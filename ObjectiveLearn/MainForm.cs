@@ -40,8 +40,6 @@ namespace ObjectiveLearn
             Console.UpdateShapes += (s, e) => Canvas.UpdateShapes();
             Canvas.SelectShape += (s, e) => SideBar.SelectObject(e);
 
-            Console.Init();
-
             var layout = new DynamicLayout();
 
             layout.BeginHorizontal(true);

@@ -62,12 +62,6 @@ public class ConsoleBar : Drawable
         Draw();
     }
 
-    public void Init()
-    {
-        MainForm.TLEnv.Execute("let meineVariable = new Rechteck(20, 50, 300, 200, 15, 255, 0, 255); println(meineVariable.Farbe.R);");
-        UpdateShapes.Invoke(this, EventArgs.Empty);
-    }
-
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);

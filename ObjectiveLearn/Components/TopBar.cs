@@ -1,6 +1,5 @@
 ﻿using Eto.Drawing;
 using Eto.Forms;
-using ObjectiveLearn.Extensions;
 using ObjectiveLearn.Models;
 using ObjectiveLearn.Properties;
 using System;
@@ -15,7 +14,7 @@ public class TopBar : Drawable
     {
         var rectangleButton = new Button()
         {
-            Image = Resources.RectangleIcon.ToIcon(),
+            Image = new Icon("Resources/RectangleIcon.png"),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Rechteck",
             Size = new Size(80, 100),
@@ -25,7 +24,7 @@ public class TopBar : Drawable
 
         var triangleButton = new Button()
         {
-            Image = Resources.TriangleIcon.ToIcon(),
+            Image = new Icon("Resources/TriangleIcon.png"),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Dreieck",
             Size = new Size(80, 100),
@@ -35,7 +34,7 @@ public class TopBar : Drawable
 
         var ellipseButton = new Button()
         {
-            Image = Resources.CircleIcon.ToIcon(),
+            Image = new Icon("Resources/CircleIcon.png"),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Ellipse",
             Size = new Size(80, 100),

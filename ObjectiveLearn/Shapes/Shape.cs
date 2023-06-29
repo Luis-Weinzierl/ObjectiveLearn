@@ -1,8 +1,6 @@
 ﻿using Eto.Drawing;
 using ObjectiveLearn.Models;
 using System;
-using System.Windows.Forms.Design;
-using TankLite.Values;
 
 namespace ObjectiveLearn.Shapes;
 
