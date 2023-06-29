@@ -1,15 +1,4 @@
 ﻿using Eto.Drawing;
-using ObjectiveLearn.Models;
-using ObjectiveLearn.Shapes;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
-using TankLite.Values;
 
 namespace ObjectiveLearn.Shared;
 

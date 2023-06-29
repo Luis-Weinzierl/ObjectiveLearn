@@ -1,7 +1,6 @@
 using Eto.Drawing;
 using Eto.Forms;
 using ObjectiveLearn.Components;
-using ObjectiveLearn.Properties;
 using System;
 using System.IO;
 using TankLite;
