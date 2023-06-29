@@ -1,4 +1,5 @@
-﻿using Eto.Forms;
+﻿using Eto.Drawing;
+using Eto.Forms;
 using ObjectiveLearn.Models;
 using ObjectiveLearn.Shared;
 using System;
@@ -14,7 +15,8 @@ public class ConsoleBar : Drawable
 {
     public event EventHandler UpdateShapes;
 
-    private readonly TextBox _textBox;
+    private TextBox _textBox;
+    private string _error = string.Empty;
 
     private readonly Dictionary<string, TLValue> _variables = new()
     {
@@ -55,29 +57,9 @@ public class ConsoleBar : Drawable
     {
         MainForm.TLEnv = new TankLiteRuntimeEnvironment(_variables);
 
-        var button = new Button()
-        {
-            Text = "Ausführen"
-        };
+        TLError.ErrorOccurred += OnErrorOccured;
 
-        _textBox = new TextBox();
-
-        button.Click += ExecuteButtonOnClick;
-
-        var layout = new DynamicLayout()
-        {
-            Padding = new(8),
-            Spacing = new(5, 20),
-        };
-
-        layout.BeginHorizontal();
-
-        layout.Add(_textBox, true, false);
-        layout.Add(button, false, false);
-
-        layout.EndBeginHorizontal();
-
-        Content = layout;
+        Draw();
     }
 
     public void Init()
@@ -103,5 +85,50 @@ public class ConsoleBar : Drawable
         UpdateShapes.Invoke(this, EventArgs.Empty);
 
         _textBox.Text = string.Empty;
+    }
+
+    private void OnErrorOccured(object sender, string message)
+    {
+        _error = message;
+
+        Draw();
+    }
+
+    private void Draw()
+    {
+        var button = new Button()
+        {
+            Text = "Ausführen"
+        };
+
+        _textBox = new TextBox();
+
+        button.Click += ExecuteButtonOnClick;
+
+        var label = new Label()
+        {
+            Text = _error,
+            TextColor = Color.FromArgb(255, 0, 0)
+        };
+
+        var layout = new DynamicLayout()
+        {
+            Padding = new(8),
+            Spacing = new(5, 20),
+        };
+
+        layout.BeginVertical();
+        layout.BeginHorizontal();
+
+        layout.Add(_textBox, true, false);
+        layout.Add(button, false, false);
+
+        layout.EndBeginHorizontal();
+
+        layout.Add(label);
+
+        layout.EndVertical();
+
+        Content = layout;
     }
 }
