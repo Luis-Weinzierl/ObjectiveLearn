@@ -3,7 +3,7 @@
 <plist version="1.0">
   <dict>
     <key>CFBundleName</key>
-    <string>ObjectiveLearn</string>
+    <string>Objective: Learn</string>
     <key>CFBundleIdentifier</key>
     <string>com.example.ObjectiveLearn</string>
     <key>CFBundleShortVersionString</key>

@@ -11,9 +11,10 @@ public class TopBar : Drawable
 	public new Point Location { get; set; }
 	public TopBar()
     {
+        var buttonSize = new Size(80, 100);
         var rectangleButton = new Button()
         {
-            Image = new Icon("Resources/RectangleIcon.png"),
+            Image = new Icon("Resources/RectangleIcon.ico"),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Rechteck",
             Size = new Size(80, 100),
@@ -23,7 +24,7 @@ public class TopBar : Drawable
 
         var triangleButton = new Button()
         {
-            Image = new Icon("Resources/TriangleIcon.png"),
+            Image = new Icon("Resources/TriangleIcon.ico"),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Dreieck",
             Size = new Size(80, 100),
@@ -33,7 +34,7 @@ public class TopBar : Drawable
 
         var ellipseButton = new Button()
         {
-            Image = new Icon("Resources/CircleIcon.png"),
+            Image = new Icon("Resources/CircleIcon.ico"),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Ellipse",
             Size = new Size(80, 100),

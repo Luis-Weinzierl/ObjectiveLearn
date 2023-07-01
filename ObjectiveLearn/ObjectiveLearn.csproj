@@ -6,14 +6,23 @@
     Valid values: Wpf, Windows, Mac64, XamMac2, Gtk, Direct2D
   -->
 
-    <PropertyGroup>
-		<BuildPlatform>Gtk</BuildPlatform>
+    <PropertyGroup Condition=" $(Platform) == 'Linux' ">
+        <BuildPlatform>Gtk</BuildPlatform>
         <TargetFramework>net7.0</TargetFramework>
-	    <RuntimeIdentifiers>osx-x64;osx-arm64</RuntimeIdentifiers>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" $(Platform) == 'MacOS' ">
+        <BuildPlatform>Mac64</BuildPlatform>
+        <TargetFramework>net7.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" $(Platform) == 'Windows' ">
+        <BuildPlatform>Wpf</BuildPlatform>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <ApplicationIcon>WinIcon.ico</ApplicationIcon>
     </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eto.Platform.Gtk" Version="2.7.5" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
   </ItemGroup>

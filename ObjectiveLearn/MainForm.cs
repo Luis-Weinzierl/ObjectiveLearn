@@ -21,10 +21,7 @@ namespace ObjectiveLearn
             BackgroundColor = ConfigurationManager.GetColor(Config.WindowColor);
 
             var topBar = new TopBar();
-            var canvas = new Canvas()
-            {
-                Location = new(0, 0)
-            };
+            var canvas = new Canvas();
             var sideBar = new SideBar();
             var console = new ConsoleBar();
 

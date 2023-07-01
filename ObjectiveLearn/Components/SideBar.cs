@@ -31,13 +31,16 @@ public class SideBar : Drawable
 
     private void Draw()
     {
-        Content = new Label()
+        var label = new Label()
         {
             Text = _text,
             TextColor = Color.FromArgb(255, 255, 255),
             TextAlignment = TextAlignment.Center,
-            Font = new("", 12)
         };
+
+        label.Font = new(label.Font.FamilyName, 12);
+
+        Content = label;
     }
 
     private string GetAllProperties(TLObj obj, string prefix = "")
