@@ -39,9 +39,14 @@ public static class DictionaryExtensions
                 return null;
             }
 
-            current = ((TLObj)current[name]).Value;
+            current = ((TLObj)value).Value;
         }
 
-        return current[breadcrumbs.Last()];
+        if (!current.TryGetValue(breadcrumbs.Last(), out TLValue returnValue))
+        {
+            return null;
+        }
+
+        return returnValue;
     }
 }
