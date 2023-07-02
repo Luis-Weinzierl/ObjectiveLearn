@@ -41,6 +41,8 @@ Every Shape has these Attributes:
 |farbeSetzen(int[0-255] r, int[0-255] g, int[0-255] b, int[0-255] a = 255)|Sets the Shape's Color. `a` is optional and defaults to 255.|
 |winkelSetzen(int angle)|Sets the Shape's tilt angle|
 
+## Teacher Mode
+Teacher Mode prohibits the use of manual drawing tools, forcing the use of the Command Line. It can be activated by setting `"TeacherMode"` to `true` in the .olcp File
 
 # Building Objective: Learn
 Objective: Learn supports Windows, Linux and MacOS, although MacOS is currently untested.
