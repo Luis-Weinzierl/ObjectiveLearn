@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectiveLearn", "ObjectiveLearn\ObjectiveLearn.csproj", "{46375669-92ED-4B31-831A-527FCB420332}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TankLite", "TankLite\TankLite.csproj", "{183951D9-1C06-4002-88BB-29157CF3ED68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TankLite", "TankLite\TankLite.csproj", "{183951D9-1C06-4002-88BB-29157CF3ED68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
