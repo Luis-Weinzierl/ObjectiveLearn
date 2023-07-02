@@ -31,6 +31,6 @@ FLOAT: [0-9]+ '.' [0-9]+;
 STRING: '"' ~'"'* '"';
 BOOL: 'true' | 'false';
 
-IDENT: [a-zA-Z_][a-zA-Z0-9_]*;
+IDENT: [a-zA-ZäöüÄÖÜ_][a-zA-Z0-9äöüÄÖÜ_]*;
 
 WS: [ \t\r\n] -> skip;
