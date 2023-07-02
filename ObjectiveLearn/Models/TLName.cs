@@ -17,7 +17,7 @@ public static class TLName
     public const string XPos = "X";
     public const string YPos = "Y";
     public const string Width = "Breite";
-    public const string Height= "Hoehe";
+    public const string Height= "Höhe";
     public const string Rotation = "Rotation";
 
     public const string Color = "Farbe";

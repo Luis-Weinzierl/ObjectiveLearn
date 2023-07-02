@@ -7,6 +7,20 @@ namespace ObjectiveLearn.Shared;
 
 public class ShapeHelpers
 {
+    public static TLObj CreateShape(SerializeableShape shape)
+    {
+        return CreateShape(
+            new(shape.Type),
+            new(shape.X, shape.Y),
+            new(shape.Width, shape.Height),
+            shape.Rotation,
+            shape.R,
+            shape.G,
+            shape.B,
+            shape.A
+            );
+    }
+
     public static TLObj CreateShape(TLFuncArgs args, TLString shapeType)
     {
         var x = ((TLInt)args.Args[0]).Value;
@@ -67,7 +81,8 @@ public class ShapeHelpers
                 },
                 { "positionSetzen", new TLFunc(SetPosition, "void") },
                 { "grösseSetzen", new TLFunc(SetSize, "void") },
-                { "farbeSetzen", new TLFunc(SetColor, "void") }
+                { "farbeSetzen", new TLFunc(SetColor, "void") },
+                { "winkelSetzen", new TLFunc(SetAngle, "void") },
             }
         };
 
@@ -140,6 +155,21 @@ public class ShapeHelpers
         color.Value[TLName.Green] = (TLInt)args.Args[1];
         color.Value[TLName.Blue] = (TLInt)args.Args[2];
         color.Value[TLName.Alpha] = args.Args.Length > 3 ? (TLInt)args.Args[3] : new TLInt(255);
+
+        return new TLVoid();
+    }
+
+    private static TLValue SetAngle(TLFuncArgs args)
+    {
+        if (args.Args.Length != 1) {
+            return new TLError($"1 Argument wurde erwartet, aber {args.Args.Length} erhalten.");
+        }
+
+        if (args.Args[0].Type != TLName.Int) {
+            return new TLError($"Das 1. Argument sollte zwischen 0 und 255 sein, ist aber {args.Args[0].Type}.");
+        }
+
+        args.Parent.Value[TLName.Rotation] = (TLInt)args.Args[0];
 
         return new TLVoid();
     }

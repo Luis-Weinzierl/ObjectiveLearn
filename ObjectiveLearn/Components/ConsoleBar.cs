@@ -8,6 +8,7 @@ using System.Diagnostics;
 using TankLite;
 using TankLite.Models;
 using TankLite.Values;
+using System.Text.Json;
 
 namespace ObjectiveLearn.Components;
 
@@ -70,6 +71,7 @@ public class ConsoleBar : Drawable
     private static TLValue TestFunc(TLFuncArgs args)
     {
         Debug.WriteLine(args.Args[0].ToString());
+        
         return new TLVoid();
     }
 

@@ -5,7 +5,7 @@ program: line*;
 line: (fncall | assignment | reassignment) ';';
 
 fncall: deepIdent '(' expr? (',' expr)* ')';
-assignment: KEYW_LET IDENT '=' expr;
+assignment: KEYW_VAR IDENT '=' expr;
 reassignment: deepIdent '=' expr;
 
 expr
@@ -24,7 +24,7 @@ deepIdent: IDENT ('.' IDENT)*;
 addOp: '+' | '-';
 multOp: '*' | '/';
 
-KEYW_LET: 'let';
+KEYW_VAR: 'var';
 
 INT: [0-9]+;
 FLOAT: [0-9]+ '.' [0-9]+;
