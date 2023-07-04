@@ -1,14 +1,8 @@
 ﻿using Eto.Drawing;
 using Eto.Forms;
-using ObjectiveLearn.Models;
 using ObjectiveLearn.Shared;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using TankLite;
-using TankLite.Models;
 using TankLite.Values;
-using System.Text.Json;
 
 namespace ObjectiveLearn.Components;
 

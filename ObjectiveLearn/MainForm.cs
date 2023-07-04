@@ -1,5 +1,6 @@
 using Eto.Drawing;
 using Eto.Forms;
+using ObjectiveLearn.Models;
 using ObjectiveLearn.Shared;
 using System;
 
@@ -18,7 +19,7 @@ namespace ObjectiveLearn
 
 			Location = new Point(100, 100);
 
-            BackgroundColor = ConfigurationManager.GetColor(Config.WindowColor);
+            BackgroundColor = ConfigManager.GetColor(Config.WindowColor);
 
             var layout = new DynamicLayout();
 

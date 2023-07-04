@@ -13,8 +13,6 @@ public class Canvas : Drawable
 {
     public event EventHandler<SelectShapeEventArgs> SelectShape;
 
-    public static ShapeTool Tool { get; set; } = ShapeTool.Triangle;
-
     public new Point Location { get; set; }
     public List<Shape> Shapes { get; set; } = new();
 
@@ -25,8 +23,8 @@ public class Canvas : Drawable
 
     public Canvas()
     {
-        _canvasBackground   = ConfigurationManager.GetColor(Config.CanvasColor);
-        _dragThreshold      = ConfigurationManager.GetDouble(Config.DragThreshold);
+        _canvasBackground   = ConfigManager.GetColor(Config.CanvasColor);
+        _dragThreshold      = ConfigManager.GetDouble(Config.DragThreshold);
     }
 
     protected override void OnPaint(PaintEventArgs pe)
@@ -67,7 +65,7 @@ public class Canvas : Drawable
                     : (int)c.Y
             );
 
-            switch (Tool)
+            switch (App.Tool)
             {
                 case ShapeTool.Rectangle:
                     pe.Graphics.DrawRectangle(startPoint, size);
@@ -152,13 +150,13 @@ public class Canvas : Drawable
             return;
         }
 
-        if (Tool == ShapeTool.Eraser)
+        if (App.Tool == ShapeTool.Eraser)
         {
             return;
         }
 
         App.TankVM.Visitor.Variables[$"form{Shape.IdCounter}"] = ShapeHelpers.CreateShape(
-            Tool switch
+            App.Tool switch
             {
                 ShapeTool.Rectangle => TLName.RectangleType,
                 ShapeTool.Triangle => TLName.TriangleType,

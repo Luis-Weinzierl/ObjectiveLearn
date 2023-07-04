@@ -2,7 +2,6 @@
 using Eto.Forms;
 using ObjectiveLearn.Models;
 using System;
-using System.Diagnostics;
 using System.Text.Json;
 using System.IO;
 using ObjectiveLearn.Shared;
@@ -27,8 +26,8 @@ public class TopBar : Drawable
             ImagePosition = ButtonImagePosition.Above,
             Text = "Rechteck",
             Size = new Size(80, 100),
-            BackgroundColor = ConfigurationManager.GetColor(Config.WindowColor),
-            TextColor = ConfigurationManager.GetColor(Config.CanvasColor)
+            BackgroundColor = ConfigManager.GetColor(Config.WindowColor),
+            TextColor = ConfigManager.GetColor(Config.CanvasColor)
         };
 
         var triangleButton = new Button()
@@ -37,8 +36,8 @@ public class TopBar : Drawable
             ImagePosition = ButtonImagePosition.Above,
             Text = "Dreieck",
             Size = new Size(80, 100),
-            BackgroundColor = ConfigurationManager.GetColor(Config.WindowColor),
-            TextColor = ConfigurationManager.GetColor(Config.CanvasColor)
+            BackgroundColor = ConfigManager.GetColor(Config.WindowColor),
+            TextColor = ConfigManager.GetColor(Config.CanvasColor)
         };
 
         var ellipseButton = new Button()
@@ -47,8 +46,8 @@ public class TopBar : Drawable
             ImagePosition = ButtonImagePosition.Above,
             Text = "Ellipse",
             Size = new Size(80, 100),
-            BackgroundColor = ConfigurationManager.GetColor(Config.WindowColor),
-            TextColor = ConfigurationManager.GetColor(Config.CanvasColor),
+            BackgroundColor = ConfigManager.GetColor(Config.WindowColor),
+            TextColor = ConfigManager.GetColor(Config.CanvasColor),
         };
 
         var saveButton = new Button()
@@ -89,17 +88,17 @@ public class TopBar : Drawable
 
     private void RectangleButtonOnClick(object sender, EventArgs e)
     {
-        Canvas.Tool = ShapeTool.Rectangle;
+        App.Tool = ShapeTool.Rectangle;
     }
 
     private void TriangleButtonOnClick(object sender, EventArgs e)
     {
-        Canvas.Tool = ShapeTool.Triangle;
+        App.Tool = ShapeTool.Triangle;
     }
 
     private void CircleButtonOnClick(object sender, EventArgs e)
     {
-        Canvas.Tool = ShapeTool.Ellipse;
+        App.Tool = ShapeTool.Ellipse;
     }
 
     private void SaveButtonOnClick(object sender, EventArgs e)

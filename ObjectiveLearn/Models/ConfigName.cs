@@ -1,4 +1,4 @@
-﻿namespace ObjectiveLearn.Shared;
+﻿namespace ObjectiveLearn.Models;
 
 public static class Config
 {

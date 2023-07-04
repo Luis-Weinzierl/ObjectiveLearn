@@ -1,9 +1,7 @@
-﻿using Eto.Drawing;
-using Eto.Forms;
+﻿using Eto.Forms;
 using Microsoft.Extensions.Configuration;
 using ObjectiveLearn.Shared;
 using System;
-using TankLite;
 
 namespace ObjectiveLearn
 {

@@ -16,6 +16,8 @@ public static class App
 
     public static bool TeacherMode { get; set; }
 
+    public static ShapeTool Tool { get; set; } = ShapeTool.Triangle;
+
     public static string Directory { get; set; }
 
     public static TopBar TopBar { get; set; }

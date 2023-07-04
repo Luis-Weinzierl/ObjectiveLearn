@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace ObjectiveLearn.Shared;
 
-public static class ConfigurationManager
+public static class ConfigManager
 {
     private static IConfigurationRoot _config;
 
