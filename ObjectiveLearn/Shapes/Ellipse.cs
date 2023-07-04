@@ -67,14 +67,14 @@ public class Ellipse : Shape
                 Location.X + Size.Width / 2,
                 Location.Y + Size.Height / 2
             ),
-            Size.Height / 2f,
             Size.Width / 2f,
+            Size.Height / 2f,
             Rotation,
             p
         );
     }
 
-    private bool IsInEllipse(Point center, float a, float b, int angle, Point p)
+    private static bool IsInEllipse(Point center, float a, float b, int angle, Point p)
     {
         var cos = Math.Cos(angle);
         var sin = Math.Sin(angle);

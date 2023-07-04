@@ -19,68 +19,24 @@ public class ConsoleBar : Drawable
     private TextBox _textBox;
     private string _error = string.Empty;
 
-    private readonly Dictionary<string, TLValue> _variables = new()
-    {
-        { "println", new TLFunc(TestFunc, "void") },
-        {
-            TLName.Rectangle,
-            new TLObj()
-            {
-                Value = new()
-                {
-                    { TLName.Constructor, new TLFunc(RectangleHelpers.Constructor, TLName.Rectangle) }
-                }
-            }
-        },
-        {
-            TLName.Triangle,
-            new TLObj()
-            {
-                Value = new()
-                {
-                    { TLName.Constructor, new TLFunc(TriangleHelpers.Constructor, TLName.Triangle) }
-                }
-            }
-        },
-        {
-            TLName.Ellipse,
-            new TLObj()
-            {
-                Value = new()
-                {
-                    { TLName.Constructor, new TLFunc(EllipseHelpers.Constructor, TLName.Ellipse) }
-                }
-            }
-        }
-    };
-
     public ConsoleBar()
     {
-        MainForm.TLEnv = new TankLiteRuntimeEnvironment(_variables);
-
         TLError.ErrorOccurred += OnErrorOccured;
 
         Draw();
     }
 
-    protected override void OnPaint(PaintEventArgs e)
-    {
-        base.OnPaint(e);
-    }
-
-    private static TLValue TestFunc(TLFuncArgs args)
-    {
-        Debug.WriteLine(args.Args[0].ToString());
-        
-        return new TLVoid();
-    }
-
     private void ExecuteButtonOnClick(object sender, EventArgs e)
     {
-        MainForm.TLEnv.Execute(_textBox.Text);
-        UpdateShapes.Invoke(this, EventArgs.Empty);
+        ExecuteCommand();
+    }
 
-        _textBox.Text = string.Empty;
+    private void TextBoxOnKeyUp(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Keys.Enter)
+        {
+            ExecuteCommand();
+        }
     }
 
     private void OnErrorOccured(object sender, string message)
@@ -98,6 +54,8 @@ public class ConsoleBar : Drawable
         };
 
         _textBox = new TextBox();
+
+        _textBox.KeyUp += TextBoxOnKeyUp;
 
         button.Click += ExecuteButtonOnClick;
 
@@ -126,5 +84,13 @@ public class ConsoleBar : Drawable
         layout.EndVertical();
 
         Content = layout;
+    }
+
+    private void ExecuteCommand()
+    {
+        App.TankVM.Execute(_textBox.Text);
+        UpdateShapes.Invoke(this, EventArgs.Empty);
+
+        _textBox.Text = string.Empty;
     }
 }

@@ -1,12 +1,13 @@
 ﻿using Eto.Drawing;
+using ObjectiveLearn.Models;
 
 namespace ObjectiveLearn.Shared;
 
 public static class ShapeShorthands
 {
     private static readonly Pen _pen = new(
-        ConfigurationManager.GetColor(Config.PreviewColor),
-        ConfigurationManager.GetFloat(Config.PreviewStrength)
+        ConfigManager.GetColor(Config.PreviewColor),
+        ConfigManager.GetFloat(Config.PreviewStrength)
         );
 
     public static void DrawRectangle(this Graphics graphics, Point location, Size size)

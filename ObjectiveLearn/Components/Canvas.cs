@@ -5,8 +5,6 @@ using ObjectiveLearn.Shapes;
 using ObjectiveLearn.Shared;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using TankLite.Values;
 
 namespace ObjectiveLearn.Components;
@@ -159,7 +157,7 @@ public class Canvas : Drawable
             return;
         }
 
-        MainForm.TLEnv.Visitor.Variables[$"form{Shape.IdCounter}"] = ShapeHelpers.CreateShape(
+        App.TankVM.Visitor.Variables[$"form{Shape.IdCounter}"] = ShapeHelpers.CreateShape(
             Tool switch
             {
                 ShapeTool.Rectangle => TLName.RectangleType,
@@ -184,7 +182,7 @@ public class Canvas : Drawable
     {
         Shapes.Clear();
 
-        foreach (var variable in MainForm.TLEnv.Visitor.Variables)
+        foreach (var variable in App.TankVM.Visitor.Variables)
         {
             if (variable.Value.Type != TLName.Object)
             {

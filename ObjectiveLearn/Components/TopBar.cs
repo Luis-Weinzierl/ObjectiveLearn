@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Text.Json;
 using System.IO;
+using ObjectiveLearn.Shared;
 
 namespace ObjectiveLearn.Components;
 
@@ -22,7 +23,7 @@ public class TopBar : Drawable
         var buttonSize = new Size(80, 100);
         var rectangleButton = new Button()
         {
-            Image = new Bitmap(System.IO.Path.Combine(MainForm.AppPath, "Resources/RectangleIcon.png")),
+            Image = new Bitmap(System.IO.Path.Combine(App.Directory, "Resources/RectangleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Rechteck",
             Size = new Size(80, 100),
@@ -32,7 +33,7 @@ public class TopBar : Drawable
 
         var triangleButton = new Button()
         {
-            Image = new Bitmap(System.IO.Path.Combine(MainForm.AppPath, "Resources/TriangleIcon.png")),
+            Image = new Bitmap(System.IO.Path.Combine(App.Directory, "Resources/TriangleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Dreieck",
             Size = new Size(80, 100),
@@ -42,7 +43,7 @@ public class TopBar : Drawable
 
         var ellipseButton = new Button()
         {
-            Image = new Bitmap(System.IO.Path.Combine(MainForm.AppPath, "Resources/CircleIcon.png")),
+            Image = new Bitmap(System.IO.Path.Combine(App.Directory, "Resources/CircleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Ellipse",
             Size = new Size(80, 100),
@@ -73,7 +74,7 @@ public class TopBar : Drawable
             Orientation = Orientation.Horizontal
         };
 
-        if (!MainForm.TeacherMode)
+        if (!App.TeacherMode)
         {
             layout.Items.Add(rectangleButton);
             layout.Items.Add(triangleButton);
@@ -112,7 +113,7 @@ public class TopBar : Drawable
 
         if (dialog.ShowDialog(Application.Instance.MainForm) == DialogResult.Ok)
         {
-            var jsonString = JsonSerializer.Serialize(MainForm.Serialize());
+            var jsonString = JsonSerializer.Serialize(App.Serialize());
             File.WriteAllText(dialog.FileName, jsonString);
         }
     }
@@ -129,7 +130,7 @@ public class TopBar : Drawable
         if (dialog.ShowDialog(Application.Instance.MainForm) == DialogResult.Ok)
         {
             var program = JsonSerializer.Deserialize<SerializeableOLProgram>(File.ReadAllText(dialog.FileName));
-            MainForm.Deserialize(program);
+            App.Deserialize(program);
         }
 
         Draw();

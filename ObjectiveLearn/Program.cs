@@ -1,12 +1,13 @@
 ﻿using Eto.Drawing;
 using Eto.Forms;
 using Microsoft.Extensions.Configuration;
+using ObjectiveLearn.Shared;
 using System;
 using TankLite;
 
 namespace ObjectiveLearn
 {
-	internal class Program
+    internal class Program
 	{
 		[STAThread]
 		static void Main()
@@ -16,7 +17,7 @@ namespace ObjectiveLearn
 
             var config = builder.Build();
 			
-			ConfigurationManager.Init(config);
+			ConfigManager.Init(config);
 
             new Application(Eto.Platform.Detect).Run(new MainForm());
 		}
