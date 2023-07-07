@@ -28,7 +28,7 @@ namespace ObjectiveLearn
             layout.Add(App.TopBar, true, false);
             layout.Add(App.Canvas, true, true);
             layout.Add(App.ConsoleBar, true, false);
-            layout.EndBeginVertical();
+            layout.EndVertical();
             layout.Add(App.SideBar, false, true);
             layout.EndHorizontal();
 

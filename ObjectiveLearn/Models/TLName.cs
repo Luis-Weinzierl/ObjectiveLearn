@@ -29,4 +29,5 @@ public static class TLName
 
     public const string Int = "int";
     public const string Object = "object";
+    public const string Func = "func";
 }
