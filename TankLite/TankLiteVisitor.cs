@@ -116,6 +116,16 @@ public class TankLiteVisitor : TankLiteBaseVisitor<TLValue>
         return new TLVoid();
     }
 
+    public override TLValue VisitReassignment([NotNull] TankLiteParser.ReassignmentContext context)
+    {
+        var value = Visit(context.expr());
+        var breadcrumbs = context.deepIdent().IDENT().Select(i => i.GetText()).ToList();
+
+        Variables.Set(breadcrumbs, value);
+
+        return new TLVoid();
+    }
+
     public override TLValue VisitConstructorExpression([NotNull] TankLiteParser.ConstructorExpressionContext context)
     {
         var name = context.IDENT().GetText();

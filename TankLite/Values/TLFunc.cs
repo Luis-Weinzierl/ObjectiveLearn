@@ -5,6 +5,7 @@ namespace TankLite.Values;
 
 public class TLFunc : TLValue
 {
+    public override bool IsReadonly { get; set; } = true;
     public override string Type { get; set; }
     public string ReturnType { get; set; }
     public Func<TLFuncArgs, TLValue> Value { get; set; }

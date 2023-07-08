@@ -6,6 +6,7 @@ namespace TankLite.Values;
 
 public abstract class TLValue
 {
+    public virtual bool IsReadonly { get; set; } = false;
     public abstract string Type { get; set; }
 
     public virtual TLValue Add(TLValue _)
