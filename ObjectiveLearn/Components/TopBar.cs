@@ -22,7 +22,7 @@ public class TopBar : Drawable
         var buttonSize = new Size(80, 100);
         var rectangleButton = new Button()
         {
-            Image = new Bitmap(System.IO.Path.Combine(App.Directory, "Resources/RectangleIcon.png")),
+            Image = new Bitmap(Path.Combine(App.Directory, "Resources/RectangleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Rechteck",
             Size = new Size(80, 100),
@@ -32,7 +32,7 @@ public class TopBar : Drawable
 
         var triangleButton = new Button()
         {
-            Image = new Bitmap(System.IO.Path.Combine(App.Directory, "Resources/TriangleIcon.png")),
+            Image = new Bitmap(Path.Combine(App.Directory, "Resources/TriangleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Dreieck",
             Size = new Size(80, 100),
@@ -42,7 +42,7 @@ public class TopBar : Drawable
 
         var ellipseButton = new Button()
         {
-            Image = new Bitmap(System.IO.Path.Combine(App.Directory, "Resources/CircleIcon.png")),
+            Image = new Bitmap(Path.Combine(App.Directory, "Resources/CircleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
             Text = "Ellipse",
             Size = new Size(80, 100),
@@ -52,12 +52,13 @@ public class TopBar : Drawable
 
         var saveButton = new Button()
         {
-            Text = "Speichern"
+            Text = "Speichern",
+            Width = 50
         };
 
         var loadButton = new Button()
         {
-            Text = "Öffnen"
+            Text = "Öffnen",
         };
 
         rectangleButton.Click += RectangleButtonOnClick;
@@ -66,22 +67,31 @@ public class TopBar : Drawable
         saveButton.Click += SaveButtonOnClick;
         loadButton.Click += LoadButtonOnClick;
 
-        var layout = new StackLayout()
+        var layout = new DynamicLayout()
         {
             Padding = new(8),
-            Spacing = 5,
-            Orientation = Orientation.Horizontal
+            DefaultSpacing = new(5, 5)
         };
+
+        layout.BeginHorizontal(false);
 
         if (!App.TeacherMode)
         {
-            layout.Items.Add(rectangleButton);
-            layout.Items.Add(triangleButton);
-            layout.Items.Add(ellipseButton);    
+            layout.Add(rectangleButton);
+            layout.Add(triangleButton);
+            layout.Add(ellipseButton);    
         }
 
-        layout.Items.Add(saveButton);
-        layout.Items.Add(loadButton);
+        layout.BeginVertical(null, null, false, false);
+
+        layout.Add(saveButton, false, true);
+        layout.Add(loadButton, false, true);
+
+        layout.EndVertical();
+
+        layout.AddSpace();
+
+        layout.EndHorizontal();
 
         Content = layout;
     }

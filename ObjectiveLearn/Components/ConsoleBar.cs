@@ -2,6 +2,7 @@
 using Eto.Forms;
 using ObjectiveLearn.Shared;
 using System;
+using System.Collections.Generic;
 using TankLite.Values;
 
 namespace ObjectiveLearn.Components;
@@ -11,7 +12,7 @@ public class ConsoleBar : Drawable
     public event EventHandler UpdateShapes;
 
     private TextBox _textBox;
-    private string _error = string.Empty;
+    private List<string> _errors = new();
 
     public ConsoleBar()
     {
@@ -25,6 +26,12 @@ public class ConsoleBar : Drawable
         ExecuteCommand();
     }
 
+    private void ClearErrorsButtonOnClick(object sender, EventArgs e)
+    {
+        _errors.Clear();
+        Draw();
+    }
+
     private void TextBoxOnKeyUp(object sender, KeyEventArgs e)
     {
         if (e.Key == Keys.Enter)
@@ -35,43 +42,46 @@ public class ConsoleBar : Drawable
 
     private void OnErrorOccured(object sender, string message)
     {
-        _error = message;
+        _errors.Add(message);
 
         Draw();
     }
 
     private void Draw()
     {
-        var button = new Button()
+        var executeButton = new Button()
         {
             Text = "Ausführen"
+        };
+
+        var clearErrorsButton = new Button()
+        {
+            Text = "Fehler löschen"
         };
 
         _textBox = new TextBox();
 
         _textBox.KeyUp += TextBoxOnKeyUp;
 
-        button.Click += ExecuteButtonOnClick;
+        executeButton.Click += ExecuteButtonOnClick;
+        clearErrorsButton.Click += ClearErrorsButtonOnClick;
 
         var label = new Label()
         {
-            Text = _error,
+            Text = string.Join('\n', _errors),
             TextColor = Color.FromArgb(255, 0, 0)
         };
 
-        var layout = new DynamicLayout()
-        {
-            Padding = new(8),
-            Spacing = new(5, 20),
-        };
+        var layout = new DynamicLayout();
 
-        layout.BeginVertical();
+        layout.BeginVertical(new(8, 8, 0, 8), new(5, 5));
         layout.BeginHorizontal();
 
         layout.Add(_textBox, true, false);
-        layout.Add(button, false, false);
+        layout.Add(executeButton, false, false);
+        layout.Add(clearErrorsButton, false, false);
 
-        layout.EndBeginHorizontal();
+        layout.EndHorizontal();
 
         layout.Add(label);
 
