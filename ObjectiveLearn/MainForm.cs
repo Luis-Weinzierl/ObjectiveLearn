@@ -3,6 +3,7 @@ using Eto.Forms;
 using ObjectiveLearn.Models;
 using ObjectiveLearn.Shared;
 using System;
+using System.Diagnostics;
 
 namespace ObjectiveLearn
 {
@@ -14,8 +15,8 @@ namespace ObjectiveLearn
 
             Icon = new Icon(System.IO.Path.Combine(App.Directory, "WinIcon.ico"));
 			Title = title;
-			MinimumSize = new Size(200, 200);
-			Size = new Size(800, 500);
+			MinimumSize = new Size(765, 540);
+			Size = new Size(900, 600);
 
 			Location = new Point(100, 100);
 
@@ -39,5 +40,11 @@ namespace ObjectiveLearn
 		{
 			GC.SuppressFinalize(this);
 		}
-	}
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+            Debug.WriteLine($"Window Size: {Size.Width} x {Size.Height}");
+        }
+    }
 }

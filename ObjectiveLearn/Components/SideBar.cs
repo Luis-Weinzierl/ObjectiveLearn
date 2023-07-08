@@ -2,9 +2,6 @@
 using Eto.Forms;
 using ObjectiveLearn.Models;
 using ObjectiveLearn.Shared;
-using System;
-using System.Diagnostics;
-using System.IO;
 using TankLite.Values;
 
 namespace ObjectiveLearn.Components;
@@ -20,10 +17,16 @@ public class SideBar : Drawable
     private Color _textColor;
     private Color _backgroundColor;
 
+    private SolidBrush _textBrush;
+    private Font _textFont;
+
     public SideBar()
     {
         _textColor = ConfigManager.GetColor(Config.SidebarTextColor);
         _backgroundColor = ConfigManager.GetColor(Config.SidebarBackground);
+
+        _textBrush = new(_textColor);
+        _textFont = new("Default", 12);
 
         MinimumSize = new(300, 300);
 
@@ -41,10 +44,14 @@ public class SideBar : Drawable
 
     protected override void OnPaint(PaintEventArgs e)
     {
-        var textBrush = new SolidBrush(_textColor);
-        var textFont = new Font("Default", 12);
+        base.OnPaint(e);
 
-        var totalHeight = _padding * 6 + (_text.Split('\n').Length + _text2.Split('\n').Length + 4) * textFont.LineHeight;
+        if (_text.Length == 0)
+        {
+            return;
+        }
+
+        var totalHeight = _padding * 6 + (_text.Split('\n').Length + _text2.Split('\n').Length + 4) * _textFont.LineHeight;
 
         var rect = new RectangleF(e.ClipRectangle.X + _padding, e.ClipRectangle.Y + _padding, e.ClipRectangle.Width - 2 * _padding, totalHeight);
 
@@ -54,23 +61,23 @@ public class SideBar : Drawable
 
         e.Graphics.FillPath(_backgroundColor, path);
 
-        e.Graphics.DrawText(textFont,textBrush, rect.X + _padding, height, _title);
+        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _title);
 
-        height += textFont.LineHeight + _padding;
-
-        e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
-
-        height += _padding;
-
-        e.Graphics.DrawText(textFont, textBrush, rect.X + _padding, height, _text);
-
-        height += textFont.LineHeight * (_text.Split("\n").Length + 1) + 2 * _padding;
+        height += _textFont.LineHeight + _padding;
 
         e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
 
         height += _padding;
 
-        e.Graphics.DrawText(textFont, textBrush, rect.X + _padding, height, _text2);
+        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _text);
+
+        height += _textFont.LineHeight * (_text.Split("\n").Length + 1) + 2 * _padding;
+
+        e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
+
+        height += _padding;
+
+        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _text2);
     }
 
     private (string, string) GetAllProperties(TLObj obj, string prefix = "")
