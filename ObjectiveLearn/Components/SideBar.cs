@@ -44,7 +44,9 @@ public class SideBar : Drawable
         var textBrush = new SolidBrush(_textColor);
         var textFont = new Font("Default", 12);
 
-        var rect = new RectangleF(e.ClipRectangle.X + _padding, e.ClipRectangle.Y + _padding, e.ClipRectangle.Width - 2 * _padding, e.ClipRectangle.Height - 2 * _padding);
+        var totalHeight = _padding * 6 + (_text.Split('\n').Length + _text2.Split('\n').Length + 4) * textFont.LineHeight;
+
+        var rect = new RectangleF(e.ClipRectangle.X + _padding, e.ClipRectangle.Y + _padding, e.ClipRectangle.Width - 2 * _padding, totalHeight);
 
         var path = GraphicsPath.GetRoundRect(rect, 8);
 
