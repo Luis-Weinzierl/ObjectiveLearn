@@ -80,10 +80,10 @@ public class ShapeHelpers
                         }
                     }
                 },
-                { "positionSetzen", new TLFunc(SetPosition, "void") },
-                { "grösseSetzen", new TLFunc(SetSize, "void") },
-                { "farbeSetzen", new TLFunc(SetColor, "void") },
-                { "winkelSetzen", new TLFunc(SetAngle, "void") },
+                { TLName.SetPosition, new TLFunc(SetPosition, "void") },
+                { TLName.SetSize, new TLFunc(SetSize, "void") },
+                { TLName.SetColor, new TLFunc(SetColor, "void") },
+                { TLName.SetRotation, new TLFunc(SetRotation, "void") },
             }
         };
         return obj;
@@ -197,7 +197,7 @@ public class ShapeHelpers
         return new TLVoid();
     }
 
-    private static TLValue SetAngle(TLFuncArgs args)
+    private static TLValue SetRotation(TLFuncArgs args)
     {
         if (args.Args.Length != 1) {
             return new TLError(

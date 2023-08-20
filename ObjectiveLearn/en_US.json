@@ -1,0 +1,57 @@
+{
+    "topBar": {
+        "rectangle": "Rectangle",
+        "ellipse": "Ellipsis",
+        "triangle": "Triangle",
+        "save": "Save",
+        "open": "Open"
+    },
+    "consoleBar": {
+        "Execute": "Execute",
+        "ClearErrors": "Clear Errors"
+    },
+    "error": {
+        "or": "or",
+        "expectedArgs": "Expected {expected} arguments but received {received}.",
+        "typeInferrenceCtor": "The {i}. argument of the constructor should be of type int but is {type}.",
+        "typeInferrenceArgs": "The {i}. argument should be of type int but is {type}.",
+        "outsideRange": "The {i}. argument should be between {min} and {max} but is {value}."
+    },
+    "tankLite": {
+        "variableDoesntExist": "Variable {name} doesn't exist'.",
+        "classDoesntExist": "Class {name} doesn't exist'.",
+        "variableNotFunction": "Variable {name} cannot be executes as a function as it is of type {type}.",
+        "variableIsReafonly": "{name} is readonly.",
+        "variableTypeInterferrence": "A value of type {valueType} cannot be assigned to variable {name} as it is of type {type}.",
+        "variableIsNotObject": "{name} is not an object but {type}",
+        "cannotAdd": "Cannot add {type1} and {type2}.",
+        "cannotSubtract": "Cannot subtract {type2} from {type1}.",
+        "cannotMultiply": "Cannot multiply {type1} with {type2}.",
+        "cannotDivide": "Cannot divide {type1} by {type2}.",
+        "cannotOperate": "Cannot operate on {type}."
+    },
+    "tlName": {
+        "rectangle": "RECTANGLE",
+        "triangle": "TRIANGLE",
+        "ellipse": "ELLIPSIS",
+        "constructor": ".ctor",
+        "type": ".type",
+        "xPos": "X",
+        "yPos": "Y",
+        "width": "Width",
+        "height": "Height",
+        "rotation": "Rotation",
+        "color": "Color",
+        "red": "R",
+        "green": "G",
+        "blue": "B",
+        "alpha": "A",
+        "int": "int",
+        "object": "object",
+        "func": "func",
+        "setPosition": "setPosition",
+        "setSize": "setSize",
+        "setColor": "setColor",
+        "setRotation": "setRotation"
+    }
+}

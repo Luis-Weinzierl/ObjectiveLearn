@@ -15,7 +15,7 @@
         "expectedArgs": "{expected} Argumente wurden erwartet aber {received} erhalten.",
         "typeInferrenceCtor": "Das {i}. Argument des Konstruktors sollte vom Typ int sein, ist aber {type}.",
         "typeInferrenceArgs": "Das {i}. Argument sollte vom Typ int sein, ist aber {type}.",
-        "outsideRange": "Das {i}. Argument sollte zwischen {min} und {max} sein, ist aber {value}"
+        "outsideRange": "Das {i}. Argument sollte zwischen {min} und {max} sein, ist aber {value}."
     },
     "tankLite": {
         "variableDoesntExist": "Variable {name} existiert nicht.",
@@ -48,6 +48,10 @@
         "alpha": "A",
         "int": "int",
         "object": "object",
-        "func": "func"
+        "func": "func",
+        "setPosition": "positionSetzen",
+        "setSize": "grösseSetzen",
+        "setColor": "farbeSetzen",
+        "setRotation": "rotationSetzen"
     }
 }

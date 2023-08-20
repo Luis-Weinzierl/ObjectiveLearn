@@ -43,4 +43,8 @@ public static class LanguageName
     public const string TLNameInt                       = "tlName:int";
     public const string TLNameObject                    = "tlName:object";
     public const string TLNameFunc                      = "tlName:func";
+    public const string TLNameSetPosition               = "tlName:setPosition";
+    public const string TLNameSetSize                   = "tlName:setSize";
+    public const string TLNameSetColor                  = "tlName:setColor";
+    public const string TLNameSetRotation               = "tlName:setRotation";
 }

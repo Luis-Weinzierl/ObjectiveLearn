@@ -32,6 +32,12 @@ public static class TLName
     public static string Object;
     public static string Func;
 
+    public static string SetPosition;
+    public static string SetSize;
+    public static string SetColor;
+    public static string SetRotation;
+
+
     public static void Init()
     {
         Rectangle = LanguageManager.Get(LanguageName.TLNameRectangle);
@@ -55,5 +61,9 @@ public static class TLName
         Int = LanguageManager.Get(LanguageName.TLNameInt);
         Object = LanguageManager.Get(LanguageName.TLNameObject);
         Func = LanguageManager.Get(LanguageName.TLNameFunc);
+        SetPosition = LanguageManager.Get(LanguageName.TLNameSetPosition);
+        SetSize = LanguageManager.Get(LanguageName.TLNameSetSize);
+        SetColor = LanguageManager.Get(LanguageName.TLNameSetColor);
+        SetRotation = LanguageManager.Get(LanguageName.TLNameSetRotation);
     }
 }
