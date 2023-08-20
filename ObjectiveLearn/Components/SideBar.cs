@@ -26,7 +26,7 @@ public class SideBar : Drawable
         _backgroundColor = ConfigManager.GetColor(Config.SidebarBackground);
 
         _textBrush = new(_textColor);
-        _textFont = new("Default", 12);
+        _textFont = new(SystemFont.Default, 12);
 
         MinimumSize = new(300, 300);
 

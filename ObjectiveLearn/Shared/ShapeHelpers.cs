@@ -2,6 +2,7 @@
 using ObjectiveLearn.Models;
 using TankLite.Models;
 using TankLite.Values;
+using Shared.Localisation;
 
 namespace ObjectiveLearn.Shared;
 
@@ -85,21 +86,30 @@ public class ShapeHelpers
                 { "winkelSetzen", new TLFunc(SetAngle, "void") },
             }
         };
-
         return obj;
     }
 
     private static TLValue SetPosition(TLFuncArgs args)
     {
         if (args.Args.Length != 2) {
-            return new TLError($"2 Argumente wurden erwartet, aber {args.Args.Length} erhalten.");
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.ErrorExpectedArgs)
+                    .Replace("{expected}", "2")
+                    .Replace("{received}", args.Args.Length.ToString())
+            );
         }
 
         for (int i = 0; i < args.Args.Length; i++) {
             var arg = args.Args[i];
 
             if (arg.Type != TLName.Int) {
-                return new TLError($"Das {i}. Argument sollte vom Typ int sein, ist aber {arg.Type}.");
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.ErrorTypeInferrenceArgs)
+                        .Replace("{i}", i.ToString())
+                        .Replace("{type}", arg.Type)
+                );
             }
         }
 
@@ -112,14 +122,24 @@ public class ShapeHelpers
     private static TLValue SetSize(TLFuncArgs args)
     {
         if (args.Args.Length != 2) {
-            return new TLError($"2 Argumente wurden erwartet, aber {args.Args.Length} erhalten.");
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.ErrorExpectedArgs)
+                    .Replace("{expected}", "2")
+                    .Replace("{received}", args.Args.Length.ToString())
+            );
         }
 
         for (int i = 0; i < args.Args.Length; i++) {
             var arg = args.Args[i];
 
             if (arg.Type != TLName.Int) {
-                return new TLError($"Das {i}. Argument sollte vom Typ int sein, ist aber {arg.Type}.");
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.ErrorTypeInferrenceArgs)
+                        .Replace("{i}", i.ToString())
+                        .Replace("{type}", arg.Type)
+                );
             }
         }
 
@@ -132,20 +152,38 @@ public class ShapeHelpers
     private static TLValue SetColor(TLFuncArgs args)
     {
         if (args.Args.Length != 3 && args.Args.Length != 4) {
-            return new TLError($"3 oder 4 Argumente wurden erwartet, aber {args.Args.Length} erhalten.");
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.ErrorExpectedArgs)
+                    .Replace("{expected}", "3 {or} 4")
+                    .Replace("{or}", LanguageManager.Get(LanguageName.ErrorOr))
+                    .Replace("{received}", args.Args.Length.ToString())
+            );
         }
 
         for (int i = 0; i < args.Args.Length; i++) {
             var arg = args.Args[i];
 
             if (arg.Type != TLName.Int) {
-                return new TLError($"Das {i}. Argument sollte vom Typ int sein, ist aber {arg.Type}.");
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.ErrorTypeInferrenceArgs)
+                        .Replace("{i}", i.ToString())
+                        .Replace("{type}", arg.Type)
+                );
             }
             
             var value = ((TLInt)arg).Value;
 
             if (value > 255 || value < 0) {
-                return new TLError($"Das {i}. Argument sollte zwischen 0 und 255 sein, ist aber {value}.");
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.ErrorOutsideRange)
+                        .Replace("{i}", i.ToString())
+                        .Replace("{min}", "0")
+                        .Replace("{max}", "255")
+                        .Replace("{value}", value.ToString())
+                );
             }
         }
 
@@ -162,11 +200,21 @@ public class ShapeHelpers
     private static TLValue SetAngle(TLFuncArgs args)
     {
         if (args.Args.Length != 1) {
-            return new TLError($"1 Argument wurde erwartet, aber {args.Args.Length} erhalten.");
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.ErrorExpectedArgs)
+                    .Replace("{expected}", "1")
+                    .Replace("{received}", args.Args.Length.ToString())
+            );
         }
 
         if (args.Args[0].Type != TLName.Int) {
-            return new TLError($"Das 1. Argument sollte zwischen 0 und 255 sein, ist aber {args.Args[0].Type}.");
+            return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.ErrorTypeInferrenceArgs)
+                        .Replace("{i}", "0")
+                        .Replace("{type}", args.Args[0].Type)
+                );
         }
 
         args.Parent.Value[TLName.Rotation] = (TLInt)args.Args[0];

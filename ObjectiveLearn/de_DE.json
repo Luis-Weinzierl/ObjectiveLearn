@@ -1,0 +1,53 @@
+{
+    "topBar": {
+        "rectangle": "Rechteck",
+        "ellipse": "Ellipse",
+        "triangle": "Dreieck",
+        "save": "Speichern",
+        "open": "Öffnen"
+    },
+    "consoleBar": {
+        "Execute": "Ausführen",
+        "ClearErrors": "Fehler löschen"
+    },
+    "error": {
+        "or": "oder",
+        "expectedArgs": "{expected} Argumente wurden erwartet aber {received} erhalten.",
+        "typeInferrenceCtor": "Das {i}. Argument des Konstruktors sollte vom Typ int sein, ist aber {type}.",
+        "typeInferrenceArgs": "Das {i}. Argument sollte vom Typ int sein, ist aber {type}.",
+        "outsideRange": "Das {i}. Argument sollte zwischen {min} und {max} sein, ist aber {value}"
+    },
+    "tankLite": {
+        "variableDoesntExist": "Variable {name} existiert nicht.",
+        "classDoesntExist": "Klasse {name} existiert nicht.",
+        "variableNotFunction": "Variable {name} kann nicht als Funktion ausgeführt werden, da sie vom Typ {type} ist.",
+        "variableIsReafonly": "{name} ist nur lesbar.",
+        "variableTypeInterferrence": "Ein Wert vom Typ {valueType} kann der Variable {name} nicht zugewiesen werden, da sie vom Typ {type} ist.",
+        "variableIsNotObject": "{name} ist kein Objekt, sondern {type}",
+        "cannotAdd": "{type2} kann nicht zu {type1} addiert werden.",
+        "cannotSubtract": "{type2} kann nicht von {type1} subtrahiert werden.",
+        "cannotMultiply": "{type1} kann nicht mit {type2} multipliziert werden.",
+        "cannotDivide": "{type1} kann nicht durch {type2} geteilt werden.",
+        "cannotOperate": "An {type} können keine mathematischen Operationen unternommen werden."
+    },
+    "tlName": {
+        "rectangle": "RECHTECK",
+        "triangle": "DREIECK",
+        "ellipse": "ELLIPSE",
+        "constructor": ".ctor",
+        "type": ".type",
+        "xPos": "X",
+        "yPos": "Y",
+        "width": "Breite",
+        "height": "Höhe",
+        "rotation": "Rotation",
+        "color": "Farbe",
+        "red": "R",
+        "green": "G",
+        "blue": "B",
+        "alpha": "A",
+        "int": "int",
+        "object": "object",
+        "func": "func"
+    }
+}

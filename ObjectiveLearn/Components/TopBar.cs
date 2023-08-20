@@ -5,6 +5,7 @@ using System;
 using System.Text.Json;
 using System.IO;
 using ObjectiveLearn.Shared;
+using Shared.Localisation;
 
 namespace ObjectiveLearn.Components;
 
@@ -24,7 +25,7 @@ public class TopBar : Drawable
         {
             Image = new Bitmap(Path.Combine(App.Directory, "Resources/RectangleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
-            Text = "Rechteck",
+            Text = LanguageManager.Get(LanguageName.TopBarRectangle),
             Size = new Size(80, 100),
             BackgroundColor = ConfigManager.GetColor(Config.WindowColor),
             TextColor = ConfigManager.GetColor(Config.CanvasColor)
@@ -34,7 +35,7 @@ public class TopBar : Drawable
         {
             Image = new Bitmap(Path.Combine(App.Directory, "Resources/TriangleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
-            Text = "Dreieck",
+            Text = LanguageManager.Get(LanguageName.TopBarTriangle),
             Size = new Size(80, 100),
             BackgroundColor = ConfigManager.GetColor(Config.WindowColor),
             TextColor = ConfigManager.GetColor(Config.CanvasColor)
@@ -44,7 +45,7 @@ public class TopBar : Drawable
         {
             Image = new Bitmap(Path.Combine(App.Directory, "Resources/CircleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
-            Text = "Ellipse",
+            Text = LanguageManager.Get(LanguageName.TopBarEllipse),
             Size = new Size(80, 100),
             BackgroundColor = ConfigManager.GetColor(Config.WindowColor),
             TextColor = ConfigManager.GetColor(Config.CanvasColor),
@@ -52,13 +53,13 @@ public class TopBar : Drawable
 
         var saveButton = new Button()
         {
-            Text = "Speichern",
+            Text = LanguageManager.Get(LanguageName.TopBarSave),
             Width = 50
         };
 
         var loadButton = new Button()
         {
-            Text = "Öffnen",
+            Text = LanguageManager.Get(LanguageName.TopBarOpen),
         };
 
         rectangleButton.Click += RectangleButtonOnClick;

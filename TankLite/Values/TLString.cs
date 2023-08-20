@@ -23,7 +23,12 @@ public class TLString : TLValue
                 return this;
 
             default:
-                return new TLError($"Cannot add {Type} and {other.Type}");
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.TankLiteCannotAdd)
+                        .Replace("{type1}", Type)
+                        .Replace("{type2}", other.Type)
+                );
         }
     }
 

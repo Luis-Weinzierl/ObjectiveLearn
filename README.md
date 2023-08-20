@@ -1,17 +1,24 @@
 # Objective: Learn
+
 Objective: Learn is a program made to teach children the basics of [OOP](https://en.wikipedia.org/wiki/Object-oriented_programming) with a Java-esque syntax.
 
 # Using Objective: Learn
+
 ## UI Explanation
+
 <img src="Preview.png" style="width: 100%;">
 
 ## Shapes
+
 Shapes can be created in two ways:
- - Using the toolbar, select the shape you want to draw and drag over the canvas to create the shape
- - In the Command Line type the following:
+
+- Using the toolbar, select the shape you want to draw and drag over the canvas to create the shape
+- In the Command Line type the following:
+
  ```java
  var myShape = new RECHTECK(100, 100, 20, 50);
  ```
+
  Valid class names are `RECHTECK`, `DREIECK` and `ELLIPSE`. Every constructor accepts 4, 5, 8 or 9 arguments. These are the constructors:
 | Number of arguments | Description                |
 |---------------------|----------------------------|
@@ -42,37 +49,48 @@ Every Shape has these Attributes:
 |winkelSetzen(int angle)|Sets the Shape's tilt angle|
 
 ## Teacher Mode
+
 Teacher Mode prohibits the use of manual drawing tools, forcing the use of the Command Line. It can be activated by setting `"TeacherMode"` to `true` in the .olcp File
 
 # Building Objective: Learn
+
 Objective: Learn supports Windows, Linux and MacOS, although MacOS is currently untested.
+
 ## Prerequesites
- - .NET 7
+
+- .NET 7
 
 Only for compiling the Icons on Linux:
- - png2icns for Mac ICNS
- - ImageMagick for Windows ICO
+
+- png2icns for Mac ICNS
+- ImageMagick for Windows ICO
 
 ## Build Commands
-Windows:
+
+To run the app in debug mode (unoptimized), use
+
 ```bash
-dotnet build -p Platform=Windows
+dotnet run -p:Platform={Platform}
 ```
-Linux:
+
+and for optimized building, use
+
 ```bash
-dotnet build -p Platform=Linux
+dotnet publish -p:Platform={Platform}
 ```
-MacOS:
-```bash
-dotnet build -p Platform=MacOS
-```
-ICNS on Linux:
+
+Valid Platform values are `Windows`, `Linux` and `MacOS`.
+
+To build the ICNS icon file on Linux, you need `png2icns`:
+
 ```bash
 png2icns MacIcon.icns Icons/ObjectiveLearnLogo*.png
-
 ```
-ICO on Linux:
+
+and to create the ICO file on Linux, use `imagemagick`'s `convert`:
+
 ```bash
 convert Icons/ObjectiveLearnLogo512.png -define icon:auto-resize=255,64,48,32,16 -define png:conpression-strategy=0 WinIcon.ico
 ```
+
 Note: All of the above commands need to be run in the `ObjectiveLearn/` directory, not the project root

@@ -1,33 +1,59 @@
 ﻿using TankLite.Values;
+using Shared.Localisation;
 
 namespace ObjectiveLearn.Models;
 
 public static class TLName
 {
-    public const string Rectangle = "RECHTECK";
-    public const string Triangle = "DREIECK";
-    public const string Ellipse = "ELLIPSE";
+    public static string Rectangle;
+    public static string Triangle;
+    public static string Ellipse;
 
-    public static readonly TLString RectangleType = new(Rectangle);
-    public static readonly TLString TriangleType = new(Triangle);
-    public static readonly TLString EllipseType = new(Ellipse);
+    public static TLString RectangleType;
+    public static TLString TriangleType;
+    public static TLString EllipseType;
 
-    public const string Constructor = ".ctor";
-    public const string Type = ".type";
-    public const string XPos = "X";
-    public const string YPos = "Y";
-    public const string Width = "Breite";
-    public const string Height= "Höhe";
-    public const string Rotation = "Rotation";
+    public static string Constructor;
+    public static string Type;
+    public static string XPos;
+    public static string YPos;
+    public static string Width;
+    public static string Height;
+    public static string Rotation;
 
-    public const string Color = "Farbe";
+    public static string Color;
 
-    public const string Red = "R";
-    public const string Green = "G";
-    public const string Blue = "B";
-    public const string Alpha = "A";
+    public static string Red;
+    public static string Green;
+    public static string Blue;
+    public static string Alpha;
 
-    public const string Int = "int";
-    public const string Object = "object";
-    public const string Func = "func";
+    public static string Int;
+    public static string Object;
+    public static string Func;
+
+    public static void Init()
+    {
+        Rectangle = LanguageManager.Get(LanguageName.TLNameRectangle);
+        Triangle = LanguageManager.Get(LanguageName.TLNameTriangle);
+        Ellipse = LanguageManager.Get(LanguageName.TLNameEllipse);
+        RectangleType = new(Rectangle);
+        TriangleType = new(Triangle);
+        EllipseType = new(Ellipse);
+        Constructor = LanguageManager.Get(LanguageName.TLNameConstructor);
+        Type = LanguageManager.Get(LanguageName.TLNameType);
+        XPos = LanguageManager.Get(LanguageName.TLNameXPos);
+        YPos = LanguageManager.Get(LanguageName.TLNameYPos);
+        Width = LanguageManager.Get(LanguageName.TLNameWidth);
+        Height = LanguageManager.Get(LanguageName.TLNameHeight);
+        Rotation = LanguageManager.Get(LanguageName.TLNameRotation);
+        Color = LanguageManager.Get(LanguageName.TLNameColor);
+        Red = LanguageManager.Get(LanguageName.TLNameRed);
+        Green = LanguageManager.Get(LanguageName.TLNameGreen);
+        Blue = LanguageManager.Get(LanguageName.TLNameBlue);
+        Alpha = LanguageManager.Get(LanguageName.TLNameAlpha);
+        Int = LanguageManager.Get(LanguageName.TLNameInt);
+        Object = LanguageManager.Get(LanguageName.TLNameObject);
+        Func = LanguageManager.Get(LanguageName.TLNameFunc);
+    }
 }

@@ -11,22 +11,38 @@ public abstract class TLValue
 
     public virtual TLValue Add(TLValue _)
     {
-        return new TLError($"Cannot operate on {Type}");
+        return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.TankLiteCannotOperate)
+                        .Replace("{type}", Type)
+                );
     }
 
     public virtual TLValue Subtract(TLValue _)
     {
-        return new TLError($"Cannot operate on {Type}");
+        return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.TankLiteCannotOperate)
+                        .Replace("{type}", Type)
+                );
     }
 
     public virtual TLValue Multiply(TLValue _)
     {
-        return new TLError($"Cannot operate on {Type}");
+        return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.TankLiteCannotOperate)
+                        .Replace("{type}", Type)
+                );
     }
 
     public virtual TLValue Divide(TLValue _)
     {
-        return new TLError($"Cannot operate on {Type}");
+        return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.TankLiteCannotOperate)
+                        .Replace("{type}", Type)
+                );
     }
 
     public override string ToString()

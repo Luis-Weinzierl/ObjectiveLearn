@@ -4,6 +4,7 @@ using ObjectiveLearn.Shared;
 using System;
 using System.Collections.Generic;
 using TankLite.Values;
+using Shared.Localisation;
 
 namespace ObjectiveLearn.Components;
 
@@ -51,12 +52,12 @@ public class ConsoleBar : Drawable
     {
         var executeButton = new Button()
         {
-            Text = "Ausführen"
+            Text = LanguageManager.Get(LanguageName.ConsoleBarExecute)
         };
 
         var clearErrorsButton = new Button()
         {
-            Text = "Fehler löschen"
+            Text = LanguageManager.Get(LanguageName.ConsoleBarClearErrors)
         };
 
         _textBox = new TextBox();

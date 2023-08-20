@@ -9,4 +9,5 @@ public static class Config
     public static readonly string DragThreshold = "dragThreshold";
     public static readonly string PreviewColor = "colors:previewOutline";
     public static readonly string PreviewStrength = "previewStrength";
+    public static readonly string Language = "language";
 }

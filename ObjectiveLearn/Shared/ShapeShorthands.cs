@@ -1,5 +1,6 @@
 ﻿using Eto.Drawing;
 using ObjectiveLearn.Models;
+using Shared.Localisation;
 
 namespace ObjectiveLearn.Shared;
 

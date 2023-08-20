@@ -27,7 +27,12 @@ public class TLFloat : TLValue
                 return this;
 
             default:
-                return new TLError($"Cannot add {Type} and {other.Type}");
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.TankLiteCannotAdd)
+                        .Replace("{type1}", Type)
+                        .Replace("{type2}", other.Type)
+                );
         }
     }
 
@@ -44,7 +49,12 @@ public class TLFloat : TLValue
                 return this;
 
             default:
-                return new TLError($"Cannot subtract {other.Type} from {Type}");
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.TankLiteCannotSubtract)
+                        .Replace("{type1}", Type)
+                        .Replace("{type2}", other.Type)
+                );
         }
     }
 
@@ -61,7 +71,12 @@ public class TLFloat : TLValue
                 return this;
 
             default:
-                return new TLError($"Cannot multiply {Type} by {other.Type}");
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.TankLiteCannotMultiply)
+                        .Replace("{type1}", Type)
+                        .Replace("{type2}", other.Type)
+                );
         }
     }
 
@@ -78,7 +93,12 @@ public class TLFloat : TLValue
                 return this;
 
             default:
-                return new TLError($"Cannot divide {Type} by {other.Type}");
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.TankLiteCannotDivide)
+                        .Replace("{type1}", Type)
+                        .Replace("{type2}", other.Type)
+                );
         }
     }
 

@@ -1,4 +1,6 @@
-﻿using Antlr4.Runtime.Misc;
+﻿global using Shared.Localisation;
+
+using Antlr4.Runtime.Misc;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,12 +24,21 @@ public class TankLiteVisitor : TankLiteBaseVisitor<TLValue>
 
         if (value is not { }) 
         {
-            return new TLError($"Variable {string.Join('.', breadcrumbs)} existiert nicht."); 
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.TankLiteVariableDoesntExist)
+                    .Replace("{name}", string.Join('.', breadcrumbs))
+            ); 
         }
 
         if (!value.Type.StartsWith("func"))
         {
-            return new TLError($"Variable {string.Join('.', breadcrumbs)} kann nicht als Funktion ausgeführt werden, da sie vom Typ {value.Type} ist.");
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.TankLiteVariableNotFunction)
+                    .Replace("{name}", string.Join('.', breadcrumbs))
+                    .Replace("{type}", value.Type)
+            );
         }
 
         var args = context.expr().Select(Visit).ToArray();
@@ -77,7 +88,11 @@ public class TankLiteVisitor : TankLiteBaseVisitor<TLValue>
 
         if (value is not { })
         {
-            return new TLError($"Variable {string.Join('.', breadcrumbs)} existiert nicht.");
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.TankLiteVariableDoesntExist)
+                    .Replace("{name}", string.Join('.', breadcrumbs))
+            );
         }
 
         return value;
@@ -132,7 +147,11 @@ public class TankLiteVisitor : TankLiteBaseVisitor<TLValue>
 
         if (!Variables.TryGetValue(name, out TLValue value) || value.Type != "object")
         {
-            return new TLError($"Klasse {name} existiert nicht.");
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.TankLiteClassDoesntExist)
+                    .Replace("{name}", name)
+            );
         }
 
         var constructor = ((TLFunc)((TLObj)value).Value[".ctor"]).Value;

@@ -27,8 +27,7 @@ public static class App
 
     public static void Initialize()
     {
-        var file    = Assembly.GetExecutingAssembly().Location;
-        Directory   = Path.GetDirectoryName(file);
+        Directory   = System.AppContext.BaseDirectory;
 
         TopBar      = new();
         Canvas      = new();

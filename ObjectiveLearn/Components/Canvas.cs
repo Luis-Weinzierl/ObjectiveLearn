@@ -215,9 +215,11 @@ public class Canvas : Drawable
                 Shape = obj
             });
 
-            Shape shape = type.Value switch
+            Shape shape;
+
+            if (type.Value == TLName.Rectangle)
             {
-                TLName.Rectangle => new Shapes.Rectangle(
+                shape = new Shapes.Rectangle(
                     new(w.Value, h.Value),
                     new(x.Value, y.Value),
                     r.Value,
@@ -227,8 +229,11 @@ public class Canvas : Drawable
                         blue.Value,
                         alpha.Value
                         )
-                    ),
-                TLName.Triangle => new Triangle(
+                    );
+            }
+            else if (type.Value == TLName.Triangle)
+            {
+                shape = new Triangle(
                     new(w.Value, h.Value),
                     new(x.Value, y.Value),
                     r.Value,
@@ -238,8 +243,11 @@ public class Canvas : Drawable
                         blue.Value,
                         alpha.Value
                         )
-                    ),
-                TLName.Ellipse => new Ellipse(
+                    );
+            }
+            else if (type.Value == TLName.Ellipse)
+            {
+                shape = new Ellipse(
                     new(w.Value, h.Value),
                     new(x.Value, y.Value),
                     r.Value,
@@ -249,9 +257,11 @@ public class Canvas : Drawable
                         blue.Value,
                         alpha.Value
                         )
-                    ),
-                _ => throw new NotImplementedException(type.Value)
-            };
+                    );
+            }
+            else {
+                throw new NotImplementedException(type.Value);
+            }
 
             shape.ReferencedShape = new()
             {

@@ -61,14 +61,23 @@ public static class DictionaryExtensions
 
             if (!current.ContainsKey(name))
             {
-                return new TLError($"{string.Join('.', breadcrumbs.ToArray()[..(i + 1)])} existiert nicht");
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.TankLiteVariableDoesntExist)
+                        .Replace("{name}", string.Join('.', breadcrumbs.ToArray()[..(i + 1)]))
+                );
             }
 
             var obj = current[name];
 
             if (!obj.Type.StartsWith("object"))
             {
-                return new TLError($"{string.Join('.', breadcrumbs.ToArray()[..(i + 1)])} ist kein Objekt sondern {value.Type}.");
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.TankLiteVariableIsNotObject)
+                        .Replace("{name}", string.Join('.', breadcrumbs.ToArray()[..(i + 1)]))
+                        .Replace("{type}", value.Type)
+                );
             }
 
             current = ((TLObj)obj).Value;
@@ -79,12 +88,22 @@ public static class DictionaryExtensions
 
         if (last.IsReadonly)
         {
-            return new TLError($"\"{lastName}\" ist nur lesbar.");
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.TankLiteVariableIsReadonly)
+                    .Replace("{name}", lastName)
+            );
         }
 
         if (last.Type != value.Type)
         {
-            return new TLError($"Ein Wert vom Typ {value.Type} kann der Variable {string.Join('.', breadcrumbs)} nicht zugewiesen werden, da sie vom Typ {last.Type} ist.");
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.TankLiteVarTypeInterferrence)
+                    .Replace("{valueType}", value.Type)
+                    .Replace("{name}", string.Join('.', breadcrumbs))
+                    .Replace("{type}", last.Type)
+            );
         }
 
         current[lastName] = value;
