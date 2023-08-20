@@ -52,6 +52,13 @@ Every Shape has these Attributes:
 
 Teacher Mode prohibits the use of manual drawing tools, forcing the use of the Command Line. It can be activated by setting `"TeacherMode"` to `true` in the .olcp File
 
+## Languages
+Objective: Learn currently supports German and US English. You can switch between the two by setting the `language` attribute in the `appsettings.json` file to `de_DE` or `en_US` 
+respectively. You can find said file besides the main executable.
+
+### Customising Languages
+To customise the Text in O:L, edit the `de_DE.json` or `en_US.json` files located besides the main executable.
+
 # Building Objective: Learn
 
 Objective: Learn supports Windows, Linux and MacOS, although MacOS is currently untested.
