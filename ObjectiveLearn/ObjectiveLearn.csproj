@@ -7,7 +7,7 @@
   -->
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 	</PropertyGroup>
 	
     <PropertyGroup Condition=" $(Platform) == 'Linux' ">
@@ -33,7 +33,6 @@
         <DebugSymbols>false</DebugSymbols>
         <Optimize>true</Optimize>
         <SelfContained>true</SelfContained>
-        <PublishSingleFile>true</PublishSingleFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -66,6 +65,9 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="WinIcon.ico">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Icon.svg">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
