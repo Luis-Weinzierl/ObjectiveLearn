@@ -36,6 +36,7 @@ public static class TLName
     public static string SetSize;
     public static string SetColor;
     public static string SetRotation;
+    public static string Move;
 
 
     public static void Init()
@@ -65,5 +66,6 @@ public static class TLName
         SetSize = LanguageManager.Get(LanguageName.TLNameSetSize);
         SetColor = LanguageManager.Get(LanguageName.TLNameSetColor);
         SetRotation = LanguageManager.Get(LanguageName.TLNameSetRotation);
+        Move = LanguageManager.Get(LanguageName.TLNameMove);
     }
 }

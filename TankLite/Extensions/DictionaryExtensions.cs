@@ -84,6 +84,16 @@ public static class DictionaryExtensions
         }
 
         var lastName = breadcrumbs.Last();
+
+        if (!current.ContainsKey(lastName))
+        {
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.TankLiteVariableDoesntExist)
+                    .Replace("{name}", string.Join('.', breadcrumbs))
+            );
+        }
+
         var last = current[lastName];
 
         if (last.IsReadonly)

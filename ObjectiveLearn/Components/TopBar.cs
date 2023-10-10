@@ -4,6 +4,7 @@ using ObjectiveLearn.Models;
 using System;
 using System.Text.Json;
 using System.IO;
+using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using ObjectiveLearn.Shared;
 using Shared.Localisation;
 
@@ -62,6 +63,17 @@ public class TopBar : Drawable
             Text = LanguageManager.Get(LanguageName.TopBarOpen),
         };
 
+        var label = new Label()
+        {
+            Text = App.Task,
+            Width = -1,
+            Height = -1,
+            Wrap = WrapMode.Word,
+            TextColor = ConfigManager.GetColor(Config.CanvasColor),
+            VerticalAlignment = VerticalAlignment.Center,
+            TextAlignment = TextAlignment.Center
+        };
+
         rectangleButton.Click += RectangleButtonOnClick;
         triangleButton.Click += TriangleButtonOnClick;
         ellipseButton.Click += CircleButtonOnClick;
@@ -90,7 +102,11 @@ public class TopBar : Drawable
 
         layout.EndVertical();
 
-        layout.AddSpace();
+        layout.BeginVertical(Padding.Empty, Size.Empty, true, true);
+
+        layout.Add(label);
+
+        layout.EndVertical();
 
         layout.EndHorizontal();
 
@@ -124,6 +140,7 @@ public class TopBar : Drawable
         if (dialog.ShowDialog(Application.Instance.MainForm) == DialogResult.Ok)
         {
             var jsonString = JsonSerializer.Serialize(App.Serialize());
+            App.CurrentFile = dialog.FileName;
             File.WriteAllText(dialog.FileName, jsonString);
         }
     }
@@ -140,6 +157,7 @@ public class TopBar : Drawable
         if (dialog.ShowDialog(Application.Instance.MainForm) == DialogResult.Ok)
         {
             var program = JsonSerializer.Deserialize<SerializeableOLProgram>(File.ReadAllText(dialog.FileName));
+            App.CurrentFile = dialog.FileName;
             App.Deserialize(program);
         }
 

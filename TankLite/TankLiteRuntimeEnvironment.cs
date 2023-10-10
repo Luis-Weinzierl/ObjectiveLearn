@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using System.Collections.Generic;
+using System.Linq;
 using TankLite.Values;
 
 namespace TankLite;
@@ -8,9 +9,11 @@ public class TankLiteRuntimeEnvironment
 {
     public TankLiteVisitor Visitor { get; set; } = new();
 
-    public TankLiteRuntimeEnvironment(Dictionary<string, TLValue> variables) 
+    public TankLiteRuntimeEnvironment(Dictionary<string, TLValue> variables)
     {
-        Visitor.Variables = variables;
+        var clone = variables.ToDictionary(entry => entry.Key,
+            entry => entry.Value);
+        Visitor.Variables = clone;
     }
 
     public void Execute(string input)

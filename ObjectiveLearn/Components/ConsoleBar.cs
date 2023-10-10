@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using TankLite.Values;
 using Shared.Localisation;
+using ObjectiveLearn.Models;
 
 namespace ObjectiveLearn.Components;
 
@@ -17,6 +18,7 @@ public class ConsoleBar : Drawable
 
     public ConsoleBar()
     {
+
         TLError.ErrorOccurred += OnErrorOccured;
 
         Draw();
@@ -67,10 +69,11 @@ public class ConsoleBar : Drawable
         executeButton.Click += ExecuteButtonOnClick;
         clearErrorsButton.Click += ClearErrorsButtonOnClick;
 
-        var label = new Label()
+        var errorLabel = new Label()
         {
             Text = string.Join('\n', _errors),
-            TextColor = Color.FromArgb(255, 0, 0)
+            TextColor = Color.FromArgb(255, 0, 0),
+            Width = -1
         };
 
         var layout = new DynamicLayout();
@@ -82,9 +85,9 @@ public class ConsoleBar : Drawable
         layout.Add(executeButton, false, false);
         layout.Add(clearErrorsButton, false, false);
 
-        layout.EndHorizontal();
+        layout.EndBeginHorizontal();
 
-        layout.Add(label);
+        layout.Add(errorLabel);
 
         layout.EndVertical();
 

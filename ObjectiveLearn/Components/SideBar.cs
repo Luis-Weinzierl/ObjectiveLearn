@@ -1,4 +1,6 @@
-﻿using Eto.Drawing;
+﻿using System;
+using System.Diagnostics;
+using Eto.Drawing;
 using Eto.Forms;
 using ObjectiveLearn.Models;
 using ObjectiveLearn.Shared;
@@ -9,16 +11,18 @@ namespace ObjectiveLearn.Components;
 public class SideBar : Drawable
 {
     private const int _padding = 16;
+    private const int _smallPadding = 8;
 
     private string _title = string.Empty;
     private string _text = string.Empty;
     private string _text2 = string.Empty;
 
-    private Color _textColor;
-    private Color _backgroundColor;
+    private readonly Color _textColor;
+    private readonly Color _backgroundColor;
 
-    private SolidBrush _textBrush;
-    private Font _textFont;
+    private readonly SolidBrush _textBrush;
+    private readonly Font _textFont;
+    private readonly Font _smallTextFont;
 
     public SideBar()
     {
@@ -27,8 +31,7 @@ public class SideBar : Drawable
 
         _textBrush = new(_textColor);
         _textFont = new(SystemFont.Default, 12);
-
-        MinimumSize = new(300, 300);
+        _smallTextFont = new(SystemFont.Default, 8);
 
         Width = 300;
 
@@ -46,12 +49,22 @@ public class SideBar : Drawable
     {
         base.OnPaint(e);
 
+        Debug.WriteLine("Redrawing SideBar");
+
+        var fullRect = e.ClipRectangle;
+
+        var pathLabelSize = e.Graphics.MeasureString(_smallTextFont, App.CurrentFile);
+        var textX = fullRect.X + fullRect.Width - pathLabelSize.Width - _smallPadding;
+        var textY = fullRect.Y + fullRect.Height - pathLabelSize.Height - _smallPadding;
+
+        e.Graphics.DrawText(_smallTextFont, _textBrush, textX, textY, App.CurrentFile);
+
         if (_text.Length == 0)
         {
             return;
         }
-
-        var totalHeight = _padding * 6 + (_text.Split('\n').Length + _text2.Split('\n').Length + 4) * _textFont.LineHeight;
+        
+        var totalHeight = _textFont.MeasureString(_text).Height + _textFont.MeasureString(_title).Height + 4 * _padding;
 
         var rect = new RectangleF(e.ClipRectangle.X + _padding, e.ClipRectangle.Y + _padding, e.ClipRectangle.Width - 2 * _padding, totalHeight);
 
@@ -70,50 +83,34 @@ public class SideBar : Drawable
         height += _padding;
 
         e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _text);
-
-        height += _textFont.LineHeight * (_text.Split("\n").Length + 1) + 2 * _padding;
-
-        e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
-
-        height += _padding;
-
-        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _text2);
     }
 
-    private (string, string) GetAllProperties(TLObj obj, string prefix = "")
+    private string GetAllProperties(TLObj obj, string prefix = "")
     {
         var propOutput = string.Empty;
-        var funcOutput = string.Empty;
 
         foreach (var property in obj.Value)
         {
-            if (property.Key.StartsWith('.'))
+            if (property.Key.StartsWith('.') || property.Value.Type.StartsWith(TLName.Func))
             {
-                continue;
-            }
-
-            if (property.Value.Type.StartsWith(TLName.Func))
-            {
-                funcOutput += $"{property.Value.Type} {prefix}{property.Key}()\n";
                 continue;
             }
 
             if (property.Value.Type == TLName.Object)
             {
                 var props = GetAllProperties((TLObj)property.Value, $"{prefix}{property.Key}.");
-                propOutput += props.Item1;
-                funcOutput += props.Item2;
+                propOutput += props;
                 continue;
             }
 
             propOutput += $"{property.Value.Type} {prefix}{property.Key} = {property.Value}\n";
         }
 
-        return (propOutput, funcOutput);
+        return propOutput;
     }
 
     private void GetAllProperties(TLObj obj)
     {
-        (_text, _text2) = GetAllProperties(obj, "");
+        _text = GetAllProperties(obj, "");
     }
 }

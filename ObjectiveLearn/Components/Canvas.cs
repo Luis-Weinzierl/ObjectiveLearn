@@ -16,26 +16,40 @@ public class Canvas : Drawable
     public new Point Location { get; set; }
     public List<Shape> Shapes { get; set; } = new();
 
-    private PointF? _lastMouseDownPos = null;
-    private PointF? _currentMousePos = null;
-    private readonly Color _canvasBackground;
-    private readonly double _dragThreshold;
-
-    public Canvas()
-    {
-        _canvasBackground   = ConfigManager.GetColor(Config.CanvasColor);
-        _dragThreshold      = ConfigManager.GetDouble(Config.DragThreshold);
-    }
+    private PointF? _lastMouseDownPos;
+    private PointF? _currentMousePos;
+    private readonly Color _canvasBackground = ConfigManager.GetColor(Config.CanvasColor);
+    private readonly double _dragThreshold = ConfigManager.GetDouble(Config.DragThreshold);
 
     protected override void OnPaint(PaintEventArgs pe)
     {
         var rect = new Eto.Drawing.Rectangle(Location, Size);
         pe.Graphics.FillRectangle(_canvasBackground, rect);
 
+        var lineColor = Color.FromArgb(209, 209, 209);
+
+        for (int i = 1; i <= Size.Width / 10; i++)
+        {
+            var startingPoint = new Point(Location.X + 10 * i, Location.Y);
+            var endingPoint = new Point(Location.X + 10 * i, Location.Y + Size.Height);
+
+            pe.Graphics.DrawLine(lineColor, startingPoint, endingPoint);
+        }
+
+        for (int i = 1; i <= Size.Height / 10; i++)
+        {
+            var startingPoint = new Point(Location.X , Location.Y + 10 * i);
+            var endingPoint = new Point(Location.X + Size.Width, Location.Y + 10 * i);
+
+            pe.Graphics.DrawLine(lineColor, startingPoint, endingPoint);
+        }
+
         foreach (var shape in Shapes)
         {
             shape.Draw(pe.Graphics);
         }
+
+        if (App.TeacherMode) return;
 
         if (_lastMouseDownPos is { } l && _currentMousePos is { } c)
         {
@@ -150,7 +164,7 @@ public class Canvas : Drawable
             return;
         }
 
-        if (App.Tool == ShapeTool.Eraser)
+        if (App.Tool == ShapeTool.Eraser || App.TeacherMode)
         {
             return;
         }

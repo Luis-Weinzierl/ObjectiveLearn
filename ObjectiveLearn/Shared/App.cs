@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Shared.Localisation;
 using TankLite;
 using TankLite.Values;
 
@@ -14,11 +15,14 @@ public static class App
 {
     public static TankLiteRuntimeEnvironment TankVM { get; set; }
 
+    public static string Task { get; set; } = string.Empty;
+
     public static bool TeacherMode { get; set; }
 
     public static ShapeTool Tool { get; set; } = ShapeTool.Triangle;
 
     public static string Directory { get; set; }
+    public static string CurrentFile { get; set; }
 
     public static TopBar TopBar { get; set; }
     public static Canvas Canvas { get; set; }
@@ -34,6 +38,8 @@ public static class App
         SideBar     = new();
         ConsoleBar  = new();
         TankVM      = new(VMVariables.DefaultVariables);
+
+        CurrentFile = LanguageManager.Get(LanguageName.UiNoFileSelected);
 
         ConsoleBar.UpdateShapes += (s, e) => Canvas.UpdateShapes();
         Canvas.SelectShape      += (s, e) => SideBar.SelectObject(e);
@@ -68,10 +74,13 @@ public static class App
             };
         }
 
+        SideBar.Invalidate();
+
         return new()
         {
             FormCounter = Shape.IdCounter,
-            TeacherMode = App.TeacherMode,
+            TeacherMode = TeacherMode,
+            Task = Task,
             Shapes = shapes
         };
     }
@@ -89,6 +98,7 @@ public static class App
             .Concat(VMVariables.DefaultVariables)
             .ToDictionary(x => x.Key, x => x.Value);
         TeacherMode = program.TeacherMode;
+        Task = program.Task;
         Shape.IdCounter = program.FormCounter;
 
         Canvas.UpdateShapes();

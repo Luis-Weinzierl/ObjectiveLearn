@@ -10,11 +10,11 @@ namespace ObjectiveLearn.Models;
 
 public static class VMVariables
 {
-    public static readonly Dictionary<string, TLValue> DefaultVariables = new()
+    public static Dictionary<string, TLValue> DefaultVariables { get; } = new()
     {
         {
             TLName.Rectangle,
-            new TLObj()
+            new TLObj
             {
                 Value = new()
                 {
@@ -24,7 +24,7 @@ public static class VMVariables
         },
         {
             TLName.Triangle,
-            new TLObj()
+            new TLObj
             {
                 Value = new()
                 {
@@ -34,7 +34,7 @@ public static class VMVariables
         },
         {
             TLName.Ellipse,
-            new TLObj()
+            new TLObj
             {
                 Value = new()
                 {

@@ -47,4 +47,6 @@ public static class LanguageName
     public const string TLNameSetSize                   = "tlName:setSize";
     public const string TLNameSetColor                  = "tlName:setColor";
     public const string TLNameSetRotation               = "tlName:setRotation";
+    public const string TLNameMove                      = "tlName:move";
+    public const string UiNoFileSelected                = "ui:noFileSelected";
 }

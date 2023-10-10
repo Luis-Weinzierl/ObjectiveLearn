@@ -84,6 +84,7 @@ public class ShapeHelpers
                 { TLName.SetSize, new TLFunc(SetSize, "void") },
                 { TLName.SetColor, new TLFunc(SetColor, "void") },
                 { TLName.SetRotation, new TLFunc(SetRotation, "void") },
+                { TLName.Move, new TLFunc(Move, "void") },
             }
         };
         return obj;
@@ -218,6 +219,37 @@ public class ShapeHelpers
         }
 
         args.Parent.Value[TLName.Rotation] = (TLInt)args.Args[0];
+
+        return new TLVoid();
+    }
+
+    private static TLValue Move(TLFuncArgs args)
+    {
+        if (args.Args.Length != 2)
+        {
+            return new TLError(
+                LanguageManager
+                    .Get(LanguageName.ErrorExpectedArgs)
+                    .Replace("{expected}", "2")
+                    .Replace("{received}", args.Args.Length.ToString())
+            );
+        }
+
+        foreach (var arg in args.Args)
+        {
+            if (arg.Type != TLName.Int)
+            {
+                return new TLError(
+                    LanguageManager
+                        .Get(LanguageName.ErrorTypeInferrenceArgs)
+                        .Replace("{i}", "0")
+                        .Replace("{type}", args.Args[0].Type)
+                );
+            }
+        }
+
+        args.Parent.Value[TLName.XPos].Add(args.Args[0]);
+        args.Parent.Value[TLName.YPos].Add(args.Args[1]);
 
         return new TLVoid();
     }
