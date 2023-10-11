@@ -4,9 +4,13 @@ Objective: Learn is a program made to teach children the basics of [OOP](https:/
 
 # Using Objective: Learn
 
-## UI Explanation
+## UI
 
 <img src="Preview.png" style="width: 100%;">
+
+### Teacher Mode
+
+<img src="TeacherModePreview.png" style="width: 100%;">
 
 ## Shapes
 
