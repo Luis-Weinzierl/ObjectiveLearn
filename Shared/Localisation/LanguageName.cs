@@ -11,14 +11,14 @@ public static class LanguageName
     public const string ConsoleBarClearErrors           = "consoleBar:clearErrors";
     public const string ErrorExpectedArgs               = "error:expectedArgs";
     public const string ErrorOr                         = "error:or";
-    public const string ErrorTypeInferrenceCtor         = "error:typeInferrenceCtor";
-    public const string ErrorTypeInferrenceArgs         = "error:typeInferrenceArgs";
+    public const string ErrorTypeInferenceCtor          = "error:typeInferrenceCtor";
+    public const string ErrorTypeInferenceArgs          = "error:typeInferrenceArgs";
     public const string ErrorOutsideRange               = "error:outsideRange";
     public const string TankLiteVariableDoesntExist     = "tankLite:variableDoesntExist";
     public const string TankLiteClassDoesntExist        = "tankLite:classDoesntExist";
     public const string TankLiteVariableNotFunction     = "tankLite:variableNotFunction";
     public const string TankLiteVariableIsReadonly      = "tankLite:variableIsReadonly";
-    public const string TankLiteVarTypeInterferrence    = "tankLite:variableTypeInterferrence";
+    public const string TankLiteVarTypeInterference     = "tankLite:variableTypeInterferrence";
     public const string TankLiteVariableIsNotObject     = "tankLite:variableIsNotObject";
     public const string TankLiteCannotAdd               = "tankLite:cannotAdd";
     public const string TankLiteCannotSubtract          = "tankLite:cannotSubtract";
@@ -49,4 +49,6 @@ public static class LanguageName
     public const string TLNameSetRotation               = "tlName:setRotation";
     public const string TLNameMove                      = "tlName:move";
     public const string UiNoFileSelected                = "ui:noFileSelected";
+    public const string UiClassCardVariables            = "ui:classCardVariables";
+    public const string UiClassCardMethods              = "ui:classCardMethods";
 }

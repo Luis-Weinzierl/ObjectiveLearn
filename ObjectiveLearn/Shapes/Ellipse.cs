@@ -25,14 +25,14 @@ public class Ellipse : Shape
 
         Points = new Point[]
         {
-            new Point(x2, y2 - heightOverTwo),
-            new Point(x2 + widthTwoThirds, Location.Y),
-            new Point(x2 + widthTwoThirds, y2 + heightOverTwo),
-            new Point(x2, y2 + heightOverTwo),
-            new Point(x2, y2 + heightOverTwo),
-            new Point(x2 - widthTwoThirds, y2 + heightOverTwo),
-            new Point(x2 - widthTwoThirds, Location.Y),
-            new Point(x2, y2 - heightOverTwo)
+            new(x2, y2 - heightOverTwo),
+            new(x2 + widthTwoThirds, Location.Y),
+            new(x2 + widthTwoThirds, y2 + heightOverTwo),
+            new(x2, y2 + heightOverTwo),
+            new(x2, y2 + heightOverTwo),
+            new(x2 - widthTwoThirds, y2 + heightOverTwo),
+            new(x2 - widthTwoThirds, Location.Y),
+            new(x2, y2 - heightOverTwo)
         };
 
 

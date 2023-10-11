@@ -22,9 +22,9 @@ public class Triangle : Shape
 
         Points = new Point[]
         {
-            new Point(Location.X + Size.Width / 2, Location.Y),
-            new Point(Location.X + Size.Width, Location.Y + Size.Height),
-            new Point(Location.X, Location.Y + Size.Height),
+            new(Location.X + Size.Width / 2, Location.Y),
+            new(Location.X + Size.Width, Location.Y + Size.Height),
+            new(Location.X, Location.Y + Size.Height),
         };
 
         Rotate(Rotation);

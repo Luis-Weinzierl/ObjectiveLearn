@@ -4,6 +4,7 @@ using Eto.Drawing;
 using Eto.Forms;
 using ObjectiveLearn.Models;
 using ObjectiveLearn.Shared;
+using Shared.Localisation;
 using TankLite.Values;
 
 namespace ObjectiveLearn.Components;
@@ -41,7 +42,24 @@ public class SideBar : Drawable
     public void SelectObject(SelectShapeEventArgs e)
     {
         _title = $"{e.VariableName} : {e.ShapeType}";
+        _text2 = string.Empty;
         GetAllProperties(e.Shape);
+        Invalidate();
+    }
+
+    public void ShowClassCard()
+    {
+        _title = App.Tool switch
+        {
+            ShapeTool.Rectangle => TLName.Rectangle,
+            ShapeTool.Triangle => TLName.Triangle,
+            ShapeTool.Ellipse => TLName.Ellipse,
+            _ => throw new NotImplementedException()
+        };
+
+        _text = LanguageManager.Get(LanguageName.UiClassCardVariables);
+        _text2 = LanguageManager.Get(LanguageName.UiClassCardMethods);
+
         Invalidate();
     }
 
@@ -59,11 +77,23 @@ public class SideBar : Drawable
 
         e.Graphics.DrawText(_smallTextFont, _textBrush, textX, textY, App.CurrentFile);
 
+        if (_text2.Length > 0)
+        {
+            DrawClassCard(e);
+        }
+        else
+        {
+            DrawObjectCard(e);
+        }
+    }
+
+    private void DrawObjectCard(PaintEventArgs e)
+    {
         if (_text.Length == 0)
         {
             return;
         }
-        
+
         var totalHeight = _textFont.MeasureString(_text).Height + _textFont.MeasureString(_title).Height + 4 * _padding;
 
         var rect = new RectangleF(e.ClipRectangle.X + _padding, e.ClipRectangle.Y + _padding, e.ClipRectangle.Width - 2 * _padding, totalHeight);
@@ -83,6 +113,43 @@ public class SideBar : Drawable
         height += _padding;
 
         e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _text);
+    }
+
+    private void DrawClassCard(PaintEventArgs e)
+    {
+        if (_text.Length == 0)
+        {
+            return;
+        }
+
+        var textHeight = _textFont.MeasureString(_text).Height;
+        var text2Height = _textFont.MeasureString(_text2).Height;
+
+        var totalHeight = textHeight + _textFont.MeasureString(_title).Height + text2Height + 6 * _padding;
+
+        var rect = new RectangleF(e.ClipRectangle.X + _padding, e.ClipRectangle.Y + _padding, e.ClipRectangle.Width - 2 * _padding, totalHeight);
+
+        var height = rect.Y + _padding;
+
+        e.Graphics.FillRectangle(_backgroundColor, rect);
+
+        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _title);
+
+        height += _textFont.LineHeight + _padding;
+
+        e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
+
+        height += _padding;
+
+        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _text);
+
+        height += textHeight + _padding;
+
+        e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
+
+        height += _padding;
+
+        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _text2);
     }
 
     private string GetAllProperties(TLObj obj, string prefix = "")

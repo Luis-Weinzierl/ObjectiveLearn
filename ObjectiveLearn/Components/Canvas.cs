@@ -5,6 +5,7 @@ using ObjectiveLearn.Shapes;
 using ObjectiveLearn.Shared;
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using TankLite.Values;
 
 namespace ObjectiveLearn.Components;
@@ -26,7 +27,7 @@ public class Canvas : Drawable
         var rect = new Eto.Drawing.Rectangle(Location, Size);
         pe.Graphics.FillRectangle(_canvasBackground, rect);
 
-        var lineColor = Color.FromArgb(209, 209, 209);
+        var lineColor = ConfigManager.GetColor(Config.CanvasGridColor);
 
         for (int i = 1; i <= Size.Width / 10; i++)
         {

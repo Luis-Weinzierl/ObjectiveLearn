@@ -109,7 +109,7 @@ public static class DictionaryExtensions
         {
             return new TLError(
                 LanguageManager
-                    .Get(LanguageName.TankLiteVarTypeInterferrence)
+                    .Get(LanguageName.TankLiteVarTypeInterference)
                     .Replace("{valueType}", value.Type)
                     .Replace("{name}", string.Join('.', breadcrumbs))
                     .Replace("{type}", last.Type)

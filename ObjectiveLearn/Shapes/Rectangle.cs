@@ -22,10 +22,10 @@ public class Rectangle : Shape
 
         Points = new Point[]
         {
-            new Point(Location.X, Location.Y),
-            new Point(Location.X + Size.Width, Location.Y),
-            new Point(Location.X + Size.Width, Location.Y + Size.Height),
-            new Point(Location.X, Location.Y + Size.Height),
+            new(Location.X, Location.Y),
+            new(Location.X + Size.Width, Location.Y),
+            new(Location.X + Size.Width, Location.Y + Size.Height),
+            new(Location.X, Location.Y + Size.Height),
         };
 
         Rotate(Rotation);

@@ -72,7 +72,7 @@ public class ConsoleBar : Drawable
         var errorLabel = new Label()
         {
             Text = string.Join('\n', _errors),
-            TextColor = Color.FromArgb(255, 0, 0),
+            TextColor = ConfigManager.GetColor(Config.ErrorTextColor),
             Width = -1
         };
 

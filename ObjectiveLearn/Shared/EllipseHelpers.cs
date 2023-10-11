@@ -32,7 +32,7 @@ public class EllipseHelpers
             {
                 return new TLError(
                     LanguageManager
-                        .Get(LanguageName.ErrorTypeInferrenceCtor)
+                        .Get(LanguageName.ErrorTypeInferenceCtor)
                         .Replace("{i}", i.ToString())
                         .Replace("{type}", arg.Type)
                 );

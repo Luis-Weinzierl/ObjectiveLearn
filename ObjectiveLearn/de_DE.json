@@ -56,6 +56,8 @@
     "move": "verschieben"
   },
   "ui": {
-    "noFileSelected": "Keine Datei geöffnet"
+    "noFileSelected": "Keine Datei geöffnet",
+    "classCardVariables": "int X\nint Y\nint Breite\nint Höhe\nint Rotation\nint Rotation\nint Farbe.R\nint Farbe.G\nint Farbe.G\nint Farbe.A",
+    "classCardMethods": "positionSetzen(int x, int y)\ngrösseSetzen(int breite, int höhe)\nfarbeSetzen(\n    int r, int g, int b,\n    int a = 255\n)\nrotationSetzen(int winkel)\nverschieben(int x, int y)"
   }
 }

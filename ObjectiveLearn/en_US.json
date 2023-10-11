@@ -56,6 +56,8 @@
     "move": "move"
   },
   "ui": {
-    "noFileSelected": "No File open"
+    "noFileSelected": "No File open",
+    "classCardVariables": "a",
+    "classCardMethods": "b"
   }
 }

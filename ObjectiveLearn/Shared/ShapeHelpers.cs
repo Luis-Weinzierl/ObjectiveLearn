@@ -107,7 +107,7 @@ public class ShapeHelpers
             if (arg.Type != TLName.Int) {
                 return new TLError(
                     LanguageManager
-                        .Get(LanguageName.ErrorTypeInferrenceArgs)
+                        .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", i.ToString())
                         .Replace("{type}", arg.Type)
                 );
@@ -137,7 +137,7 @@ public class ShapeHelpers
             if (arg.Type != TLName.Int) {
                 return new TLError(
                     LanguageManager
-                        .Get(LanguageName.ErrorTypeInferrenceArgs)
+                        .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", i.ToString())
                         .Replace("{type}", arg.Type)
                 );
@@ -168,7 +168,7 @@ public class ShapeHelpers
             if (arg.Type != TLName.Int) {
                 return new TLError(
                     LanguageManager
-                        .Get(LanguageName.ErrorTypeInferrenceArgs)
+                        .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", i.ToString())
                         .Replace("{type}", arg.Type)
                 );
@@ -212,7 +212,7 @@ public class ShapeHelpers
         if (args.Args[0].Type != TLName.Int) {
             return new TLError(
                     LanguageManager
-                        .Get(LanguageName.ErrorTypeInferrenceArgs)
+                        .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", "0")
                         .Replace("{type}", args.Args[0].Type)
                 );
@@ -241,7 +241,7 @@ public class ShapeHelpers
             {
                 return new TLError(
                     LanguageManager
-                        .Get(LanguageName.ErrorTypeInferrenceArgs)
+                        .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", "0")
                         .Replace("{type}", args.Args[0].Type)
                 );

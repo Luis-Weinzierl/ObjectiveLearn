@@ -7,6 +7,7 @@ using System.IO;
 using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using ObjectiveLearn.Shared;
 using Shared.Localisation;
+using TankLite.Values;
 
 namespace ObjectiveLearn.Components;
 
@@ -115,17 +116,20 @@ public class TopBar : Drawable
 
     private void RectangleButtonOnClick(object sender, EventArgs e)
     {
-        App.Tool = ShapeTool.Rectangle;
+        App.Tool = ShapeTool.Rectangle; 
+        App.SideBar.ShowClassCard();
     }
 
     private void TriangleButtonOnClick(object sender, EventArgs e)
     {
         App.Tool = ShapeTool.Triangle;
+        App.SideBar.ShowClassCard();
     }
 
     private void CircleButtonOnClick(object sender, EventArgs e)
     {
         App.Tool = ShapeTool.Ellipse;
+        App.SideBar.ShowClassCard();
     }
 
     private void SaveButtonOnClick(object sender, EventArgs e)
