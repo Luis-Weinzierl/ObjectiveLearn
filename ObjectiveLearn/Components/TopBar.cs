@@ -28,8 +28,6 @@ public class TopBar : Drawable
             ImagePosition = ButtonImagePosition.Above,
             Text = LanguageManager.Get(LanguageName.TopBarRectangle),
             Size = new Size(80, 100),
-            BackgroundColor = ConfigManager.GetColor(Config.WindowColor),
-            TextColor = ConfigManager.GetColor(Config.CanvasColor)
         };
 
         var triangleButton = new Button()
@@ -38,8 +36,6 @@ public class TopBar : Drawable
             ImagePosition = ButtonImagePosition.Above,
             Text = LanguageManager.Get(LanguageName.TopBarTriangle),
             Size = new Size(80, 100),
-            BackgroundColor = ConfigManager.GetColor(Config.WindowColor),
-            TextColor = ConfigManager.GetColor(Config.CanvasColor)
         };
 
         var ellipseButton = new Button()
@@ -48,8 +44,6 @@ public class TopBar : Drawable
             ImagePosition = ButtonImagePosition.Above,
             Text = LanguageManager.Get(LanguageName.TopBarEllipse),
             Size = new Size(80, 100),
-            BackgroundColor = ConfigManager.GetColor(Config.WindowColor),
-            TextColor = ConfigManager.GetColor(Config.CanvasColor),
         };
 
         var saveButton = new Button()
