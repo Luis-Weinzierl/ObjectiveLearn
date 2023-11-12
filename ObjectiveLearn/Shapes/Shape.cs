@@ -67,12 +67,14 @@ public abstract class Shape
     public abstract void UpdatePath();
     public abstract bool Contains(Point p);
 
-    public void HandleClick(Point clickPos)
+    public bool HandleClick(Point clickPos)
     {
         if (Contains(clickPos))
         {
-            
+
             ShapeSelected.Invoke(this, ReferencedShape);
+            return true;
         }
+        return false;
     }
 }

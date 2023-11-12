@@ -15,6 +15,7 @@ public class TopBar : Drawable
 {
     private static Dialog _confirmActionDialog;
     public Button DeleteButton;
+    public ColorPicker ColorPicker;
 
 	public new Point Location { get; set; }
 
@@ -86,6 +87,12 @@ public class TopBar : Drawable
             TextAlignment = TextAlignment.Center
         };
 
+        ColorPicker = new ColorPicker {
+            Width = 50,
+            AllowAlpha = true,
+            Value = Color.FromArgb(255, 0, 0)
+        };
+
         rectangleButton.Click += RectangleButtonOnClick;
         triangleButton.Click += TriangleButtonOnClick;
         ellipseButton.Click += CircleButtonOnClick;
@@ -93,6 +100,7 @@ public class TopBar : Drawable
         loadButton.Click += LoadButtonOnClick;
         clearButton.Click += ClearButtonOnClick;
         DeleteButton.Click += DeleteButtonOnClick;
+        ColorPicker.ValueChanged += ColorPickerOnValueChanged;
 
         var layout = new DynamicLayout()
         {
@@ -118,6 +126,10 @@ public class TopBar : Drawable
 
         layout.Add(clearButton, false, true);
         layout.Add(DeleteButton, false, true);
+
+        layout.EndBeginVertical(null, null, false, false);
+
+        layout.Add(ColorPicker, false, true);
 
         layout.EndBeginVertical(Padding.Empty, Size.Empty, true, true);
 
@@ -152,6 +164,7 @@ public class TopBar : Drawable
     {
         var dialog = new SaveFileDialog()
         {
+            FileName = "Checkpoint.olcp",
             Filters = {
                 new FileFilter("O:L Checkpoint", new[] {".olcp"})
             }
@@ -159,6 +172,10 @@ public class TopBar : Drawable
 
         if (dialog.ShowDialog(Application.Instance.MainForm) == DialogResult.Ok)
         {
+            if (!dialog.FileName.EndsWith(".olcp")) {
+                dialog.FileName += ".olcp";
+            }
+
             var jsonString = JsonSerializer.Serialize(App.Serialize());
             App.CurrentFile = dialog.FileName;
             File.WriteAllText(dialog.FileName, jsonString);
@@ -243,5 +260,9 @@ public class TopBar : Drawable
         App.TankVM.Visitor.Variables.Remove(App.Canvas.SelectedShape.VariableName);
         App.Canvas.SelectedShape = null;
         App.Canvas.UpdateShapes();
+    }
+
+    private void ColorPickerOnValueChanged(object sender, EventArgs e) {
+        App.Canvas.SetColor(ColorPicker.Value);
     }
 }

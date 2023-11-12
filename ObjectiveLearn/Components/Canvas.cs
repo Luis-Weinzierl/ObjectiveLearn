@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using TankLite.Values;
+using Shared.Localisation;
 
 namespace ObjectiveLearn.Components;
 
@@ -20,6 +21,7 @@ public class Canvas : Drawable
 
     private PointF? _lastMouseDownPos;
     private PointF? _currentMousePos;
+    private Color _drawColor = Color.FromArgb(255, 0, 0);
     private readonly Color _canvasBackground = ConfigManager.GetColor(Config.CanvasColor);
     private readonly double _dragThreshold = ConfigManager.GetDouble(Config.DragThreshold);
 
@@ -168,9 +170,19 @@ public class Canvas : Drawable
             {
                 foreach (var shape in Shapes)
                 {
-                    shape.HandleClick(startPoint);
+                    if (shape.HandleClick(startPoint)) {
+                        App.TopBar.ColorPicker.Value = shape.Color;
+                        Invalidate();
+                        return;
+                    }
                 }
             }
+
+            SelectedShape = null;
+            App.SideBar.Reset();
+            App.TopBar.DeleteButton.Enabled = false;
+            App.TopBar.ColorPicker.Value = _drawColor;
+            App.TopBar.Invalidate();
 
             Invalidate();
             return;
@@ -192,10 +204,10 @@ public class Canvas : Drawable
             startPoint,
             new Size((int)width, (int)height),
             0,
-            255,
-            0,
-            0,
-            255
+            _drawColor.Rb,
+            _drawColor.Gb,
+            _drawColor.Bb,
+            _drawColor.Ab
             );
 
         Shape.IdCounter++;
@@ -233,13 +245,6 @@ public class Canvas : Drawable
             var green   = (TLInt)color.Value[TLName.Green];
             var blue    = (TLInt)color.Value[TLName.Blue];
             var alpha   = (TLInt)color.Value[TLName.Alpha];
-
-            SelectShape.Invoke(this, new()
-            {
-                VariableName = variable.Key,
-                ShapeType = type.Value,
-                Shape = obj
-            });
 
             Shape shape;
 
@@ -302,5 +307,20 @@ public class Canvas : Drawable
         }
 
         Invalidate();
+    }
+
+    public void SetColor(Color color) {
+        if (SelectedShape is {} s) {
+            var name = $"{s.VariableName}.{LanguageManager.Get(LanguageName.TLNameColor)}";
+            var r = LanguageManager.Get(LanguageName.TLNameRed);
+            var g = LanguageManager.Get(LanguageName.TLNameGreen);
+            var b = LanguageManager.Get(LanguageName.TLNameBlue);
+            var a = LanguageManager.Get(LanguageName.TLNameAlpha);
+            App.TankVM.Execute($"{name}.{r}={color.Rb};{name}.{g}={color.Gb};{name}.{b}={color.Bb};{name}.{a}={color.Ab};");
+            UpdateShapes();
+        }
+        else {
+            _drawColor = color;
+        }
     }
 }
