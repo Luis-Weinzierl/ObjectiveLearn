@@ -4,7 +4,6 @@ using ObjectiveLearn.Models;
 using System;
 using System.Text.Json;
 using System.IO;
-using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using ObjectiveLearn.Shared;
 using Shared.Localisation;
 using TankLite.Values;
