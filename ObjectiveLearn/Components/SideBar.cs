@@ -47,6 +47,14 @@ public class SideBar : Drawable
         Invalidate();
     }
 
+    public void Reset()
+    {
+        _title = string.Empty;
+        _text = string.Empty;
+        _text2 = string.Empty;
+        Invalidate();
+    }
+
     public void ShowClassCard()
     {
         _title = App.Tool switch

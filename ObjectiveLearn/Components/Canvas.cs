@@ -16,11 +16,22 @@ public class Canvas : Drawable
 
     public new Point Location { get; set; }
     public List<Shape> Shapes { get; set; } = new();
+    public SelectShapeEventArgs SelectedShape { get; set; }
 
     private PointF? _lastMouseDownPos;
     private PointF? _currentMousePos;
     private readonly Color _canvasBackground = ConfigManager.GetColor(Config.CanvasColor);
     private readonly double _dragThreshold = ConfigManager.GetDouble(Config.DragThreshold);
+
+    public Canvas() {
+        SelectShape += OnSelectShape;
+    }
+
+    private void OnSelectShape(object sender, SelectShapeEventArgs e) {
+        SelectedShape = e;
+        App.TopBar.DeleteButton.Enabled = true;
+        App.TopBar.Invalidate();
+    }
 
     protected override void OnPaint(PaintEventArgs pe)
     {

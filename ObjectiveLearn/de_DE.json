@@ -4,7 +4,9 @@
     "ellipse": "Ellipse",
     "triangle": "Dreieck",
     "save": "Speichern",
-    "open": "Öffnen"
+    "open": "Öffnen",
+    "clear": "Leeren",
+    "delete": "Löschen"
   },
   "consoleBar": {
     "Execute": "Ausführen",
@@ -59,5 +61,11 @@
     "noFileSelected": "Keine Datei geöffnet",
     "classCardVariables": "int X\nint Y\nint Breite\nint Höhe\nint Rotation\nint Rotation\nint Farbe.R\nint Farbe.G\nint Farbe.G\nint Farbe.A",
     "classCardMethods": "positionSetzen(int x, int y)\ngrösseSetzen(int breite, int höhe)\nfarbeSetzen(\n    int r, int g, int b,\n    int a = 255\n)\nrotationSetzen(int winkel)\nverschieben(int x, int y)"
+  },
+  "confirmClearDialog": {
+    "acceptDialog": "Ja, leeren",
+    "declineDialog": "Abbrechen",
+    "title": "Canvas leeren?",
+    "content": "Möchten Sie die Canvas wirklich leeren? Dies kann nicht zurückgesetzt werden."
   }
 }

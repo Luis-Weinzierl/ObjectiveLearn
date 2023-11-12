@@ -47,9 +47,10 @@ public static class App
 
     public static SerializeableOLProgram Serialize()
     {
+        TopBar.DeleteButton.Enabled = false;
         var shapes = new Dictionary<string, SerializeableShape>();
 
-        foreach (var kv in App.TankVM.Visitor.Variables)
+        foreach (var kv in TankVM.Visitor.Variables)
         {
             if (kv.Value.Type != TLName.Object || !((TLObj)kv.Value).Value.ContainsKey(TLName.Type))
             {
@@ -74,7 +75,7 @@ public static class App
             };
         }
 
-        SideBar.Invalidate();
+        SideBar.Reset();
 
         return new()
         {

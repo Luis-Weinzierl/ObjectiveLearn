@@ -7,6 +7,8 @@ public static class LanguageName
     public const string TopBarTriangle                  = "topBar:triangle";
     public const string TopBarSave                      = "topBar:save";
     public const string TopBarOpen                      = "topBar:open";
+    public const string TopBarClear                     = "topBar:clear";
+    public const string TopBarDelete                    = "topBar:delete";
     public const string ConsoleBarExecute               = "consoleBar:execute";
     public const string ConsoleBarClearErrors           = "consoleBar:clearErrors";
     public const string ErrorExpectedArgs               = "error:expectedArgs";
@@ -51,4 +53,8 @@ public static class LanguageName
     public const string UiNoFileSelected                = "ui:noFileSelected";
     public const string UiClassCardVariables            = "ui:classCardVariables";
     public const string UiClassCardMethods              = "ui:classCardMethods";
+    public const string ConfirmClearDialogAccept        = "confirmClearDialog:acceptDialog";
+    public const string ConfirmClearDialogDecline       = "confirmClearDialog:declineDialog";
+    public const string ConfirmClearDialogTitle         = "confirmClearDialog:title";
+    public const string ConfirmClearDialogContent       = "confirmClearDialog:content";
 }

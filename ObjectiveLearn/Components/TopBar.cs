@@ -7,11 +7,15 @@ using System.IO;
 using ObjectiveLearn.Shared;
 using Shared.Localisation;
 using TankLite.Values;
+using System.Linq;
 
 namespace ObjectiveLearn.Components;
 
 public class TopBar : Drawable
 {
+    private static Dialog _confirmActionDialog;
+    public Button DeleteButton;
+
 	public new Point Location { get; set; }
 
     public TopBar()
@@ -55,6 +59,20 @@ public class TopBar : Drawable
         var loadButton = new Button()
         {
             Text = LanguageManager.Get(LanguageName.TopBarOpen),
+            Width = 50
+        };
+
+        var clearButton = new Button()
+        {
+            Text = LanguageManager.Get(LanguageName.TopBarClear),
+            Width = 50
+        };
+
+        DeleteButton = new Button()
+        {
+            Text = LanguageManager.Get(LanguageName.TopBarDelete),
+            Width = 50,
+            Enabled = false
         };
 
         var label = new Label()
@@ -73,6 +91,8 @@ public class TopBar : Drawable
         ellipseButton.Click += CircleButtonOnClick;
         saveButton.Click += SaveButtonOnClick;
         loadButton.Click += LoadButtonOnClick;
+        clearButton.Click += ClearButtonOnClick;
+        DeleteButton.Click += DeleteButtonOnClick;
 
         var layout = new DynamicLayout()
         {
@@ -94,9 +114,12 @@ public class TopBar : Drawable
         layout.Add(saveButton, false, true);
         layout.Add(loadButton, false, true);
 
-        layout.EndVertical();
+        layout.EndBeginVertical(null, null, false, false);
 
-        layout.BeginVertical(Padding.Empty, Size.Empty, true, true);
+        layout.Add(clearButton, false, true);
+        layout.Add(DeleteButton, false, true);
+
+        layout.EndBeginVertical(Padding.Empty, Size.Empty, true, true);
 
         layout.Add(label);
 
@@ -159,5 +182,66 @@ public class TopBar : Drawable
         }
 
         Draw();
+    }
+
+    private void ClearButtonOnClick(object sender, EventArgs e) {
+        var random = new Random();
+        var confirmButton = new Button {
+            Text = random.Next(0, 1000000) == 1 ? "Jawui oida" : LanguageManager.Get(LanguageName.ConfirmClearDialogAccept),
+        };
+
+        confirmButton.Click += ConfirmActionDialogOnConfirmed;
+
+        var abortButton = new Button {
+            Text = LanguageManager.Get(LanguageName.ConfirmClearDialogDecline),
+        };
+
+        abortButton.Click += ConfirmActionDialogOnAborted;
+
+        var content = new DynamicLayout()
+        {
+            Padding = new(8),
+            DefaultSpacing = new(5, 5)
+        };
+
+        content.BeginHorizontal(true);
+
+        content.Add(new Label 
+        {
+            TextAlignment = TextAlignment.Center,
+            Text = LanguageManager.Get(LanguageName.ConfirmClearDialogContent)
+        });
+
+        content.EndHorizontal();
+
+        _confirmActionDialog = new Dialog {
+            Content = content,
+            Title = LanguageManager.Get(LanguageName.ConfirmClearDialogTitle),
+        };
+
+        _confirmActionDialog.NegativeButtons.Add(confirmButton);
+        _confirmActionDialog.PositiveButtons.Add(abortButton);
+
+        _confirmActionDialog.ShowModal(this);
+    }
+
+    private void ConfirmActionDialogOnConfirmed(object sender, EventArgs e) {
+        App.TankVM.Visitor.Variables = VMVariables.DefaultVariables
+            .ToDictionary(x => x.Key, x => x.Value); // = Clone
+        App.Canvas.UpdateShapes();
+        _confirmActionDialog.Close();
+    }
+
+    private void ConfirmActionDialogOnAborted(object sender, EventArgs e) {
+        _confirmActionDialog.Close();
+    }
+
+    private void DeleteButtonOnClick(object sender, EventArgs e) {
+        DeleteButton.Enabled = false;
+        Invalidate();
+        App.SideBar.Reset();
+        App.TankVM.Visitor.Variables.Remove(App.Canvas.SelectedShape.VariableName);
+        App.Canvas.SelectedShape = null;
+        App.Canvas.UpdateShapes();
     }
 }

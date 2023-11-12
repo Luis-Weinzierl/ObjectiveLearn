@@ -71,6 +71,7 @@ public abstract class Shape
     {
         if (Contains(clickPos))
         {
+            
             ShapeSelected.Invoke(this, ReferencedShape);
         }
     }

@@ -4,7 +4,9 @@
     "ellipse": "Ellipsis",
     "triangle": "Triangle",
     "save": "Save",
-    "open": "Open"
+    "open": "Open",
+    "clear": "Clear",
+    "delete": "Delete"
   },
   "consoleBar": {
     "Execute": "Execute",
@@ -59,5 +61,11 @@
     "noFileSelected": "No File open",
     "classCardVariables": "a",
     "classCardMethods": "b"
+  },
+  "confirmClearDialog": {
+    "acceptDialog": "Yes, clear",
+    "declineDialog": "Abort",
+    "title": "Clear canvas?",
+    "content": "Are you sure you want to clear the canvas? This process is irreversible"
   }
 }
