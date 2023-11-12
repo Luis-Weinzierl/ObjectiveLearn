@@ -48,6 +48,7 @@ public static class App
     public static SerializeableOLProgram Serialize()
     {
         TopBar.DeleteButton.Enabled = false;
+        TopBar.RotationStepper.Enabled = false;
         var shapes = new Dictionary<string, SerializeableShape>();
 
         foreach (var kv in TankVM.Visitor.Variables)

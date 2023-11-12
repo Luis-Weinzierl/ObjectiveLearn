@@ -15,6 +15,7 @@ public class TopBar : Drawable
 {
     private static Dialog _confirmActionDialog;
     public Button DeleteButton;
+    public NumericStepper RotationStepper;
     public ColorPicker ColorPicker;
 
 	public new Point Location { get; set; }
@@ -88,9 +89,14 @@ public class TopBar : Drawable
         };
 
         ColorPicker = new ColorPicker {
-            Width = 50,
+            Width = 100,
             AllowAlpha = true,
             Value = Color.FromArgb(255, 0, 0)
+        };
+
+        RotationStepper = new NumericStepper() {
+            DecimalPlaces = 0,
+            Enabled = false
         };
 
         rectangleButton.Click += RectangleButtonOnClick;
@@ -101,6 +107,7 @@ public class TopBar : Drawable
         clearButton.Click += ClearButtonOnClick;
         DeleteButton.Click += DeleteButtonOnClick;
         ColorPicker.ValueChanged += ColorPickerOnValueChanged;
+        RotationStepper.ValueChanged += RotationStepperOnValueChanged;
 
         var layout = new DynamicLayout()
         {
@@ -130,6 +137,7 @@ public class TopBar : Drawable
         layout.EndBeginVertical(null, null, false, false);
 
         layout.Add(ColorPicker, false, true);
+        layout.Add(RotationStepper, false, true);
 
         layout.EndBeginVertical(Padding.Empty, Size.Empty, true, true);
 
@@ -255,6 +263,7 @@ public class TopBar : Drawable
 
     private void DeleteButtonOnClick(object sender, EventArgs e) {
         DeleteButton.Enabled = false;
+        RotationStepper.Enabled = false;
         Invalidate();
         App.SideBar.Reset();
         App.TankVM.Visitor.Variables.Remove(App.Canvas.SelectedShape.VariableName);
@@ -264,5 +273,9 @@ public class TopBar : Drawable
 
     private void ColorPickerOnValueChanged(object sender, EventArgs e) {
         App.Canvas.SetColor(ColorPicker.Value);
+    }
+
+    private void RotationStepperOnValueChanged(object sender, EventArgs e) {
+        App.Canvas.RotateSelectedShape((int)RotationStepper.Value);
     }
 }

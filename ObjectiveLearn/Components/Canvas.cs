@@ -32,6 +32,7 @@ public class Canvas : Drawable
     private void OnSelectShape(object sender, SelectShapeEventArgs e) {
         SelectedShape = e;
         App.TopBar.DeleteButton.Enabled = true;
+        App.TopBar.RotationStepper.Enabled = true;
         App.TopBar.Invalidate();
     }
 
@@ -172,6 +173,7 @@ public class Canvas : Drawable
                 {
                     if (shape.HandleClick(startPoint)) {
                         App.TopBar.ColorPicker.Value = shape.Color;
+                        App.TopBar.RotationStepper.Value = shape.Rotation;
                         Invalidate();
                         return;
                     }
@@ -181,7 +183,9 @@ public class Canvas : Drawable
             SelectedShape = null;
             App.SideBar.Reset();
             App.TopBar.DeleteButton.Enabled = false;
+            App.TopBar.RotationStepper.Enabled = false;
             App.TopBar.ColorPicker.Value = _drawColor;
+            App.TopBar.RotationStepper.Value = 0;
             App.TopBar.Invalidate();
 
             Invalidate();
@@ -322,5 +326,14 @@ public class Canvas : Drawable
         else {
             _drawColor = color;
         }
+    }
+
+    public void RotateSelectedShape(int newRotation) {
+        if (SelectedShape is not {}) return;
+
+        var name = SelectedShape.VariableName;
+        var rot = LanguageManager.Get(LanguageName.TLNameRotation);
+        App.TankVM.Execute($"{name}.{rot}={newRotation};");
+        UpdateShapes();
     }
 }
