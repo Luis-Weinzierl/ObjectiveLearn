@@ -1,0 +1,2 @@
+sudo chmod +x /usr/local/bin/Files.ObjectiveLearn/ObjectiveLearn
+echo "[Desktop Entry]\nName=Objective: Learn\nExec=/usr/local/bin/Files.ObjectiveLearn/ObjectiveLearn\nTerminal=false\nType=Application\nIcon=/usr/local/bin/Files.ObjectiveLearn/Icon.svg" > /usr/share/applications/ObjectiveLearn.desktop
