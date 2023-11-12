@@ -27,7 +27,9 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
+TankLite/[Bb]in/
+Shared/[Bb]in/
+ObjectiveLearn/[Bb]in/
 [Oo]bj/
 [Oo]ut/
 [Ll]og/
