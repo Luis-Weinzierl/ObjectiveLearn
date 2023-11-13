@@ -132,14 +132,20 @@ public class TopBar : Drawable
         layout.EndBeginVertical(null, null, false, false);
 
         layout.Add(clearButton, false, true);
-        layout.Add(DeleteButton, false, true);
 
-        layout.EndBeginVertical(null, null, false, false);
+        if (!App.TeacherMode) layout.Add(DeleteButton, false, true);
 
-        layout.Add(ColorPicker, false, true);
-        layout.Add(RotationStepper, false, true);
+        layout.EndVertical();
 
-        layout.EndBeginVertical(Padding.Empty, Size.Empty, true, true);
+        if (!App.TeacherMode) {
+            layout.BeginVertical(null, null, false, false);
+
+            layout.Add(ColorPicker, false, true);
+            layout.Add(RotationStepper, false, true);
+
+            layout.EndVertical();
+        }
+        layout.BeginVertical(Padding.Empty, Size.Empty, true, true);
 
         layout.Add(label);
 
@@ -254,6 +260,10 @@ public class TopBar : Drawable
         App.TankVM.Visitor.Variables = VMVariables.DefaultVariables
             .ToDictionary(x => x.Key, x => x.Value); // = Clone
         App.Canvas.UpdateShapes();
+        App.TeacherMode = false;
+        App.SideBar.Reset();
+        App.TopBar.Draw();
+        App.CurrentFile = LanguageManager.Get(LanguageName.UiNoFileSelected);
         _confirmActionDialog.Close();
     }
 
@@ -266,7 +276,7 @@ public class TopBar : Drawable
         RotationStepper.Enabled = false;
         Invalidate();
         App.SideBar.Reset();
-        App.TankVM.Visitor.Variables.Remove(App.Canvas.SelectedShape.VariableName);
+        App.TankVM.Visitor.Variables.Remove(App.Canvas.SelectedShape.ReferencedShape.VariableName);
         App.Canvas.SelectedShape = null;
         App.Canvas.UpdateShapes();
     }

@@ -1,4 +1,5 @@
-﻿using Eto.Drawing;
+﻿using System;
+using Eto.Drawing;
 using ObjectiveLearn.Models;
 using Shared.Localisation;
 
@@ -11,7 +12,7 @@ public static class ShapeShorthands
         ConfigManager.GetFloat(Config.PreviewStrength)
         );
 
-    public static void DrawRectangle(this Graphics graphics, Point location, Size size)
+    public static void DrawRectangle(this Graphics graphics, Point location, Size size, int rotation = 0)
     {
         var points = new Point[]
         {
@@ -20,6 +21,10 @@ public static class ShapeShorthands
             new Point(location.X + size.Width, location.Y + size.Height),
             new Point(location.X, location.Y + size.Height),
         };
+
+        if (rotation != 0) {
+            points = Rotate(points, rotation);
+        }
 
         var path = new GraphicsPath();
 
@@ -43,7 +48,7 @@ public static class ShapeShorthands
         graphics.DrawPath(_pen, path);
     }
 
-    public static void DrawTriangle(this Graphics graphics, Point location, Size size)
+    public static void DrawTriangle(this Graphics graphics, Point location, Size size, int rotation = 0)
     {
         var points = new Point[]
         {
@@ -51,6 +56,10 @@ public static class ShapeShorthands
             new Point(location.X + size.Width, location.Y + size.Height),
             new Point(location.X, location.Y + size.Height),
         };
+
+        if (rotation != 0) {
+            points = Rotate(points, rotation);
+        }
 
         var path = new GraphicsPath();
 
@@ -69,7 +78,7 @@ public static class ShapeShorthands
         graphics.DrawPath(_pen, path);
     }
 
-    public static void DrawEllipse(this Graphics graphics, Point location, Size size)
+    public static void DrawEllipse(this Graphics graphics, Point location, Size size, int rotation = 0)
     {
         var widthOver2 = size.Width / 2;
         var widthTwoThirds = size.Width * 2 / 3;
@@ -90,6 +99,10 @@ public static class ShapeShorthands
             new Point(x2, y2 - heightOverTwo)
         };
 
+        if (rotation != 0) {
+            points = Rotate(points, rotation);
+        }
+
         var path = new GraphicsPath();
 
         path.AddBezier(
@@ -109,5 +122,38 @@ public static class ShapeShorthands
         path.CloseFigure();
 
         graphics.DrawPath(_pen, path);
+    }
+
+    private static Point[] Rotate(Point[] points, int rotation) {
+        var angleRad = rotation / 57.2958;
+
+        var sumX = 0;
+        var sumY = 0;
+
+        for (int i = 0; i < points.Length; i++)
+        {
+            sumX += points[i].X;
+            sumY += points[i].Y;
+        }
+
+        var center = new Point(
+            sumX / points.Length,
+            sumY / points.Length
+        );
+
+        var sin = Math.Sin(angleRad);
+        var cos = Math.Cos(angleRad);
+
+        for (int i = 0; i < points.Length; i++)
+        {
+            var new_coord = new Point(
+                (int)Math.Round(center.X + (points[i].X - center.X) * cos - (points[i].Y - center.Y) * sin),
+                (int)Math.Round(center.Y + (points[i].X - center.X) * sin + (points[i].Y - center.Y) * cos)
+            );
+
+            (points[i].X, points[i].Y) = (new_coord.X, new_coord.Y);
+        }
+
+        return points;
     }
 }

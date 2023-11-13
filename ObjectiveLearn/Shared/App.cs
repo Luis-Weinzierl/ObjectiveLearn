@@ -89,6 +89,8 @@ public static class App
 
     public static void Deserialize(SerializeableOLProgram program)
     {
+        TopBar.DeleteButton.Enabled = false;
+        TopBar.RotationStepper.Enabled = false;
         var dict = new Dictionary<string, TLValue>();
 
         foreach (var kv in program.Shapes)
@@ -102,6 +104,8 @@ public static class App
         TeacherMode = program.TeacherMode;
         Task = program.Task;
         Shape.IdCounter = program.FormCounter;
+
+        TopBar.ColorPicker.Enabled = !TeacherMode;
 
         Canvas.UpdateShapes();
     }

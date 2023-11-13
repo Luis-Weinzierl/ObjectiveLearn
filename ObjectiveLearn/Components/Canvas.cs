@@ -17,11 +17,12 @@ public class Canvas : Drawable
 
     public new Point Location { get; set; }
     public List<Shape> Shapes { get; set; } = new();
-    public SelectShapeEventArgs SelectedShape { get; set; }
+    public Shape SelectedShape { get; set; }
 
     private PointF? _lastMouseDownPos;
     private PointF? _currentMousePos;
     private Color _drawColor = Color.FromArgb(255, 0, 0);
+    private bool _selectedShapeContainsLastMouseDownPos = false;
     private readonly Color _canvasBackground = ConfigManager.GetColor(Config.CanvasColor);
     private readonly double _dragThreshold = ConfigManager.GetDouble(Config.DragThreshold);
 
@@ -30,7 +31,7 @@ public class Canvas : Drawable
     }
 
     private void OnSelectShape(object sender, SelectShapeEventArgs e) {
-        SelectedShape = e;
+        SelectedShape = (Shape)sender;
         App.TopBar.DeleteButton.Enabled = true;
         App.TopBar.RotationStepper.Enabled = true;
         App.TopBar.Invalidate();
@@ -68,6 +69,22 @@ public class Canvas : Drawable
 
         if (_lastMouseDownPos is { } l && _currentMousePos is { } c)
         {
+            if (SelectedShape is {} && _selectedShapeContainsLastMouseDownPos) {
+                var location = (Point)(SelectedShape.Location - _lastMouseDownPos + _currentMousePos);
+                var previewSize = SelectedShape.Size;
+                var rotation = SelectedShape.Rotation;
+
+                if (SelectedShape is Shapes.Rectangle) {
+                    pe.Graphics.DrawRectangle(location, previewSize, rotation);
+                }
+                else if (SelectedShape is Ellipse) {
+                    pe.Graphics.DrawEllipse(location, previewSize, rotation);
+                }
+                else if (SelectedShape is Triangle) {
+                    pe.Graphics.DrawTriangle(location, previewSize, rotation);
+                }
+                return;
+            }
             var width = l.X < c.X
                             ? c.X - l.X
                             : l.X - c.X
@@ -115,6 +132,8 @@ public class Canvas : Drawable
     {
         base.OnMouseDown(e);
         _lastMouseDownPos = e.Location;
+        if (SelectedShape is {})
+            _selectedShapeContainsLastMouseDownPos = SelectedShape.Contains((Point)_lastMouseDownPos);
     }
 
     protected override void OnMouseMove(MouseEventArgs e)
@@ -134,6 +153,17 @@ public class Canvas : Drawable
     protected override void OnMouseUp(MouseEventArgs e)
     {
         base.OnMouseUp(e);
+
+        if (SelectedShape is {} && 
+            _lastMouseDownPos is {} lp && 
+            _selectedShapeContainsLastMouseDownPos &&
+            !App.TeacherMode
+        ) {
+            MoveSelectedShape((PointF)SelectedShape.Location - lp + e.Location);
+            _lastMouseDownPos = null;
+            _currentMousePos = null;
+            return;
+        }
 
         if (_lastMouseDownPos is not { } l)
         {
@@ -216,10 +246,18 @@ public class Canvas : Drawable
 
         Shape.IdCounter++;
         UpdateShapes();
+        SelectedShape = null;
+        App.TopBar.DeleteButton.Enabled = false;
+        App.TopBar.RotationStepper.Enabled = false;
     }
 
     public void UpdateShapes()
     {
+        var previousSelectedShapeRefName = SelectedShape is {}
+            ? SelectedShape.ReferencedShape.VariableName
+            : string.Empty
+            ;
+
         Shapes.Clear();
 
         foreach (var variable in App.TankVM.Visitor.Variables)
@@ -308,6 +346,10 @@ public class Canvas : Drawable
             shape.ShapeSelected += SelectShape;
 
             Shapes.Add(shape);
+
+            if (variable.Key == previousSelectedShapeRefName) {
+                SelectedShape = shape;
+            }
         }
 
         Invalidate();
@@ -315,12 +357,19 @@ public class Canvas : Drawable
 
     public void SetColor(Color color) {
         if (SelectedShape is {} s) {
-            var name = $"{s.VariableName}.{LanguageManager.Get(LanguageName.TLNameColor)}";
+            var name = s.ReferencedShape.VariableName;
+            var colorName = LanguageManager.Get(LanguageName.TLNameColor);
             var r = LanguageManager.Get(LanguageName.TLNameRed);
             var g = LanguageManager.Get(LanguageName.TLNameGreen);
             var b = LanguageManager.Get(LanguageName.TLNameBlue);
             var a = LanguageManager.Get(LanguageName.TLNameAlpha);
-            App.TankVM.Execute($"{name}.{r}={color.Rb};{name}.{g}={color.Gb};{name}.{b}={color.Bb};{name}.{a}={color.Ab};");
+            var shapeObj = (TLObj)App.TankVM.Visitor.Variables[name];
+            var colorObj = (TLObj)shapeObj.Value[colorName];
+            colorObj.Value[r] = new TLInt(color.Rb);
+            colorObj.Value[g] = new TLInt(color.Gb);
+            colorObj.Value[b] = new TLInt(color.Bb);
+            colorObj.Value[a] = new TLInt(color.Ab);
+            App.SideBar.SelectObject(SelectedShape.ReferencedShape);
             UpdateShapes();
         }
         else {
@@ -331,9 +380,24 @@ public class Canvas : Drawable
     public void RotateSelectedShape(int newRotation) {
         if (SelectedShape is not {}) return;
 
-        var name = SelectedShape.VariableName;
+        var name = SelectedShape.ReferencedShape.VariableName;
         var rot = LanguageManager.Get(LanguageName.TLNameRotation);
-        App.TankVM.Execute($"{name}.{rot}={newRotation};");
+        var shapeObj = (TLObj)App.TankVM.Visitor.Variables[name];
+        shapeObj.Value[rot] = new TLInt(newRotation);
+        App.SideBar.SelectObject(SelectedShape.ReferencedShape);
+        UpdateShapes();
+    }
+
+    public void MoveSelectedShape(PointF newPos) {
+        if (SelectedShape is not {}) return;
+
+        var name = SelectedShape.ReferencedShape.VariableName;
+        var x = LanguageManager.Get(LanguageName.TLNameXPos);
+        var y = LanguageManager.Get(LanguageName.TLNameYPos);
+        var shapeObj = (TLObj)App.TankVM.Visitor.Variables[name];
+        shapeObj.Value[x] = new TLInt((int)newPos.X);
+        shapeObj.Value[y] = new TLInt((int)newPos.Y);
+        App.SideBar.SelectObject(SelectedShape.ReferencedShape);
         UpdateShapes();
     }
 }
