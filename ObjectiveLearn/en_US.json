@@ -58,9 +58,9 @@
     "move": "move"
   },
   "ui": {
-    "noFileSelected": "No File open",
-    "classCardVariables": "a",
-    "classCardMethods": "b"
+    "noFileSelected": "No File opened",
+    "classCardVariables": "int X\nint Y\nint Width\nint Height\nint Rotation\nint Rotation\nint Color.R\nint Color.G\nint Color.B\nint Color.A",
+    "classCardMethods": "setPosition(int x, int y)\nsetSize(int breite, int höhe)\nsetColor(\n    int r, int g, int b,\n    int a = 255\n)\nsetRotation(int winkel)\nmove(int x, int y)"
   },
   "confirmClearDialog": {
     "acceptDialog": "Yes, clear",
