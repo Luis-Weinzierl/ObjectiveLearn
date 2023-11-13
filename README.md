@@ -1,107 +1,64 @@
 # Objective: Learn
 
-Objective: Learn is a program made to teach children the basics of [OOP](https://en.wikipedia.org/wiki/Object-oriented_programming) with a Java-esque syntax.
+Objective: Learn ist ein Programm, dass Kindern die Grundzüge von objektorientierter Programmierung spielerisch beibringt.
 
-# Using Objective: Learn
+# Benutzung Objective: Learn
 
-## UI
+## Benutzeroberfläche
 
 <img src="Preview.png" style="width: 100%;">
 
-### Teacher Mode
+### Benutzeroberfläche im Lehrermodus
 
 <img src="TeacherModePreview.png" style="width: 100%;">
 
-## Shapes
+## Formen
 
-Shapes can be created in two ways:
+Man hat zwei Möglichkeiten, Formen zu erstellen:
 
-- Using the toolbar, select the shape you want to draw and drag over the canvas to create the shape
-- In the Command Line type the following:
+- Mithilfe der Werkzeugleiste kann das gewünschte Form-Werkzeug gewählt und in die Canvas eingezeichnet werden
+- Über die Befehlszeile am unteren Rand des Fensters kann Java-ähnlicher Programmtext eingegeben und ausgeführt werden:
 
  ```java
- var myShape = new RECHTECK(100, 100, 20, 50);
+ var meineForm = new RECHTECK(100, 100, 20, 50);
  ```
 
- Valid class names are `RECHTECK`, `DREIECK` and `ELLIPSE`. Every constructor accepts 4, 5, 8 or 9 arguments. These are the constructors:
-| Number of arguments | Description                |
+ Es gibt drei versch. Formklassen: `RECHTECK`, `DREIECK` und `ELLIPSE`. Jeder Konstruktor akzeptiert 4, 5, 8 oder 9 Parameter:
+| Zahl der Parameter | Beschreibung                |
 |---------------------|----------------------------|
-|4                    | X, Y, Width, Height        |
-|5                    | X, Y, Width, Height, Angle |
-|8                    | X, Y, Width, Height, Angle, R, G, B |
-|9                    | X, Y, Width, Height, Angle, R, G, B, Alpha |
+|4                    | X, Y, Breite, Höhe        |
+|5                    | X, Y, Breite, Höhe, Rotation |
+|8                    | X, Y, Breite, Höhe, Rotation, R, G, B |
+|9                    | X, Y, Breite, Höhe, Rotation, R, G, B, Transparenz |
 
-Every Shape has these Attributes:
-|Type|Name|Desc.|
+Jedes Form-Objekt hat folgende Attribute:
+|Typ|Name|Beschreibung|
 |----|----|-----|
-|int|X|The X position of the Shape|
-|int|Y|The Y position of the Shape|
-|int|Breite|The Width of the Shape's bounding box|
-|int|Höhe|The Height of the Shape's bounding box|
-|int|Rotation|The tilt angle of the Shape|
-|int|Farbe.R|The Red Value of the Shape's color|
-|int|Farbe.G|The Green Value of the Shape's color|
-|int|Farbe.B|The Blue Value of the Shape's color|
-|int|Farbe.A|The Shape's transparency|
+|int|X|Die X-Position der Form|
+|int|Y|Die Y-Position der Form|
+|int|Breite|Die Breite der Bounding-Box der Form|
+|int|Höhe|Die Höhe der Bounding-Box der Form|
+|int|Rotation|Die Rotation der Form|
+|int|Farbe.R|Der Rot-Wert der Farbe der Form|
+|int|Farbe.G|Der Grün-Wert der Farbe der Form|
+|int|Farbe.B|Der Blau-Wert der Farbe der Form|
+|int|Farbe.A|Die Transparenz der Form|
 
-...and these Methods:
-|Method|Description|
+...und folgende Methoden:
+|Methode|Beschreibung|
 |-|-|
-|positionSetzen(int x, int y)|Sets the Shape's Position|
-|grösseSetzen(int width, int height)|Sets the Shape's Size|
-|farbeSetzen(int[0-255] r, int[0-255] g, int[0-255] b, int[0-255] a = 255)|Sets the Shape's Color. `a` is optional and defaults to 255.|
-|winkelSetzen(int angle)|Sets the Shape's tilt angle|
+|positionSetzen(int x, int y)|Setzt die Position der Form auf (`x`/`y`).|
+|grösseSetzen(int width, int height)|Setzt die Größe der Bounding-Box der Form auf `width` breit und `height` hoch.|
+|farbeSetzen(int[0-255] r, int[0-255] g, int[0-255] b, int[0-255] a = 255)|Setzt die Farbe der Form. `a` ist optional und ist standardmäßig `255`.|
+|rotationSetzen(int angle)|Setzt die Rotation der Form auf `angle` (in Grad)|
+|verschieben(int x, int y)|Verschiebt die Form um `x` auf der x-Achse und `y` auf der y-Achse.|
 
-## Teacher Mode
+## Lehrermodus
 
-Teacher Mode prohibits the use of manual drawing tools, forcing the use of the Command Line. It can be activated by setting `"TeacherMode"` to `true` in the .olcp File
+Im Lehrermodus können die Schüler die Werkzeuge icht mehr benutzen, sind also dazu gezwungen, die Befehlszeile zu verwenden. Der Lehrermodus kann aktiviert werden, indem `"TeacherMode"` in der .olcp-Datei auf `true` gesetzt wird.
 
 ## Languages
-Objective: Learn currently supports German and US English. You can switch between the two by setting the `language` attribute in the `appsettings.json` file to `de_DE` or `en_US` 
-respectively. You can find said file besides the main executable.
+Objective: Learn unterstützt momentan Deutsch und US-Englisch. Man kann die Sprache anhand des `language` Attributs in der `appsettings.json` Datei verändern, wobei `de_DE` für Deutsch oder `en_US` für Englisch stehen. Die `appsettings.json` Datei befindet sich im gleichen Verzeichnis wie das eigentliche Programm.
 
-### Customising Languages
-To customise the Text in O:L, edit the `de_DE.json` or `en_US.json` files located besides the main executable.
-
-# Building Objective: Learn
-
-Objective: Learn supports Windows, Linux and MacOS, although MacOS is currently untested.
-
-## Prerequesites
-
-- .NET 7
-
-Only for compiling the Icons on Linux:
-
-- png2icns for Mac ICNS
-- ImageMagick for Windows ICO
-
-## Build Commands
-
-To run the app in debug mode (unoptimized), use
-
-```bash
-dotnet run -p:Platform={Platform}
-```
-
-and for optimized building, use
-
-```bash
-dotnet publish -p:Platform={Platform}
-```
-
-Valid Platform values are `Windows`, `Linux` and `MacOS`.
-
-To build the ICNS icon file on Linux, you need `png2icns`:
-
-```bash
-png2icns MacIcon.icns Icons/ObjectiveLearnLogo*.png
-```
-
-and to create the ICO file on Linux, use `imagemagick`'s `convert`:
-
-```bash
-convert Icons/ObjectiveLearnLogo512.png -define icon:auto-resize=255,64,48,32,16 -define png:conpression-strategy=0 WinIcon.ico
-```
-
-Note: All of the above commands need to be run in the `ObjectiveLearn/` directory, not the project root
+### Texte bearbeiten 
+Die Texte, die Objective: Learn verwendet, können verändert werden, indem man die `de_DE.json` bzw. `en_US.json` Datei bearbeitet. Eigene sprachen können ebenfalls hinzugefügt werden, so bei hier das `language` Attribut in der `appsettings.json` auf den Sprachnamen gesetzt werden und eine Datei mit dem Sprachnamen + `.json` erstellt und mit den gleichen JSON-Objekten wie die anderen Sprachdateien befüllt werden muss. Bsp.: Die Sprache GB-Englisch soll hinzugefügt werden. Das Kürzel für diese Sprache lautet `en_GB`. Also muss die Datei `en_GB.json` erstellt werden und der Inhalt einer der anderen Sprachkonfigurationsdateien hinein kopiert werden. Sie können nun die Texte übersetzen. Anschließend müssen sie noch das `language` Attribut auf `en_GB` setzen, und ihre neue Sprache ist erstellt.
