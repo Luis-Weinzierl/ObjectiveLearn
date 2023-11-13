@@ -368,3 +368,4 @@ FodyWeavers.xsd
 
 # .deb-Package Build Directory
 pkgbin
+/objectivelearnsetup.exe
