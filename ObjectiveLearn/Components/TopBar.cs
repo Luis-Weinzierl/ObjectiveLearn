@@ -55,25 +55,25 @@ public class TopBar : Drawable
         var saveButton = new Button()
         {
             Text = LanguageManager.Get(LanguageName.TopBarSave),
-            Width = 50
+            Width = 75
         };
 
         var loadButton = new Button()
         {
             Text = LanguageManager.Get(LanguageName.TopBarOpen),
-            Width = 50
+            Width = 75
         };
 
         var clearButton = new Button()
         {
             Text = LanguageManager.Get(LanguageName.TopBarClear),
-            Width = 50
+            Width = 75
         };
 
         DeleteButton = new Button()
         {
             Text = LanguageManager.Get(LanguageName.TopBarDelete),
-            Width = 50,
+            Width = 75,
             Enabled = false
         };
 
