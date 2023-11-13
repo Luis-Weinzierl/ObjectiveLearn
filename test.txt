@@ -1,5 +1,0 @@
-Package: objectivelearn
-Version: 1.0
-Maintainer: Luis Weinzierl
-Architecture: amd64
-Description: A teaching-program for the Werdenfels-Gymnasium
