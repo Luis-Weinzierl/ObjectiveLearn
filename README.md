@@ -55,7 +55,7 @@ Jedes Form-Objekt hat folgende Attribute:
 
 ## Lehrermodus
 
-Im Lehrermodus können die Schüler die Werkzeuge icht mehr benutzen, sind also dazu gezwungen, die Befehlszeile zu verwenden. Der Lehrermodus kann aktiviert werden, indem `"TeacherMode"` in der .olcp-Datei auf `true` gesetzt wird.
+Im Lehrermodus können die Schüler die Werkzeuge icht mehr benutzen, sind also dazu gezwungen, die Befehlszeile zu verwenden. Der Lehrermodus kann aktiviert werden, indem `"TeacherMode"` in der .olcp-Datei auf `true` gesetzt wird. Auch kann man den Schülern Aufgaben per `"Task"` übergeben. Dafür einfach zwischen die Anführungszeichen (`[...]"Task":"(hier)"[...]`) die Aufgabe beschreiben.
 
 ## Languages
 Objective: Learn unterstützt momentan Deutsch und US-Englisch. Man kann die Sprache anhand des `language` Attributs in der `appsettings.json` Datei verändern, wobei `de_DE` für Deutsch oder `en_US` für Englisch stehen. Die `appsettings.json` Datei befindet sich im gleichen Verzeichnis wie das eigentliche Programm.
