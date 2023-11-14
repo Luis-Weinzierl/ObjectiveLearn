@@ -10,7 +10,6 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using TankLite.Values;
 using Shared.Localisation;
 using Timer = System.Threading.Timer;
