@@ -22,17 +22,13 @@ public class SideBar : Drawable
     private readonly Color _backgroundColor;
 
     private readonly SolidBrush _textBrush;
-    private readonly Font _textFont;
-    private readonly Font _smallTextFont;
-
+    
     public SideBar()
     {
         _textColor = ConfigManager.GetColor(Config.SidebarTextColor);
         _backgroundColor = ConfigManager.GetColor(Config.SidebarBackground);
 
         _textBrush = new(_textColor);
-        _textFont = new(SystemFont.Default, 12);
-        _smallTextFont = new(SystemFont.Default, 8);
 
         Width = 300;
 
@@ -79,11 +75,11 @@ public class SideBar : Drawable
 
         var fullRect = e.ClipRectangle;
 
-        var pathLabelSize = e.Graphics.MeasureString(_smallTextFont, App.CurrentFile);
+        var pathLabelSize = App.SmallTextFont.MeasureString(App.CurrentFile);
         var textX = fullRect.X + fullRect.Width - pathLabelSize.Width - _smallPadding;
         var textY = fullRect.Y + fullRect.Height - pathLabelSize.Height - _smallPadding;
 
-        e.Graphics.DrawText(_smallTextFont, _textBrush, textX, textY, App.CurrentFile);
+        e.Graphics.DrawText(App.SmallTextFont, _textBrush, textX, textY, App.CurrentFile);
 
         if (_text2.Length > 0)
         {
@@ -102,7 +98,7 @@ public class SideBar : Drawable
             return;
         }
 
-        var totalHeight = _textFont.MeasureString(_text).Height + _textFont.MeasureString(_title).Height + 4 * _padding;
+        var totalHeight = App.TextFont.MeasureString(_text).Height + App.TextFont.MeasureString(_title).Height + 4 * _padding;
 
         var rect = new RectangleF(e.ClipRectangle.X + _padding, e.ClipRectangle.Y + _padding, e.ClipRectangle.Width - 2 * _padding, totalHeight);
 
@@ -112,15 +108,15 @@ public class SideBar : Drawable
 
         e.Graphics.FillPath(_backgroundColor, path);
 
-        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _title);
+        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + _padding, height, _title);
 
-        height += _textFont.LineHeight + _padding;
+        height += App.TextFont.LineHeight + _padding;
 
         e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
 
         height += _padding;
 
-        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _text);
+        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + _padding, height, _text);
     }
 
     private void DrawClassCard(PaintEventArgs e)
@@ -130,10 +126,10 @@ public class SideBar : Drawable
             return;
         }
 
-        var textHeight = _textFont.MeasureString(_text).Height;
-        var text2Height = _textFont.MeasureString(_text2).Height;
+        var textHeight = App.TextFont.MeasureString(_text).Height;
+        var text2Height = App.TextFont.MeasureString(_text2).Height;
 
-        var totalHeight = textHeight + _textFont.MeasureString(_title).Height + text2Height + 6 * _padding;
+        var totalHeight = textHeight + App.TextFont.MeasureString(_title).Height + text2Height + 6 * _padding;
 
         var rect = new RectangleF(e.ClipRectangle.X + _padding, e.ClipRectangle.Y + _padding, e.ClipRectangle.Width - 2 * _padding, totalHeight);
 
@@ -141,15 +137,15 @@ public class SideBar : Drawable
 
         e.Graphics.FillRectangle(_backgroundColor, rect);
 
-        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _title);
+        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + _padding, height, _title);
 
-        height += _textFont.LineHeight + _padding;
+        height += App.TextFont.LineHeight + _padding;
 
         e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
 
         height += _padding;
 
-        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _text);
+        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + _padding, height, _text);
 
         height += textHeight + _padding;
 
@@ -157,7 +153,7 @@ public class SideBar : Drawable
 
         height += _padding;
 
-        e.Graphics.DrawText(_textFont, _textBrush, rect.X + _padding, height, _text2);
+        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + _padding, height, _text2);
     }
 
     private string GetAllProperties(TLObj obj, string prefix = "")

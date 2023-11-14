@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Eto.Drawing;
 using Shared.Localisation;
 using TankLite;
 using TankLite.Values;
@@ -28,6 +29,9 @@ public static class App
     public static Canvas Canvas { get; set; }
     public static ConsoleBar ConsoleBar { get; set; }
     public static SideBar SideBar { get; set; }
+    public static Font TextFont { get; set; }
+    public static Font SmallTextFont { get; set; }
+
 
     public static void Initialize()
     {
@@ -38,6 +42,8 @@ public static class App
         SideBar     = new();
         ConsoleBar  = new();
         TankVM      = new(VMVariables.DefaultVariables);
+        TextFont = new(SystemFont.Default, 12);
+        SmallTextFont = new(SystemFont.Default, 8);
 
         CurrentFile = LanguageManager.Get(LanguageName.UiNoFileSelected);
 

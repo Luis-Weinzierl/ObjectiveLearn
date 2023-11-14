@@ -4,10 +4,16 @@ using ObjectiveLearn.Models;
 using ObjectiveLearn.Shapes;
 using ObjectiveLearn.Shared;
 using System;
+using System.Timers;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using TankLite.Values;
 using Shared.Localisation;
+using Timer = System.Threading.Timer;
 
 namespace ObjectiveLearn.Components;
 
@@ -22,12 +28,20 @@ public class Canvas : Drawable
     private PointF? _lastMouseDownPos;
     private PointF? _currentMousePos;
     private Color _drawColor = Color.FromArgb(255, 0, 0);
-    private bool _selectedShapeContainsLastMouseDownPos = false;
+    private bool _selectedShapeContainsLastMouseDownPos;
+    private bool _showTooltip;
+    private CancellationTokenSource _cancellationTokenSource;
     private readonly Color _canvasBackground = ConfigManager.GetColor(Config.CanvasColor);
     private readonly double _dragThreshold = ConfigManager.GetDouble(Config.DragThreshold);
+    private readonly Color _textColor = Color.FromArgb(0, 0, 0);
+    private readonly Color _tooltipColor =  Color.FromArgb(255, 255, 255);
+    private readonly Brush _textBrush;
 
-    public Canvas() {
+    public Canvas()
+    {
         SelectShape += OnSelectShape;
+        _textBrush = new SolidBrush(_textColor);
+        _cancellationTokenSource = new();
     }
 
     private void OnSelectShape(object sender, SelectShapeEventArgs e) {
@@ -39,6 +53,7 @@ public class Canvas : Drawable
 
     protected override void OnPaint(PaintEventArgs pe)
     {
+        var now = DateTime.Now;
         var rect = new Eto.Drawing.Rectangle(Location, Size);
         pe.Graphics.FillRectangle(_canvasBackground, rect);
 
@@ -63,6 +78,31 @@ public class Canvas : Drawable
         foreach (var shape in Shapes)
         {
             shape.Draw(pe.Graphics);
+        }
+
+        if (_showTooltip && _currentMousePos is {} cp)
+        {
+            Shape hoveredShape = null;
+
+            foreach (var shape in Shapes)
+            {
+                if (shape.Contains((Point)cp))
+                {
+                    hoveredShape = shape;
+                    break;
+                }
+            }
+
+            if (hoveredShape is {} h)
+            {
+                var text = h.ReferencedShape.VariableName;
+                var textSize = App.SmallTextFont.MeasureString(text);
+                var bgWidth = textSize.Width + 6;
+                var bgHeight = textSize.Height + 6;
+                pe.Graphics.FillRectangle(_tooltipColor, cp.X - bgWidth, cp.Y - bgHeight, bgWidth, bgHeight);
+                pe.Graphics.DrawRectangle(_textColor, cp.X - bgWidth, cp.Y - bgHeight, bgWidth, bgHeight);
+                pe.Graphics.DrawText(App.SmallTextFont, _textBrush, cp.X - bgWidth + 3, cp.Y - bgHeight + 3, text);
+            }
         }
 
         if (App.TeacherMode) return;
@@ -136,16 +176,31 @@ public class Canvas : Drawable
             _selectedShapeContainsLastMouseDownPos = SelectedShape.Contains((Point)_lastMouseDownPos);
     }
 
-    protected override void OnMouseMove(MouseEventArgs e)
+    protected override async void OnMouseMove(MouseEventArgs e)
     {
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource = new();
         base.OnMouseMove(e);
 
-        if (_lastMouseDownPos is not { } l)
+        if (_showTooltip)
         {
-            return;
+            _showTooltip = false;
+            Invalidate();
         }
 
         _currentMousePos = e.Location;
+
+        if (_lastMouseDownPos is not { })
+        {
+            var cancellationToken = _cancellationTokenSource.Token;
+            try
+            {
+                await Task.Delay(500, cancellationToken);
+                _showTooltip = true;
+            }
+            catch (OperationCanceledException)
+            { }
+        }
 
         Invalidate();
     }
@@ -159,7 +214,7 @@ public class Canvas : Drawable
             _selectedShapeContainsLastMouseDownPos &&
             !App.TeacherMode
         ) {
-            MoveSelectedShape((PointF)SelectedShape.Location - lp + e.Location);
+            MoveSelectedShape(SelectedShape.Location - lp + e.Location);
             _lastMouseDownPos = null;
             _currentMousePos = null;
             return;
