@@ -2,11 +2,11 @@
 
 namespace TankLite.Values;
 
-public class TLObj : TLValue
+public class TlObj : TlValue
 {
     public override bool IsReadonly { get; set; } = true;
 
     public override string Type { get; set; } = "object";
 
-    public Dictionary<string, TLValue> Value { get; set; }
+    public Dictionary<string, TlValue> Value { get; set; }
 }

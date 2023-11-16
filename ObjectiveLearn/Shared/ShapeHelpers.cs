@@ -1,19 +1,21 @@
-﻿using Eto.Drawing;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Eto.Drawing;
 using ObjectiveLearn.Models;
 using TankLite.Models;
 using TankLite.Values;
-using Shared.Localisation;
+using Shared.Localization;
 
 namespace ObjectiveLearn.Shared;
 
 public class ShapeHelpers
 {
-    public static TLObj CreateShape(SerializeableShape shape)
+    public static TlObj CreateShape(SerializableShape shape)
     {
         return CreateShape(
-            new(shape.Type),
-            new(shape.X, shape.Y),
-            new(shape.Width, shape.Height),
+            new TlString(shape.Type),
+            new Point(shape.X, shape.Y),
+            new Size(shape.Width, shape.Height),
             shape.Rotation,
             shape.R,
             shape.G,
@@ -22,22 +24,22 @@ public class ShapeHelpers
             );
     }
 
-    public static TLObj CreateShape(TLFuncArgs args, TLString shapeType)
+    public static TlObj CreateShape(TlFuncArgs args, TlString shapeType)
     {
-        var x = ((TLInt)args.Args[0]).Value;
-        var y = ((TLInt)args.Args[1]).Value;
-        var w = ((TLInt)args.Args[2]).Value;
-        var h = ((TLInt)args.Args[3]).Value;
-        var a = args.Args.Length >= 5 ? ((TLInt)args.Args[4]).Value : 0;
-        var r = args.Args.Length >= 8 ? ((TLInt)args.Args[5]).Value : 255;
-        var g = args.Args.Length >= 8 ? ((TLInt)args.Args[6]).Value : 0;
-        var b = args.Args.Length >= 8 ? ((TLInt)args.Args[7]).Value : 0;
-        var alpha = args.Args.Length >= 9 ? ((TLInt)args.Args[8]).Value : 255;
+        var x = ((TlInt)args.Args[0]).Value;
+        var y = ((TlInt)args.Args[1]).Value;
+        var w = ((TlInt)args.Args[2]).Value;
+        var h = ((TlInt)args.Args[3]).Value;
+        var a = args.Args.Length >= 5 ? ((TlInt)args.Args[4]).Value : 0;
+        var r = args.Args.Length >= 8 ? ((TlInt)args.Args[5]).Value : 255;
+        var g = args.Args.Length >= 8 ? ((TlInt)args.Args[6]).Value : 0;
+        var b = args.Args.Length >= 8 ? ((TlInt)args.Args[7]).Value : 0;
+        var alpha = args.Args.Length >= 9 ? ((TlInt)args.Args[8]).Value : 255;
 
         return CreateShape(
             shapeType,
-            new(x, y),
-            new(w, h),
+            new Point(x, y),
+            new Size(w, h),
             a,
             r,
             g,
@@ -46,8 +48,8 @@ public class ShapeHelpers
             );
     }
 
-    public static TLObj CreateShape(
-        TLString shapeType,
+    public static TlObj CreateShape(
+        TlString shapeType,
         Point location,
         Size size,
         int rotation,
@@ -57,43 +59,43 @@ public class ShapeHelpers
         int a
         )
     {
-        var obj = new TLObj()
+        var obj = new TlObj
         {
-            Value = new()
+            Value = new Dictionary<string, TlValue>
             {
-                { TLName.Type, shapeType },
-                { TLName.XPos, new TLInt(location.X) },
-                { TLName.YPos, new TLInt(location.Y) },
-                { TLName.Width, new TLInt(size.Width) },
-                { TLName.Height, new TLInt(size.Height) },
-                { TLName.Rotation, new TLInt(rotation) },
+                { TlName.Type, shapeType },
+                { TlName.XPos, new TlInt(location.X) },
+                { TlName.YPos, new TlInt(location.Y) },
+                { TlName.Width, new TlInt(size.Width) },
+                { TlName.Height, new TlInt(size.Height) },
+                { TlName.Rotation, new TlInt(rotation) },
                 {
-                    TLName.Color,
-                    new TLObj()
+                    TlName.Color,
+                    new TlObj
                     {
-                        Value = new()
+                        Value = new Dictionary<string, TlValue>
                         {
-                            { TLName.Red, new TLInt(r) },
-                            { TLName.Green, new TLInt(g) },
-                            { TLName.Blue, new TLInt(b) },
-                            { TLName.Alpha, new TLInt(a) }
+                            { TlName.Red, new TlInt(r) },
+                            { TlName.Green, new TlInt(g) },
+                            { TlName.Blue, new TlInt(b) },
+                            { TlName.Alpha, new TlInt(a) }
                         }
                     }
                 },
-                { TLName.SetPosition, new TLFunc(SetPosition, "void") },
-                { TLName.SetSize, new TLFunc(SetSize, "void") },
-                { TLName.SetColor, new TLFunc(SetColor, "void") },
-                { TLName.SetRotation, new TLFunc(SetRotation, "void") },
-                { TLName.Move, new TLFunc(Move, "void") },
+                { TlName.SetPosition, new TlFunc(SetPosition, "void") },
+                { TlName.SetSize, new TlFunc(SetSize, "void") },
+                { TlName.SetColor, new TlFunc(SetColor, "void") },
+                { TlName.SetRotation, new TlFunc(SetRotation, "void") },
+                { TlName.Move, new TlFunc(Move, "void") }
             }
         };
         return obj;
     }
 
-    private static TLValue SetPosition(TLFuncArgs args)
+    private static TlValue SetPosition(TlFuncArgs args)
     {
         if (args.Args.Length != 2) {
-            return new TLError(
+            return new TlError(
                 LanguageManager
                     .Get(LanguageName.ErrorExpectedArgs)
                     .Replace("{expected}", "2")
@@ -101,11 +103,11 @@ public class ShapeHelpers
             );
         }
 
-        for (int i = 0; i < args.Args.Length; i++) {
+        for (var i = 0; i < args.Args.Length; i++) {
             var arg = args.Args[i];
 
-            if (arg.Type != TLName.Int) {
-                return new TLError(
+            if (arg.Type != TlName.Int) {
+                return new TlError(
                     LanguageManager
                         .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", i.ToString())
@@ -114,16 +116,16 @@ public class ShapeHelpers
             }
         }
 
-        args.Parent.Value[TLName.XPos] = (TLInt)args.Args[0];
-        args.Parent.Value[TLName.YPos] = (TLInt)args.Args[1];
+        args.Parent.Value[TlName.XPos] = (TlInt)args.Args[0];
+        args.Parent.Value[TlName.YPos] = (TlInt)args.Args[1];
 
-        return new TLVoid();
+        return new TlVoid();
     }
 
-    private static TLValue SetSize(TLFuncArgs args)
+    private static TlValue SetSize(TlFuncArgs args)
     {
         if (args.Args.Length != 2) {
-            return new TLError(
+            return new TlError(
                 LanguageManager
                     .Get(LanguageName.ErrorExpectedArgs)
                     .Replace("{expected}", "2")
@@ -131,11 +133,11 @@ public class ShapeHelpers
             );
         }
 
-        for (int i = 0; i < args.Args.Length; i++) {
+        for (var i = 0; i < args.Args.Length; i++) {
             var arg = args.Args[i];
 
-            if (arg.Type != TLName.Int) {
-                return new TLError(
+            if (arg.Type != TlName.Int) {
+                return new TlError(
                     LanguageManager
                         .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", i.ToString())
@@ -144,16 +146,16 @@ public class ShapeHelpers
             }
         }
 
-        args.Parent.Value[TLName.Width] = (TLInt)args.Args[0];
-        args.Parent.Value[TLName.Height] = (TLInt)args.Args[1];
+        args.Parent.Value[TlName.Width] = (TlInt)args.Args[0];
+        args.Parent.Value[TlName.Height] = (TlInt)args.Args[1];
 
-        return new TLVoid();
+        return new TlVoid();
     }
 
-    private static TLValue SetColor(TLFuncArgs args)
+    private static TlValue SetColor(TlFuncArgs args)
     {
         if (args.Args.Length != 3 && args.Args.Length != 4) {
-            return new TLError(
+            return new TlError(
                 LanguageManager
                     .Get(LanguageName.ErrorExpectedArgs)
                     .Replace("{expected}", "3 {or} 4")
@@ -162,11 +164,11 @@ public class ShapeHelpers
             );
         }
 
-        for (int i = 0; i < args.Args.Length; i++) {
+        for (var i = 0; i < args.Args.Length; i++) {
             var arg = args.Args[i];
 
-            if (arg.Type != TLName.Int) {
-                return new TLError(
+            if (arg.Type != TlName.Int) {
+                return new TlError(
                     LanguageManager
                         .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", i.ToString())
@@ -174,10 +176,10 @@ public class ShapeHelpers
                 );
             }
             
-            var value = ((TLInt)arg).Value;
+            var value = ((TlInt)arg).Value;
 
-            if (value > 255 || value < 0) {
-                return new TLError(
+            if (value is > 255 or < 0) {
+                return new TlError(
                     LanguageManager
                         .Get(LanguageName.ErrorOutsideRange)
                         .Replace("{i}", i.ToString())
@@ -188,20 +190,20 @@ public class ShapeHelpers
             }
         }
 
-        var color = (TLObj)args.Parent.Value[TLName.Color];
+        var color = (TlObj)args.Parent.Value[TlName.Color];
 
-        color.Value[TLName.Red] = (TLInt)args.Args[0];
-        color.Value[TLName.Green] = (TLInt)args.Args[1];
-        color.Value[TLName.Blue] = (TLInt)args.Args[2];
-        color.Value[TLName.Alpha] = args.Args.Length > 3 ? (TLInt)args.Args[3] : new TLInt(255);
+        color.Value[TlName.Red] = (TlInt)args.Args[0];
+        color.Value[TlName.Green] = (TlInt)args.Args[1];
+        color.Value[TlName.Blue] = (TlInt)args.Args[2];
+        color.Value[TlName.Alpha] = args.Args.Length > 3 ? (TlInt)args.Args[3] : new TlInt(255);
 
-        return new TLVoid();
+        return new TlVoid();
     }
 
-    private static TLValue SetRotation(TLFuncArgs args)
+    private static TlValue SetRotation(TlFuncArgs args)
     {
         if (args.Args.Length != 1) {
-            return new TLError(
+            return new TlError(
                 LanguageManager
                     .Get(LanguageName.ErrorExpectedArgs)
                     .Replace("{expected}", "1")
@@ -209,8 +211,8 @@ public class ShapeHelpers
             );
         }
 
-        if (args.Args[0].Type != TLName.Int) {
-            return new TLError(
+        if (args.Args[0].Type != TlName.Int) {
+            return new TlError(
                     LanguageManager
                         .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", "0")
@@ -218,16 +220,16 @@ public class ShapeHelpers
                 );
         }
 
-        args.Parent.Value[TLName.Rotation] = (TLInt)args.Args[0];
+        args.Parent.Value[TlName.Rotation] = (TlInt)args.Args[0];
 
-        return new TLVoid();
+        return new TlVoid();
     }
 
-    private static TLValue Move(TLFuncArgs args)
+    private static TlValue Move(TlFuncArgs args)
     {
         if (args.Args.Length != 2)
         {
-            return new TLError(
+            return new TlError(
                 LanguageManager
                     .Get(LanguageName.ErrorExpectedArgs)
                     .Replace("{expected}", "2")
@@ -235,22 +237,22 @@ public class ShapeHelpers
             );
         }
 
-        foreach (var arg in args.Args)
+        var anyIsInt = args.Args
+            .Any(arg => arg.Type != TlName.Int);
+
+        if (anyIsInt)
         {
-            if (arg.Type != TLName.Int)
-            {
-                return new TLError(
-                    LanguageManager
-                        .Get(LanguageName.ErrorTypeInferenceArgs)
-                        .Replace("{i}", "0")
-                        .Replace("{type}", args.Args[0].Type)
-                );
-            }
+            return new TlError(
+                LanguageManager
+                    .Get(LanguageName.ErrorTypeInferenceArgs)
+                    .Replace("{i}", "0")
+                    .Replace("{type}", args.Args[0].Type)
+            );
         }
 
-        args.Parent.Value[TLName.XPos].Add(args.Args[0]);
-        args.Parent.Value[TLName.YPos].Add(args.Args[1]);
+        args.Parent.Value[TlName.XPos].Add(args.Args[0]);
+        args.Parent.Value[TlName.YPos].Add(args.Args[1]);
 
-        return new TLVoid();
+        return new TlVoid();
     }
 }

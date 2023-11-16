@@ -23,11 +23,6 @@ public abstract class Shape
         graphics.FillPath(Color, Path);
     }
 
-    public void DrawOutline(Graphics graphics)
-    {
-        graphics.DrawPath(Color, Path);
-    }
-
     public void Rotate(int deg)
     {
         Rotation = deg;
@@ -37,10 +32,10 @@ public abstract class Shape
         var sumX = 0;
         var sumY = 0;
 
-        for (int i = 0; i < Points.Length; i++)
+        foreach (var point in Points)
         {
-            sumX += Points[i].X;
-            sumY += Points[i].Y;
+            sumX += point.X;
+            sumY += point.Y;
         }
 
         var center = new Point(
@@ -51,14 +46,14 @@ public abstract class Shape
         var sin = Math.Sin(angleRad);
         var cos = Math.Cos(angleRad);
 
-        for (int i = 0; i < Points.Length; i++)
+        for (var i = 0; i < Points.Length; i++)
         {
-            var new_coord = new Point(
+            var newCoordinate = new Point(
                 (int)Math.Round(center.X + (Points[i].X - center.X) * cos - (Points[i].Y - center.Y) * sin),
                 (int)Math.Round(center.Y + (Points[i].X - center.X) * sin + (Points[i].Y - center.Y) * cos)
             );
 
-            (Points[i].X, Points[i].Y) = (new_coord.X, new_coord.Y);
+            (Points[i].X, Points[i].Y) = (newCoordinate.X, newCoordinate.Y);
         }
 
         UpdatePath();
@@ -69,12 +64,12 @@ public abstract class Shape
 
     public bool HandleClick(Point clickPos)
     {
-        if (Contains(clickPos))
+        if (!Contains(clickPos) || ShapeSelected is null)
         {
-
-            ShapeSelected.Invoke(this, ReferencedShape);
-            return true;
+            return false;
         }
-        return false;
+
+        ShapeSelected.Invoke(this, ReferencedShape);
+        return true;
     }
 }

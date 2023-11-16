@@ -1,6 +1,6 @@
 namespace ObjectiveLearn.Models;
 
-public class SerializeableShape
+public class SerializableShape
 {
     public string Type { get; set; }
     public int X { get; set; }

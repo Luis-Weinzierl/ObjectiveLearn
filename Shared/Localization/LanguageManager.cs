@@ -1,11 +1,10 @@
 using Microsoft.Extensions.Configuration;
-using System.Globalization;
 
-namespace Shared.Localisation;
+namespace Shared.Localization;
 
 public static class LanguageManager
 {
-    private static IConfigurationRoot _root;
+    private static IConfigurationRoot? _root;
 
     public static void Init(IConfigurationRoot root)
     {
@@ -14,6 +13,11 @@ public static class LanguageManager
 
     public static string Get(string name)
     {
-        return _root[name];
+        if (_root is not {} root || root[name] is not { } r)
+        {
+            throw new NullReferenceException();
+        }
+
+        return r;
     }
 }

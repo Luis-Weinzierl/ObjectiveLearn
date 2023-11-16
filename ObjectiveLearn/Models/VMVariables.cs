@@ -1,44 +1,40 @@
 ﻿using ObjectiveLearn.Shared;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TankLite.Values;
 
 namespace ObjectiveLearn.Models;
 
-public static class VMVariables
+public static class VmVariables
 {
-    public static Dictionary<string, TLValue> DefaultVariables { get; } = new()
+    public static Dictionary<string, TlValue> DefaultVariables { get; } = new()
     {
         {
-            TLName.Rectangle,
-            new TLObj
+            TlName.Rectangle,
+            new TlObj
             {
-                Value = new()
+                Value = new Dictionary<string, TlValue>
                 {
-                    { TLName.Constructor, new TLFunc(RectangleHelpers.Constructor, TLName.Rectangle) }
+                    { TlName.Constructor, new TlFunc(RectangleHelpers.Constructor, TlName.Rectangle) }
                 }
             }
         },
         {
-            TLName.Triangle,
-            new TLObj
+            TlName.Triangle,
+            new TlObj
             {
-                Value = new()
+                Value = new Dictionary<string, TlValue>
                 {
-                    { TLName.Constructor, new TLFunc(TriangleHelpers.Constructor, TLName.Triangle) }
+                    { TlName.Constructor, new TlFunc(TriangleHelpers.Constructor, TlName.Triangle) }
                 }
             }
         },
         {
-            TLName.Ellipse,
-            new TLObj
+            TlName.Ellipse,
+            new TlObj
             {
-                Value = new()
+                Value = new Dictionary<string, TlValue>
                 {
-                    { TLName.Constructor, new TLFunc(EllipseHelpers.Constructor, TLName.Ellipse) }
+                    { TlName.Constructor, new TlFunc(EllipseHelpers.Constructor, TlName.Ellipse) }
                 }
             }
         }

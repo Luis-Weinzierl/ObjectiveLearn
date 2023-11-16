@@ -1,71 +1,67 @@
 ﻿using TankLite.Values;
-using Shared.Localisation;
+using Shared.Localization;
 
 namespace ObjectiveLearn.Models;
 
-public static class TLName
+public static class TlName
 {
-    public static string Rectangle;
-    public static string Triangle;
-    public static string Ellipse;
+    public static string Rectangle { get; set; }
+    public static string Triangle { get; set; }
+    public static string Ellipse { get; set; }
 
-    public static TLString RectangleType;
-    public static TLString TriangleType;
-    public static TLString EllipseType;
+    public static TlString RectangleType { get; set; }
+    public static TlString TriangleType { get; set; }
+    public static TlString EllipseType { get; set; }
+    public static string Constructor { get; set; }
 
-    public static string Constructor;
-    public static string Type;
-    public static string XPos;
-    public static string YPos;
-    public static string Width;
-    public static string Height;
-    public static string Rotation;
-
-    public static string Color;
-
-    public static string Red;
-    public static string Green;
-    public static string Blue;
-    public static string Alpha;
-
-    public static string Int;
-    public static string Object;
-    public static string Func;
-
-    public static string SetPosition;
-    public static string SetSize;
-    public static string SetColor;
-    public static string SetRotation;
-    public static string Move;
+    public static string Type { get; set; }
+    public static string XPos { get; set; }
+    public static string YPos { get; set; }
+    public static string Width { get; set; }
+    public static string Height { get; set; }
+    public static string Rotation { get; set; }
+    public static string Color { get; set; }
+    public static string Red { get; set; }
+    public static string Green { get; set; }
+    public static string Blue { get; set; }
+    public static string Alpha { get; set; }
+    public static string Int { get; set; }
+    public static string Object { get; set; }
+    public static string Func { get; set; }
+    public static string SetPosition { get; set; }
+    public static string SetSize { get; set; }
+    public static string SetColor { get; set; }
+    public static string SetRotation { get; set; }
+    public static string Move { get; set; }
 
 
     public static void Init()
     {
-        Rectangle = LanguageManager.Get(LanguageName.TLNameRectangle);
-        Triangle = LanguageManager.Get(LanguageName.TLNameTriangle);
-        Ellipse = LanguageManager.Get(LanguageName.TLNameEllipse);
-        RectangleType = new(Rectangle);
-        TriangleType = new(Triangle);
-        EllipseType = new(Ellipse);
-        Constructor = LanguageManager.Get(LanguageName.TLNameConstructor);
-        Type = LanguageManager.Get(LanguageName.TLNameType);
-        XPos = LanguageManager.Get(LanguageName.TLNameXPos);
-        YPos = LanguageManager.Get(LanguageName.TLNameYPos);
-        Width = LanguageManager.Get(LanguageName.TLNameWidth);
-        Height = LanguageManager.Get(LanguageName.TLNameHeight);
-        Rotation = LanguageManager.Get(LanguageName.TLNameRotation);
-        Color = LanguageManager.Get(LanguageName.TLNameColor);
-        Red = LanguageManager.Get(LanguageName.TLNameRed);
-        Green = LanguageManager.Get(LanguageName.TLNameGreen);
-        Blue = LanguageManager.Get(LanguageName.TLNameBlue);
-        Alpha = LanguageManager.Get(LanguageName.TLNameAlpha);
-        Int = LanguageManager.Get(LanguageName.TLNameInt);
-        Object = LanguageManager.Get(LanguageName.TLNameObject);
-        Func = LanguageManager.Get(LanguageName.TLNameFunc);
-        SetPosition = LanguageManager.Get(LanguageName.TLNameSetPosition);
-        SetSize = LanguageManager.Get(LanguageName.TLNameSetSize);
-        SetColor = LanguageManager.Get(LanguageName.TLNameSetColor);
-        SetRotation = LanguageManager.Get(LanguageName.TLNameSetRotation);
-        Move = LanguageManager.Get(LanguageName.TLNameMove);
+        Rectangle = LanguageManager.Get(LanguageName.TlNameRectangle);
+        Triangle = LanguageManager.Get(LanguageName.TlNameTriangle);
+        Ellipse = LanguageManager.Get(LanguageName.TlNameEllipse);
+        RectangleType = new TlString(Rectangle);
+        TriangleType = new TlString(Triangle);
+        EllipseType = new TlString(Ellipse);
+        Constructor = LanguageManager.Get(LanguageName.TlNameConstructor);
+        Type = LanguageManager.Get(LanguageName.TlNameType);
+        XPos = LanguageManager.Get(LanguageName.TlNameXPos);
+        YPos = LanguageManager.Get(LanguageName.TlNameYPos);
+        Width = LanguageManager.Get(LanguageName.TlNameWidth);
+        Height = LanguageManager.Get(LanguageName.TlNameHeight);
+        Rotation = LanguageManager.Get(LanguageName.TlNameRotation);
+        Color = LanguageManager.Get(LanguageName.TlNameColor);
+        Red = LanguageManager.Get(LanguageName.TlNameRed);
+        Green = LanguageManager.Get(LanguageName.TlNameGreen);
+        Blue = LanguageManager.Get(LanguageName.TlNameBlue);
+        Alpha = LanguageManager.Get(LanguageName.TlNameAlpha);
+        Int = LanguageManager.Get(LanguageName.TlNameInt);
+        Object = LanguageManager.Get(LanguageName.TlNameObject);
+        Func = LanguageManager.Get(LanguageName.TlNameFunc);
+        SetPosition = LanguageManager.Get(LanguageName.TlNameSetPosition);
+        SetSize = LanguageManager.Get(LanguageName.TlNameSetSize);
+        SetColor = LanguageManager.Get(LanguageName.TlNameSetColor);
+        SetRotation = LanguageManager.Get(LanguageName.TlNameSetRotation);
+        Move = LanguageManager.Get(LanguageName.TlNameMove);
     }
 }

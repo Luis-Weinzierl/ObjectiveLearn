@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Eto.Drawing;
 using Eto.Forms;
 using ObjectiveLearn.Models;
 using ObjectiveLearn.Shared;
-using Shared.Localisation;
+using Shared.Localization;
 using TankLite.Values;
 
 namespace ObjectiveLearn.Components;
 
 public class SideBar : Drawable
 {
-    private const int _padding = 16;
-    private const int _smallPadding = 8;
+    protected const int CardPadding = 16;
+    private const int SmallPadding = 8;
 
     private string _title = string.Empty;
     private string _text = string.Empty;
@@ -28,11 +29,10 @@ public class SideBar : Drawable
         _textColor = ConfigManager.GetColor(Config.SidebarTextColor);
         _backgroundColor = ConfigManager.GetColor(Config.SidebarBackground);
 
-        _textBrush = new(_textColor);
+        _textBrush = new SolidBrush(_textColor);
 
-        Width = 300;
-
-        Padding = new(16);
+        Handler.Width = 300;
+        Padding = new Padding(16);
     }
 
     public void SelectObject(SelectShapeEventArgs e)
@@ -55,9 +55,9 @@ public class SideBar : Drawable
     {
         _title = App.Tool switch
         {
-            ShapeTool.Rectangle => TLName.Rectangle,
-            ShapeTool.Triangle => TLName.Triangle,
-            ShapeTool.Ellipse => TLName.Ellipse,
+            ShapeTool.Rectangle => TlName.Rectangle,
+            ShapeTool.Triangle => TlName.Triangle,
+            ShapeTool.Ellipse => TlName.Ellipse,
             _ => throw new NotImplementedException()
         };
 
@@ -76,8 +76,8 @@ public class SideBar : Drawable
         var fullRect = e.ClipRectangle;
 
         var pathLabelSize = App.SmallTextFont.MeasureString(App.CurrentFile);
-        var textX = fullRect.X + fullRect.Width - pathLabelSize.Width - _smallPadding;
-        var textY = fullRect.Y + fullRect.Height - pathLabelSize.Height - _smallPadding;
+        var textX = fullRect.X + fullRect.Width - pathLabelSize.Width - SmallPadding;
+        var textY = fullRect.Y + fullRect.Height - pathLabelSize.Height - SmallPadding;
 
         e.Graphics.DrawText(App.SmallTextFont, _textBrush, textX, textY, App.CurrentFile);
 
@@ -98,25 +98,25 @@ public class SideBar : Drawable
             return;
         }
 
-        var totalHeight = App.TextFont.MeasureString(_text).Height + App.TextFont.MeasureString(_title).Height + 4 * _padding;
+        var totalHeight = App.TextFont.MeasureString(_text).Height + App.TextFont.MeasureString(_title).Height + 4 * CardPadding;
 
-        var rect = new RectangleF(e.ClipRectangle.X + _padding, e.ClipRectangle.Y + _padding, e.ClipRectangle.Width - 2 * _padding, totalHeight);
+        var rect = new RectangleF(e.ClipRectangle.X + CardPadding, e.ClipRectangle.Y + CardPadding, e.ClipRectangle.Width - 2 * CardPadding, totalHeight);
 
         var path = GraphicsPath.GetRoundRect(rect, 8);
 
-        var height = rect.Y + _padding;
+        var height = rect.Y + CardPadding;
 
         e.Graphics.FillPath(_backgroundColor, path);
 
-        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + _padding, height, _title);
+        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + CardPadding, height, _title);
 
-        height += App.TextFont.LineHeight + _padding;
+        height += App.TextFont.LineHeight + CardPadding;
 
         e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
 
-        height += _padding;
+        height += CardPadding;
 
-        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + _padding, height, _text);
+        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + CardPadding, height, _text);
     }
 
     private void DrawClassCard(PaintEventArgs e)
@@ -129,47 +129,47 @@ public class SideBar : Drawable
         var textHeight = App.TextFont.MeasureString(_text).Height;
         var text2Height = App.TextFont.MeasureString(_text2).Height;
 
-        var totalHeight = textHeight + App.TextFont.MeasureString(_title).Height + text2Height + 6 * _padding;
+        var totalHeight = textHeight + App.TextFont.MeasureString(_title).Height + text2Height + 6 * CardPadding;
 
-        var rect = new RectangleF(e.ClipRectangle.X + _padding, e.ClipRectangle.Y + _padding, e.ClipRectangle.Width - 2 * _padding, totalHeight);
+        var rect = new RectangleF(e.ClipRectangle.X + CardPadding, e.ClipRectangle.Y + CardPadding, e.ClipRectangle.Width - 2 * CardPadding, totalHeight);
 
-        var height = rect.Y + _padding;
+        var height = rect.Y + CardPadding;
 
         e.Graphics.FillRectangle(_backgroundColor, rect);
 
-        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + _padding, height, _title);
+        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + CardPadding, height, _title);
 
-        height += App.TextFont.LineHeight + _padding;
-
-        e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
-
-        height += _padding;
-
-        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + _padding, height, _text);
-
-        height += textHeight + _padding;
+        height += App.TextFont.LineHeight + CardPadding;
 
         e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
 
-        height += _padding;
+        height += CardPadding;
 
-        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + _padding, height, _text2);
+        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + CardPadding, height, _text);
+
+        height += textHeight + CardPadding;
+
+        e.Graphics.DrawLine(_textColor, rect.X, height, rect.X + rect.Width, height);
+
+        height += CardPadding;
+
+        e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + CardPadding, height, _text2);
     }
 
-    private string GetAllProperties(TLObj obj, string prefix = "")
+    public static string GetAllProperties(TlObj obj, string prefix)
     {
         var propOutput = string.Empty;
 
-        foreach (var property in obj.Value)
-        {
-            if (property.Key.StartsWith('.') || property.Value.Type.StartsWith(TLName.Func))
-            {
-                continue;
-            }
+        var properties = obj.Value
+            .Where(property =>
+                !property.Key.StartsWith('.') && 
+                !property.Value.Type.StartsWith(TlName.Func));
 
-            if (property.Value.Type == TLName.Object)
+        foreach (var property in properties)
+        {
+            if (property.Value.Type == TlName.Object)
             {
-                var props = GetAllProperties((TLObj)property.Value, $"{prefix}{property.Key}.");
+                var props = GetAllProperties((TlObj)property.Value, $"{prefix}{property.Key}.");
                 propOutput += props;
                 continue;
             }
@@ -180,7 +180,7 @@ public class SideBar : Drawable
         return propOutput;
     }
 
-    private void GetAllProperties(TLObj obj)
+    private void GetAllProperties(TlObj obj)
     {
         _text = GetAllProperties(obj, "");
     }

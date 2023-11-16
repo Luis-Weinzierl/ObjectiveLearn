@@ -5,8 +5,7 @@ using System;
 using System.Text.Json;
 using System.IO;
 using ObjectiveLearn.Shared;
-using Shared.Localisation;
-using TankLite.Values;
+using Shared.Localization;
 using System.Linq;
 
 namespace ObjectiveLearn.Components;
@@ -18,8 +17,6 @@ public class TopBar : Drawable
     public NumericStepper RotationStepper;
     public ColorPicker ColorPicker;
 
-	public new Point Location { get; set; }
-
     public TopBar()
     {
         Draw();
@@ -28,56 +25,56 @@ public class TopBar : Drawable
 	public void Draw()
     {
         var buttonSize = new Size(80, 100);
-        var rectangleButton = new Button()
+        var rectangleButton = new Button
         {
             Image = new Bitmap(Path.Combine(App.Directory, "Resources/RectangleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
             Text = LanguageManager.Get(LanguageName.TopBarRectangle),
-            Size = new Size(80, 100),
+            Size = buttonSize
         };
 
-        var triangleButton = new Button()
+        var triangleButton = new Button
         {
             Image = new Bitmap(Path.Combine(App.Directory, "Resources/TriangleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
             Text = LanguageManager.Get(LanguageName.TopBarTriangle),
-            Size = new Size(80, 100),
+            Size = buttonSize
         };
 
-        var ellipseButton = new Button()
+        var ellipseButton = new Button
         {
             Image = new Bitmap(Path.Combine(App.Directory, "Resources/CircleIcon.png")),
             ImagePosition = ButtonImagePosition.Above,
             Text = LanguageManager.Get(LanguageName.TopBarEllipse),
-            Size = new Size(80, 100),
+            Size = buttonSize
         };
 
-        var saveButton = new Button()
+        var saveButton = new Button
         {
             Text = LanguageManager.Get(LanguageName.TopBarSave),
             Width = 75
         };
 
-        var loadButton = new Button()
+        var loadButton = new Button
         {
             Text = LanguageManager.Get(LanguageName.TopBarOpen),
             Width = 75
         };
 
-        var clearButton = new Button()
+        var clearButton = new Button
         {
             Text = LanguageManager.Get(LanguageName.TopBarClear),
             Width = 75
         };
 
-        DeleteButton = new Button()
+        DeleteButton = new Button
         {
             Text = LanguageManager.Get(LanguageName.TopBarDelete),
             Width = 75,
             Enabled = false
         };
 
-        var label = new Label()
+        var label = new Label
         {
             Text = App.Task,
             Width = -1,
@@ -88,13 +85,15 @@ public class TopBar : Drawable
             TextAlignment = TextAlignment.Center
         };
 
-        ColorPicker = new ColorPicker {
+        ColorPicker = new ColorPicker
+        {
             Width = 100,
             AllowAlpha = true,
             Value = Color.FromArgb(255, 0, 0)
         };
 
-        RotationStepper = new NumericStepper() {
+        RotationStepper = new NumericStepper
+        {
             DecimalPlaces = 0,
             Enabled = false
         };
@@ -109,10 +108,10 @@ public class TopBar : Drawable
         ColorPicker.ValueChanged += ColorPickerOnValueChanged;
         RotationStepper.ValueChanged += RotationStepperOnValueChanged;
 
-        var layout = new DynamicLayout()
+        var layout = new DynamicLayout
         {
-            Padding = new(8),
-            DefaultSpacing = new(5, 5)
+            Padding = new Padding(8),
+            DefaultSpacing = new Size(5, 5)
         };
 
         layout.BeginHorizontal(false);
@@ -156,58 +155,61 @@ public class TopBar : Drawable
         Content = layout;
     }
 
-    private void RectangleButtonOnClick(object sender, EventArgs e)
+    private static void RectangleButtonOnClick(object sender, EventArgs e)
     {
         App.Tool = ShapeTool.Rectangle; 
         App.SideBar.ShowClassCard();
     }
 
-    private void TriangleButtonOnClick(object sender, EventArgs e)
+    private static void TriangleButtonOnClick(object sender, EventArgs e)
     {
         App.Tool = ShapeTool.Triangle;
         App.SideBar.ShowClassCard();
     }
 
-    private void CircleButtonOnClick(object sender, EventArgs e)
+    private static void CircleButtonOnClick(object sender, EventArgs e)
     {
         App.Tool = ShapeTool.Ellipse;
         App.SideBar.ShowClassCard();
     }
 
-    private void SaveButtonOnClick(object sender, EventArgs e)
+    private static void SaveButtonOnClick(object sender, EventArgs e)
     {
-        var dialog = new SaveFileDialog()
+        var dialog = new SaveFileDialog
         {
             FileName = "Checkpoint.olcp",
             Filters = {
-                new FileFilter("O:L Checkpoint", new[] {".olcp"})
+                new FileFilter("O:L Checkpoint", ".olcp")
             }
         };
 
-        if (dialog.ShowDialog(Application.Instance.MainForm) == DialogResult.Ok)
+        if (dialog.ShowDialog(Application.Instance.MainForm) != DialogResult.Ok)
         {
-            if (!dialog.FileName.EndsWith(".olcp")) {
-                dialog.FileName += ".olcp";
-            }
-
-            var jsonString = JsonSerializer.Serialize(App.Serialize());
-            App.CurrentFile = dialog.FileName;
-            File.WriteAllText(dialog.FileName, jsonString);
+            return;
         }
+
+        if (!dialog.FileName.EndsWith(".olcp")) 
+        {
+            dialog.FileName += ".olcp";
+        }
+
+        var jsonString = JsonSerializer.Serialize(App.Serialize());
+        App.CurrentFile = dialog.FileName;
+        File.WriteAllText(dialog.FileName, jsonString);
     }
 
     private void LoadButtonOnClick(object sender, EventArgs e)
     {
-        var dialog = new OpenFileDialog()
+        var dialog = new OpenFileDialog
         {
             Filters = {
-                new FileFilter("O:L Checkpoint", new[] {".olcp"})
+                new FileFilter("O:L Checkpoint", ".olcp")
             }
         };
         
         if (dialog.ShowDialog(Application.Instance.MainForm) == DialogResult.Ok)
         {
-            var program = JsonSerializer.Deserialize<SerializeableOLProgram>(File.ReadAllText(dialog.FileName));
+            var program = JsonSerializer.Deserialize<SerializableObjectiveLearnProgram>(File.ReadAllText(dialog.FileName));
             App.CurrentFile = dialog.FileName;
             App.Deserialize(program);
         }
@@ -218,21 +220,23 @@ public class TopBar : Drawable
     private void ClearButtonOnClick(object sender, EventArgs e) {
         var random = new Random();
         var confirmButton = new Button {
-            Text = random.Next(0, 1000000) == 1 ? "Jawui oida" : LanguageManager.Get(LanguageName.ConfirmClearDialogAccept),
+            Text = random.Next(0, 1000000) == 1 
+                ? "Jawui oida" 
+                : LanguageManager.Get(LanguageName.ConfirmClearDialogAccept)
         };
 
         confirmButton.Click += ConfirmActionDialogOnConfirmed;
 
         var abortButton = new Button {
-            Text = LanguageManager.Get(LanguageName.ConfirmClearDialogDecline),
+            Text = LanguageManager.Get(LanguageName.ConfirmClearDialogDecline)
         };
 
         abortButton.Click += ConfirmActionDialogOnAborted;
 
-        var content = new DynamicLayout()
+        var content = new DynamicLayout
         {
-            Padding = new(8),
-            DefaultSpacing = new(5, 5)
+            Padding = new Padding(8),
+            DefaultSpacing = new Size(5, 5)
         };
 
         content.BeginHorizontal(true);
@@ -247,7 +251,7 @@ public class TopBar : Drawable
 
         _confirmActionDialog = new Dialog {
             Content = content,
-            Title = LanguageManager.Get(LanguageName.ConfirmClearDialogTitle),
+            Title = LanguageManager.Get(LanguageName.ConfirmClearDialogTitle)
         };
 
         _confirmActionDialog.NegativeButtons.Add(confirmButton);
@@ -256,8 +260,8 @@ public class TopBar : Drawable
         _confirmActionDialog.ShowModal(this);
     }
 
-    private void ConfirmActionDialogOnConfirmed(object sender, EventArgs e) {
-        App.TankVM.Visitor.Variables = VMVariables.DefaultVariables
+    private static void ConfirmActionDialogOnConfirmed(object sender, EventArgs e) {
+        App.TankVm.Visitor.Variables = VmVariables.DefaultVariables
             .ToDictionary(x => x.Key, x => x.Value); // = Clone
         App.Canvas.UpdateShapes();
         App.TeacherMode = false;
@@ -267,7 +271,7 @@ public class TopBar : Drawable
         _confirmActionDialog.Close();
     }
 
-    private void ConfirmActionDialogOnAborted(object sender, EventArgs e) {
+    private static void ConfirmActionDialogOnAborted(object sender, EventArgs e) {
         _confirmActionDialog.Close();
     }
 
@@ -276,7 +280,7 @@ public class TopBar : Drawable
         RotationStepper.Enabled = false;
         Invalidate();
         App.SideBar.Reset();
-        App.TankVM.Visitor.Variables.Remove(App.Canvas.SelectedShape.ReferencedShape.VariableName);
+        App.TankVm.Visitor.Variables.Remove(App.Canvas.SelectedShape.ReferencedShape.VariableName);
         App.Canvas.SelectedShape = null;
         App.Canvas.UpdateShapes();
     }

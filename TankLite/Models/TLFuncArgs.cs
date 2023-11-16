@@ -2,8 +2,8 @@
 
 namespace TankLite.Models;
 
-public class TLFuncArgs
+public class TlFuncArgs
 {
-    public TLValue[] Args { get; set; }
-    public TLObj Parent { get; set; }
+    public TlValue[] Args { get; set; }
+    public TlObj Parent { get; set; }
 }

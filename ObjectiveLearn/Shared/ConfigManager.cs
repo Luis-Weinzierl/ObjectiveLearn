@@ -13,32 +13,32 @@ public static class ConfigManager
         _config = root;
     }
 
-    public static string GetConfig(string key)
+    public static string Get(string key)
     {
         return _config[key];
     }
 
     public static int GetInt(string key)
     {
-        return int.Parse(_config[key]);
+        return int.Parse(Get(key));
     }
 
     public static float GetFloat(string key)
     {
-        return float.Parse(_config[key], CultureInfo.InvariantCulture);
+        return float.Parse(Get(key), CultureInfo.InvariantCulture);
     }
 
     public static double GetDouble(string key)
     {
-        return double.Parse(_config[key], CultureInfo.InvariantCulture);
+        return double.Parse(Get(key), CultureInfo.InvariantCulture);
     }
 
     public static Color GetColor(string key)
     {
-        var r = int.Parse(_config[$"{key}:r"]);
-        var g = int.Parse(_config[$"{key}:g"]);
-        var b = int.Parse(_config[$"{key}:b"]);
-        var a = int.Parse(_config[$"{key}:a"]);
+        var r = GetInt($"{key}:r");
+        var g = GetInt($"{key}:g");
+        var b = GetInt($"{key}:b");
+        var a = GetInt($"{key}:a");
 
         return Color.FromArgb(r, g, b, a);
     }

@@ -1,13 +1,12 @@
 ﻿using System;
 using Eto.Drawing;
 using ObjectiveLearn.Models;
-using Shared.Localisation;
 
 namespace ObjectiveLearn.Shared;
 
 public static class ShapeShorthands
 {
-    private static readonly Pen _pen = new(
+    private static readonly Pen Pen = new(
         ConfigManager.GetColor(Config.PreviewColor),
         ConfigManager.GetFloat(Config.PreviewStrength)
         );
@@ -16,10 +15,10 @@ public static class ShapeShorthands
     {
         var points = new Point[]
         {
-            new Point(location.X, location.Y),
-            new Point(location.X + size.Width, location.Y),
-            new Point(location.X + size.Width, location.Y + size.Height),
-            new Point(location.X, location.Y + size.Height),
+            new(location.X, location.Y),
+            new(location.X + size.Width, location.Y),
+            new(location.X + size.Width, location.Y + size.Height),
+            new(location.X, location.Y + size.Height)
         };
 
         if (rotation != 0) {
@@ -45,16 +44,16 @@ public static class ShapeShorthands
 
         path.CloseFigure();
 
-        graphics.DrawPath(_pen, path);
+        graphics.DrawPath(Pen, path);
     }
 
     public static void DrawTriangle(this Graphics graphics, Point location, Size size, int rotation = 0)
     {
         var points = new Point[]
         {
-            new Point(location.X + size.Width / 2, location.Y),
-            new Point(location.X + size.Width, location.Y + size.Height),
-            new Point(location.X, location.Y + size.Height),
+            new(location.X + size.Width / 2, location.Y),
+            new(location.X + size.Width, location.Y + size.Height),
+            new(location.X, location.Y + size.Height)
         };
 
         if (rotation != 0) {
@@ -75,7 +74,7 @@ public static class ShapeShorthands
 
         path.CloseFigure();
 
-        graphics.DrawPath(_pen, path);
+        graphics.DrawPath(Pen, path);
     }
 
     public static void DrawEllipse(this Graphics graphics, Point location, Size size, int rotation = 0)
@@ -89,14 +88,14 @@ public static class ShapeShorthands
 
         var points = new Point[]
         {
-            new Point(x2, y2 - heightOverTwo),
-            new Point(x2 + widthTwoThirds, location.Y),
-            new Point(x2 + widthTwoThirds, y2 + heightOverTwo),
-            new Point(x2, y2 + heightOverTwo),
-            new Point(x2, y2 + heightOverTwo),
-            new Point(x2 - widthTwoThirds, y2 + heightOverTwo),
-            new Point(x2 - widthTwoThirds, location.Y),
-            new Point(x2, y2 - heightOverTwo)
+            new(x2, y2 - heightOverTwo),
+            new(x2 + widthTwoThirds, location.Y),
+            new(x2 + widthTwoThirds, y2 + heightOverTwo),
+            new(x2, y2 + heightOverTwo),
+            new(x2, y2 + heightOverTwo),
+            new(x2 - widthTwoThirds, y2 + heightOverTwo),
+            new(x2 - widthTwoThirds, location.Y),
+            new(x2, y2 - heightOverTwo)
         };
 
         if (rotation != 0) {
@@ -121,7 +120,7 @@ public static class ShapeShorthands
 
         path.CloseFigure();
 
-        graphics.DrawPath(_pen, path);
+        graphics.DrawPath(Pen, path);
     }
 
     private static Point[] Rotate(Point[] points, int rotation) {
@@ -130,10 +129,10 @@ public static class ShapeShorthands
         var sumX = 0;
         var sumY = 0;
 
-        for (int i = 0; i < points.Length; i++)
+        foreach (var point in points)
         {
-            sumX += points[i].X;
-            sumY += points[i].Y;
+            sumX += point.X;
+            sumY += point.Y;
         }
 
         var center = new Point(
@@ -144,14 +143,14 @@ public static class ShapeShorthands
         var sin = Math.Sin(angleRad);
         var cos = Math.Cos(angleRad);
 
-        for (int i = 0; i < points.Length; i++)
+        for (var i = 0; i < points.Length; i++)
         {
-            var new_coord = new Point(
+            var newCoordinate = new Point(
                 (int)Math.Round(center.X + (points[i].X - center.X) * cos - (points[i].Y - center.Y) * sin),
                 (int)Math.Round(center.Y + (points[i].X - center.X) * sin + (points[i].Y - center.Y) * cos)
             );
 
-            (points[i].X, points[i].Y) = (new_coord.X, new_coord.Y);
+            (points[i].X, points[i].Y) = (newCoordinate.X, newCoordinate.Y);
         }
 
         return points;

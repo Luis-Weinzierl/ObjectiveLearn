@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TankLite.Values;
 
-public class TLError : TLValue
+public class TlError : TlValue
 {
     public static event EventHandler<string> ErrorOccurred;
     public override string Type { get; set; } = "error";
     
     public string Message { get; set; }
-    public TLError(string message)
+    public TlError(string message)
     {
         Message = message;
-        ErrorOccurred.Invoke(this, message);
+
+        ErrorOccurred?.Invoke(this, message);
     }
 
     public override string ToString()

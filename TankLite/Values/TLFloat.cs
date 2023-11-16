@@ -1,33 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Globalization;
 
 namespace TankLite.Values;
 
-public class TLFloat : TLValue
+public class TlFloat : TlValue
 {
     public override string Type { get; set; } = "float";
     public float Value { get; set; }
 
-    public TLFloat(float value)
+    public TlFloat(float value)
     {
         Value = value;
     }
 
-    public override TLValue Add(TLValue other)
+    public override TlValue Add(TlValue other)
     {
         switch (other.Type)
         {
             case "float":
-                Value += ((TLFloat)other).Value;
+                Value += ((TlFloat)other).Value;
                 return this;
 
             case "int":
-                Value += ((TLInt)other).Value;
+                Value += ((TlInt)other).Value;
                 return this;
 
             default:
-                return new TLError(
+                return new TlError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotAdd)
                         .Replace("{type1}", Type)
@@ -36,20 +34,20 @@ public class TLFloat : TLValue
         }
     }
 
-    public override TLValue Subtract(TLValue other)
+    public override TlValue Subtract(TlValue other)
     {
         switch (other.Type)
         {
             case "float":
-                Value -= ((TLFloat)other).Value;
+                Value -= ((TlFloat)other).Value;
                 return this;
 
             case "int":
-                Value -= ((TLInt)other).Value;
+                Value -= ((TlInt)other).Value;
                 return this;
 
             default:
-                return new TLError(
+                return new TlError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotSubtract)
                         .Replace("{type1}", Type)
@@ -58,20 +56,20 @@ public class TLFloat : TLValue
         }
     }
 
-    public override TLValue Multiply(TLValue other)
+    public override TlValue Multiply(TlValue other)
     {
         switch (other.Type)
         {
             case "float":
-                Value *= ((TLFloat)other).Value;
+                Value *= ((TlFloat)other).Value;
                 return this;
 
             case "int":
-                Value *= ((TLInt)other).Value;
+                Value *= ((TlInt)other).Value;
                 return this;
 
             default:
-                return new TLError(
+                return new TlError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotMultiply)
                         .Replace("{type1}", Type)
@@ -80,20 +78,20 @@ public class TLFloat : TLValue
         }
     }
 
-    public override TLValue Divide(TLValue other)
+    public override TlValue Divide(TlValue other)
     {
         switch (other.Type)
         {
             case "float":
-                Value /= ((TLFloat)other).Value;
+                Value /= ((TlFloat)other).Value;
                 return this;
 
             case "int":
-                Value /= ((TLInt)other).Value;
+                Value /= ((TlInt)other).Value;
                 return this;
 
             default:
-                return new TLError(
+                return new TlError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotDivide)
                         .Replace("{type1}", Type)
@@ -104,6 +102,6 @@ public class TLFloat : TLValue
 
     public override string ToString()
     {
-        return Value.ToString();
+        return Value.ToString(CultureInfo.CurrentCulture);
     }
 }

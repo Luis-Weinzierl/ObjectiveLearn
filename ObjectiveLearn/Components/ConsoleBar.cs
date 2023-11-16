@@ -1,10 +1,10 @@
-﻿using Eto.Drawing;
-using Eto.Forms;
+﻿using Eto.Forms;
 using ObjectiveLearn.Shared;
 using System;
 using System.Collections.Generic;
+using Eto.Drawing;
 using TankLite.Values;
-using Shared.Localisation;
+using Shared.Localization;
 using ObjectiveLearn.Models;
 
 namespace ObjectiveLearn.Components;
@@ -14,12 +14,11 @@ public class ConsoleBar : Drawable
     public event EventHandler UpdateShapes;
 
     private TextBox _textBox;
-    private List<string> _errors = new();
+    private readonly List<string> _errors = new();
 
     public ConsoleBar()
     {
-
-        TLError.ErrorOccurred += OnErrorOccured;
+        TlError.ErrorOccurred += OnErrorOccurred;
 
         Draw();
     }
@@ -43,7 +42,7 @@ public class ConsoleBar : Drawable
         }
     }
 
-    private void OnErrorOccured(object sender, string message)
+    private void OnErrorOccurred(object sender, string message)
     {
         _errors.Add(message);
 
@@ -52,12 +51,12 @@ public class ConsoleBar : Drawable
 
     private void Draw()
     {
-        var executeButton = new Button()
+        var executeButton = new Button
         {
             Text = LanguageManager.Get(LanguageName.ConsoleBarExecute)
         };
 
-        var clearErrorsButton = new Button()
+        var clearErrorsButton = new Button
         {
             Text = LanguageManager.Get(LanguageName.ConsoleBarClearErrors)
         };
@@ -69,7 +68,7 @@ public class ConsoleBar : Drawable
         executeButton.Click += ExecuteButtonOnClick;
         clearErrorsButton.Click += ClearErrorsButtonOnClick;
 
-        var errorLabel = new Label()
+        var errorLabel = new Label
         {
             Text = string.Join('\n', _errors),
             TextColor = ConfigManager.GetColor(Config.ErrorTextColor),
@@ -78,7 +77,7 @@ public class ConsoleBar : Drawable
 
         var layout = new DynamicLayout();
 
-        layout.BeginVertical(new(8, 8, 0, 8), new(5, 5));
+        layout.BeginVertical(new Padding(8, 8, 0, 8), new Size(5, 5));
         layout.BeginHorizontal();
 
         layout.Add(_textBox, true, false);
@@ -96,7 +95,12 @@ public class ConsoleBar : Drawable
 
     private void ExecuteCommand()
     {
-        App.TankVM.Execute(_textBox.Text);
+        if (UpdateShapes is null)
+        {
+            return;
+        }
+
+        App.TankVm.Execute(_textBox.Text);
         UpdateShapes.Invoke(this, EventArgs.Empty);
 
         _textBox.Text = string.Empty;
