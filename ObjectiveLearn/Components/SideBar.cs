@@ -20,16 +20,20 @@ public class SideBar : Drawable
     private string _text2 = string.Empty;
 
     private readonly Color _textColor;
+    private readonly Color _uiTextColor;
     private readonly Color _backgroundColor;
 
     private readonly SolidBrush _textBrush;
-    
+    private readonly SolidBrush _uiTextBrush;
+
     public SideBar()
     {
         _textColor = ConfigManager.GetColor(Config.SidebarTextColor);
+        _uiTextColor = ConfigManager.GetColor(Config.UiTextColor);
         _backgroundColor = ConfigManager.GetColor(Config.SidebarBackground);
 
         _textBrush = new SolidBrush(_textColor);
+        _uiTextBrush = new SolidBrush(_uiTextColor);
 
         Handler.Width = 300;
         Padding = new Padding(16);
@@ -79,7 +83,7 @@ public class SideBar : Drawable
         var textX = fullRect.X + fullRect.Width - pathLabelSize.Width - SmallPadding;
         var textY = fullRect.Y + fullRect.Height - pathLabelSize.Height - SmallPadding;
 
-        e.Graphics.DrawText(App.SmallTextFont, _textBrush, textX, textY, App.CurrentFile);
+        e.Graphics.DrawText(App.SmallTextFont, _uiTextBrush, textX, textY, App.CurrentFile);
 
         if (_text2.Length > 0)
         {

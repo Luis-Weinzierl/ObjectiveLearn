@@ -29,19 +29,21 @@ public static class App
     public static SideBar SideBar { get; set; }
     public static Font TextFont { get; set; }
     public static Font SmallTextFont { get; set; }
+    public static Font SmallTextFontUnderline { get; set; }
 
 
     public static void Initialize()
     {
         Directory   = System.AppContext.BaseDirectory;
 
-        TopBar          = new TopBar();
-        Canvas          = new Canvas();
-        SideBar         = new SideBar();
-        ConsoleBar      = new ConsoleBar();
-        TankVm          = new TankLiteRuntimeEnvironment(VmVariables.DefaultVariables);
-        TextFont        = new Font(SystemFont.Default, 12);
-        SmallTextFont   = new Font(SystemFont.Default, 8);
+        TopBar                   = new TopBar();
+        Canvas                   = new Canvas();
+        SideBar                  = new SideBar();
+        ConsoleBar               = new ConsoleBar();
+        TankVm                   = new TankLiteRuntimeEnvironment(VmVariables.DefaultVariables);
+        TextFont                 = new Font(SystemFont.Default, 12);
+        SmallTextFont            = new Font(SystemFont.Default, 8);
+        SmallTextFontUnderline   = new Font(SystemFont.Default, 8, FontDecoration.Underline);  
 
         CurrentFile = LanguageManager.Get(LanguageName.UiNoFileSelected);
 

@@ -63,6 +63,9 @@
         <None Update="Resources\CircleIcon.png">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="Resources\Logo.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Update="Resources\RectangleIcon.png">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
