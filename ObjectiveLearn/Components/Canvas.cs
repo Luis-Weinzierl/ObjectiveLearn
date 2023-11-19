@@ -262,7 +262,7 @@ public class Canvas : Drawable
 
                 if (clickedShape is not null)
                 {
-                    App.TopBar.ColorPicker.Value = clickedShape.Color;
+                    App.TopBar.ColorPicker.SelectedColor = clickedShape.Color;
                     App.TopBar.RotationStepper.Value = clickedShape.Rotation;
                     Invalidate();
                     return;
@@ -273,7 +273,7 @@ public class Canvas : Drawable
             App.SideBar.Reset();
             App.TopBar.DeleteButton.Enabled = false;
             App.TopBar.RotationStepper.Enabled = false;
-            App.TopBar.ColorPicker.Value = _drawColor;
+            App.TopBar.ColorPicker.SelectedColor = _drawColor;
             App.TopBar.RotationStepper.Value = 0;
             App.TopBar.Invalidate();
 

@@ -48,7 +48,7 @@ Jedes Form-Objekt hat folgende Attribute:
 |Methode|Beschreibung|
 |-|-|
 |positionSetzen(int x, int y)|Setzt die Position der Form auf (`x`/`y`).|
-|grösseSetzen(int width, int height)|Setzt die Größe der Bounding-Box der Form auf `width` breit und `height` hoch.|
+|groesseSetzen(int width, int height)|Setzt die Größe der Bounding-Box der Form auf `width` breit und `height` hoch.|
 |farbeSetzen(int[0-255] r, int[0-255] g, int[0-255] b, int[0-255] a = 255)|Setzt die Farbe der Form. `a` ist optional und ist standardmäßig `255`.|
 |rotationSetzen(int angle)|Setzt die Rotation der Form auf `angle` (in Grad)|
 |verschieben(int x, int y)|Verschiebt die Form um `x` auf der x-Achse und `y` auf der y-Achse.|

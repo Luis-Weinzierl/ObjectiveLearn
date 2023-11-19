@@ -13,9 +13,9 @@ namespace ObjectiveLearn.Components;
 public class TopBar : Drawable
 {
     private static Dialog _confirmActionDialog;
-    public Button DeleteButton;
-    public NumericStepper RotationStepper;
-    public ColorPicker ColorPicker;
+    public CustomButton DeleteButton;
+    public CustomNumericStepper RotationStepper;
+    public CustomColorPicker ColorPicker;
 
     public TopBar()
     {
@@ -25,53 +25,66 @@ public class TopBar : Drawable
 	public void Draw()
     {
         var buttonSize = new Size(80, 100);
-        var rectangleButton = new Button
+
+        var rectangleButton = new ImageButton
         {
             Image = new Bitmap(Path.Combine(App.Directory, "Resources/RectangleIcon.png")),
-            ImagePosition = ButtonImagePosition.Above,
             Text = LanguageManager.Get(LanguageName.TopBarRectangle),
-            Size = buttonSize
+            Font = App.TextFont,
+            Color = ConfigManager.GetColor(Config.UiTextColor),
+            Height = 130
         };
 
-        var triangleButton = new Button
+        var triangleButton = new ImageButton
         {
             Image = new Bitmap(Path.Combine(App.Directory, "Resources/TriangleIcon.png")),
-            ImagePosition = ButtonImagePosition.Above,
             Text = LanguageManager.Get(LanguageName.TopBarTriangle),
-            Size = buttonSize
+            Font = App.TextFont,
+            Color = ConfigManager.GetColor(Config.UiTextColor),
+            Height = 130
         };
 
-        var ellipseButton = new Button
+        var ellipseButton = new ImageButton
         {
             Image = new Bitmap(Path.Combine(App.Directory, "Resources/CircleIcon.png")),
-            ImagePosition = ButtonImagePosition.Above,
             Text = LanguageManager.Get(LanguageName.TopBarEllipse),
-            Size = buttonSize
+            Font = App.TextFont,
+            Color = ConfigManager.GetColor(Config.UiTextColor),
+            Height = 130
         };
 
-        var saveButton = new Button
+        var saveButton = new CustomButton
         {
             Text = LanguageManager.Get(LanguageName.TopBarSave),
-            Width = 75
+            Font = App.TextFont,
+            Color = ConfigManager.GetColor(Config.UiTextColor),
+            Width = -1
         };
 
-        var loadButton = new Button
+        var loadButton = new CustomButton
         {
             Text = LanguageManager.Get(LanguageName.TopBarOpen),
-            Width = 75
+            Font = App.TextFont,
+            Color = ConfigManager.GetColor(Config.UiTextColor),
+            Width = -1
         };
 
-        var clearButton = new Button
+        var clearButton = new CustomButton
         {
             Text = LanguageManager.Get(LanguageName.TopBarClear),
-            Width = 75
+            Font = App.TextFont,
+            Color = ConfigManager.GetColor(Config.UiTextColor),
+            Width = -1
         };
 
-        DeleteButton = new Button
+        DeleteButton = new CustomButton
         {
             Text = LanguageManager.Get(LanguageName.TopBarDelete),
-            Width = 75,
-            Enabled = false
+            Font = App.TextFont,
+            Color = ConfigManager.GetColor(Config.UiTextColor),
+            DisabledColor = ConfigManager.GetColor(Config.UiDisabledTextColor),
+            Enabled = false,
+            Width = -1
         };
 
         var label = new Label
@@ -85,26 +98,27 @@ public class TopBar : Drawable
             TextAlignment = TextAlignment.Center
         };
 
-        ColorPicker = new ColorPicker
+        ColorPicker = new CustomColorPicker
         {
             Width = 100,
-            AllowAlpha = true,
-            Value = Color.FromArgb(255, 0, 0)
+            SelectedColor = Color.FromArgb(255, 0, 0),
         };
 
-        RotationStepper = new NumericStepper
+        RotationStepper = new CustomNumericStepper
         {
-            DecimalPlaces = 0,
+            Font = App.TextFont,
+            Color = ConfigManager.GetColor(Config.UiTextColor),
+            DisabledColor = ConfigManager.GetColor(Config.UiDisabledTextColor),
             Enabled = false
         };
 
-        rectangleButton.Click += RectangleButtonOnClick;
-        triangleButton.Click += TriangleButtonOnClick;
-        ellipseButton.Click += CircleButtonOnClick;
-        saveButton.Click += SaveButtonOnClick;
-        loadButton.Click += LoadButtonOnClick;
-        clearButton.Click += ClearButtonOnClick;
-        DeleteButton.Click += DeleteButtonOnClick;
+        rectangleButton.Clicked += RectangleButtonOnClick;
+        triangleButton.Clicked += TriangleButtonOnClick;
+        ellipseButton.Clicked += CircleButtonOnClick;
+        saveButton.Clicked += SaveButtonOnClick;
+        loadButton.Clicked += LoadButtonOnClick;
+        clearButton.Clicked += ClearButtonOnClick;
+        DeleteButton.Clicked += DeleteButtonOnClick;
         ColorPicker.ValueChanged += ColorPickerOnValueChanged;
         RotationStepper.ValueChanged += RotationStepperOnValueChanged;
 
@@ -286,10 +300,10 @@ public class TopBar : Drawable
     }
 
     private void ColorPickerOnValueChanged(object sender, EventArgs e) {
-        App.Canvas.SetColor(ColorPicker.Value);
+        App.Canvas.SetColor(ColorPicker.SelectedColor);
     }
 
     private void RotationStepperOnValueChanged(object sender, EventArgs e) {
-        App.Canvas.RotateSelectedShape((int)RotationStepper.Value);
+        App.Canvas.RotateSelectedShape(RotationStepper.Value);
     }
 }

@@ -16,7 +16,7 @@ public class ConsoleBar : Drawable
 {
     public event EventHandler UpdateShapes;
 
-    private TextBox _textBox;
+    private CustomTextBox _textBox;
     private readonly List<string> _errors = new();
 
     public ConsoleBar()
@@ -37,14 +37,6 @@ public class ConsoleBar : Drawable
         Draw();
     }
 
-    private void TextBoxOnKeyUp(object sender, KeyEventArgs e)
-    {
-        if (e.Key == Keys.Enter)
-        {
-            ExecuteCommand();
-        }
-    }
-
     private void OnErrorOccurred(object sender, string message)
     {
         _errors.Add(message);
@@ -54,22 +46,31 @@ public class ConsoleBar : Drawable
 
     private void Draw()
     {
-        var executeButton = new Button
+        var executeButton = new CustomButton
         {
-            Text = LanguageManager.Get(LanguageName.ConsoleBarExecute)
+            Text = LanguageManager.Get(LanguageName.ConsoleBarExecute),
+            Font = App.TextFont,
+            Color = ConfigManager.GetColor(Config.UiTextColor),
         };
 
-        var clearErrorsButton = new Button
+        var clearErrorsButton = new CustomButton
         {
-            Text = LanguageManager.Get(LanguageName.ConsoleBarClearErrors)
+            Text = LanguageManager.Get(LanguageName.ConsoleBarClearErrors),
+            Font = App.TextFont,
+            Color = ConfigManager.GetColor(Config.UiTextColor),
         };
 
-        _textBox = new TextBox();
+        _textBox = new CustomTextBox()
+        {
+            Color = ConfigManager.GetColor(Config.UiTextColor)
+        };
+        if (App.TextFont is not null)
+            _textBox.Font = App.TextFont;
 
-        _textBox.KeyUp += TextBoxOnKeyUp;
+        _textBox.Submitted += (_, _) => ExecuteCommand();
 
-        executeButton.Click += ExecuteButtonOnClick;
-        clearErrorsButton.Click += ClearErrorsButtonOnClick;
+        executeButton.Clicked += ExecuteButtonOnClick;
+        clearErrorsButton.Clicked += ClearErrorsButtonOnClick;
 
         var errorLabel = new Label
         {

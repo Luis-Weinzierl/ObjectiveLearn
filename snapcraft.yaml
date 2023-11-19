@@ -1,0 +1,23 @@
+name: objective-learn
+version: 'v.1.2-2'
+grade: stable
+summary: A teaching program originally made for the Werdenfels-Gymnasium
+description: |
+  Objective: Learn is a teaching program which uses a Java-esque micro-language called TankLite to playfully teach OOP to chidren.
+
+base: core22
+
+confinement: devmode
+
+parts:
+  ObjectiveLearn:
+    plugin: dotnet
+    source: .
+    build-packages:
+      - dotnet-sdk-6.0
+    override-build: |      
+      dotnet publish -p:Platform=Linux -c Release -o $SNAPCRAFT_PART_INSTALL --self-contained -r linux-x64
+
+apps:
+  objectivelearn:
+    command: ObjectiveLearn

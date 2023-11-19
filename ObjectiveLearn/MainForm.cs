@@ -1,3 +1,4 @@
+using Eto;
 using Eto.Drawing;
 using Eto.Forms;
 using ObjectiveLearn.Models;
@@ -8,6 +9,8 @@ namespace ObjectiveLearn;
 
 public class MainForm : Form, IDisposable
 {
+    private bool _controlDown = false;
+
     public MainForm(string title = "Objective: Learn")
 	{
         App.Initialize();
@@ -43,6 +46,19 @@ public class MainForm : Form, IDisposable
     protected override void OnSizeChanged(EventArgs e)
     {
         base.OnSizeChanged(e);
-        Console.WriteLine($"Window Size: {Size.Width} x {Size.Height}");
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        KeyHandler.FocusedComponent?.HandleKeyDown(e);
+
+        base.OnKeyDown(e);
+    }
+
+    protected override void OnKeyUp(KeyEventArgs e)
+    {
+        KeyHandler.FocusedComponent?.HandleKeyUp(e);
+
+        base.OnKeyUp(e);
     }
 }

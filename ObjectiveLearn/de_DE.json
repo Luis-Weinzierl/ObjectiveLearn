@@ -52,7 +52,7 @@
     "object": "object",
     "func": "func",
     "setPosition": "positionSetzen",
-    "setSize": "grösseSetzen",
+    "setSize": "groesseSetzen",
     "setColor": "farbeSetzen",
     "setRotation": "rotationSetzen",
     "move": "verschieben"
@@ -60,7 +60,7 @@
   "ui": {
     "noFileSelected": "Keine Datei geöffnet",
     "classCardVariables": "int X\nint Y\nint Breite\nint Höhe\nint Rotation\nint Rotation\nint Farbe.R\nint Farbe.G\nint Farbe.B\nint Farbe.A",
-    "classCardMethods": "positionSetzen(int x, int y)\ngrösseSetzen(int breite, int höhe)\nfarbeSetzen(\n    int r, int g, int b,\n    int a = 255\n)\nrotationSetzen(int winkel)\nverschieben(int x, int y)"
+    "classCardMethods": "positionSetzen(int x, int y)\ngroesseSetzen(int breite, int höhe)\nfarbeSetzen(\n    int r, int g, int b,\n    int a = 255\n)\nrotationSetzen(int winkel)\nverschieben(int x, int y)"
   },
   "confirmClearDialog": {
     "acceptDialog": "Ja, leeren",
