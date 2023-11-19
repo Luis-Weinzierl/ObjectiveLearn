@@ -10,13 +10,13 @@ public class CustomColorPicker : Drawable
 {
     public Color Color { get; set; }
 
+    private Color _selectedColor;
+
     public Color SelectedColor {
-        get {
-            return _dialog.Color;
-        }
+        get => _selectedColor;
 
         set {
-            _dialog.Color = value;
+            _selectedColor = value;
             Invalidate();
         }
     }
@@ -31,17 +31,13 @@ public class CustomColorPicker : Drawable
 
     private bool _isMouseOver = false;
 
-    private ColorDialog _dialog = new ColorDialog()
-    {
-        AllowAlpha = true
-    };
+    private ColorDialog _dialog;
 
     private const float TextPadding = 20;
 
     public CustomColorPicker() 
     {
         Cursor = Cursors.Pointer;
-        _dialog.ColorChanged += ColorDialogOnColorChanged;
     }
 
     protected override void OnPaint(PaintEventArgs e)
@@ -89,12 +85,20 @@ public class CustomColorPicker : Drawable
     {
         base.OnMouseUp(e);
 
+        _dialog = new()
+        {
+            AllowAlpha = true
+        };
+
+        _dialog.ColorChanged += ColorDialogOnColorChanged;
+
         _dialog.ShowDialog(this);
     }
 
     private void ColorDialogOnColorChanged(object sender, EventArgs e)
     {
+        _selectedColor = _dialog.Color;
+        ValueChanged?.Invoke(this, EventArgs.Empty);
         Invalidate();
-        ValueChanged.Invoke(this, EventArgs.Empty);
     }
 }

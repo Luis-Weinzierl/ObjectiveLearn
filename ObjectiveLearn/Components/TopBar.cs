@@ -57,24 +57,21 @@ public class TopBar : Drawable
         {
             Text = LanguageManager.Get(LanguageName.TopBarSave),
             Font = App.TextFont,
-            Color = ConfigManager.GetColor(Config.UiTextColor),
-            Width = -1
+            Color = ConfigManager.GetColor(Config.UiTextColor)
         };
 
         var loadButton = new CustomButton
         {
             Text = LanguageManager.Get(LanguageName.TopBarOpen),
             Font = App.TextFont,
-            Color = ConfigManager.GetColor(Config.UiTextColor),
-            Width = -1
+            Color = ConfigManager.GetColor(Config.UiTextColor)
         };
 
         var clearButton = new CustomButton
         {
             Text = LanguageManager.Get(LanguageName.TopBarClear),
             Font = App.TextFont,
-            Color = ConfigManager.GetColor(Config.UiTextColor),
-            Width = -1
+            Color = ConfigManager.GetColor(Config.UiTextColor)
         };
 
         DeleteButton = new CustomButton
@@ -83,8 +80,7 @@ public class TopBar : Drawable
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
             DisabledColor = ConfigManager.GetColor(Config.UiDisabledTextColor),
-            Enabled = false,
-            Width = -1
+            Enabled = false
         };
 
         var label = new Label

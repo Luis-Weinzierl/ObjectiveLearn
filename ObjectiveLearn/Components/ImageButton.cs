@@ -27,8 +27,16 @@ public class ImageButton : Drawable
 
     private bool _isMouseOver = false;
 
-    public void Init() 
+    protected override void OnLoad(EventArgs e)
     {
+        base.OnLoad(e);
+
+        // Because WPF was a bitch about painting sth with Width = -1
+        if (Width == 0)
+        {
+            Width = 100;
+        }
+
         Cursor = Cursors.Pointer;
         TextBrush = new(Color);
     }
@@ -36,11 +44,6 @@ public class ImageButton : Drawable
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
-
-        if (TextBrush is null) 
-        {
-            Init();
-        }
 
         var height = (int)e.ClipRectangle.Height;
         var width = Image.Width;
@@ -93,6 +96,6 @@ public class ImageButton : Drawable
     {
         base.OnMouseUp(e);
 
-        Clicked.Invoke(this, EventArgs.Empty);
+        Clicked?.Invoke(this, EventArgs.Empty);
     }
 }

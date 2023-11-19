@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Markup;
+using Antlr4.Runtime.Atn;
 using Eto.Drawing;
 using Eto.Forms;
 using ObjectiveLearn.Shared;
@@ -15,10 +17,9 @@ public class CustomTextBox : KeyboardDrawable
     private const int SecondaryKeyDelay = 100;
     private string _textContent = string.Empty;
 
-    public string Text { 
-        get {
-            return _textContent;
-        }
+    public string Text
+    {
+        get => _textContent;
         set {
             _textContent = value;
             _cursorIndex = value.Length;
@@ -26,7 +27,7 @@ public class CustomTextBox : KeyboardDrawable
         }
     }
 
-    public Font Font { get; set; } = new Font(SystemFont.Default, 12);
+    public Font Font { get; set; }
 
     public Color Color { get; set; }
 
@@ -49,9 +50,18 @@ public class CustomTextBox : KeyboardDrawable
     private char? _currentChar;
 
     private CancellationTokenSource _recursionSource = new();
-    
-    public void Init() 
+
+    protected override void OnLoad(EventArgs e)
     {
+        base.OnLoad(e);
+
+        // Because WPF was a bitch about painting sth with Width = -1
+        if (Width == 0)
+        {
+            Width = 100;
+        }
+
+
         Cursor = Cursors.Pointer;
         TextBrush = new(Color);
         DisabledTextBrush = new(DisabledColor);
@@ -60,11 +70,6 @@ public class CustomTextBox : KeyboardDrawable
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
-
-        if (TextBrush is null) 
-        {
-            Init();
-        }
 
         var textSize = e.Graphics.MeasureString(Font, Text);
 
@@ -120,45 +125,43 @@ public class CustomTextBox : KeyboardDrawable
 
     public override void HandleKeyDown(KeyEventArgs e)
     {
-        if (e.IsChar)
-        {
-            _currentChar = e.KeyChar;
-            _recursionSource.Cancel();
-            _recursionSource = new();
-            Task.Run(async () => await RecursiveTyping(_recursionSource.Token));
-        }
-        else switch (e.Key)
+        switch (e.Key)
         {
             case Keys.Backspace:
-                _recursionSource.Cancel();
-                _recursionSource = new();
-                Task.Run(async () => await RecursiveBackspace(_recursionSource.Token));
-                break;
+                RenewRecursionSource();
+                RecursiveBackspace(_recursionSource.Token);
+                return;
 
             case Keys.Delete:
-                _recursionSource.Cancel();
-                _recursionSource = new();
-                Task.Run(async () => await RecursiveDelete(_recursionSource.Token));
-                break;
+                RenewRecursionSource();
+                RecursiveDelete(_recursionSource.Token);
+                return;
+
+            default:
+                if (!e.IsChar) return;
+
+                RenewRecursionSource();
+
+                if (e.KeyChar == '\b')
+                {
+                    return;
+                }
+
+                _currentChar = e.KeyChar;
+                RecursiveTyping(_recursionSource.Token);
+
+                return;
         }
     }
 
     public override void HandleKeyUp(KeyEventArgs e)
     {
-        if (e.IsChar)
-        {
-            _currentChar = null;
-            _recursionSource.Cancel();
-        }
-        else switch (e.Key) 
+        _recursionSource.Cancel();
+        
+        switch (e.Key) 
         {
             case Keys.Enter:
-                Submitted.Invoke(this, EventArgs.Empty);
-                break;
-
-            case Keys.Backspace:
-            case Keys.Delete:
-                _recursionSource.Cancel();
+                Submitted?.Invoke(this, EventArgs.Empty);
                 break;
 
             case Keys.Left:
@@ -178,44 +181,44 @@ public class CustomTextBox : KeyboardDrawable
                 _cursorIndex = 0;
                 Invalidate();
                 break;
+
+            default:
+                if (e.IsChar)
+                {
+                    _currentChar = null;
+                }
+
+                break;
         }
     }
 
-    private void Delete() 
+    private void Delete()
     {
-        if (_textContent.Length > 0 && _cursorIndex < _textContent.Length)
-        {
-            _textContent = _textContent[.._cursorIndex] + _textContent[(_cursorIndex + 1)..];
-            Invalidate();
-        }
+        if (_textContent.Length <= 0 || _cursorIndex >= _textContent.Length) return;
+        _textContent = _textContent[.._cursorIndex] + _textContent[(_cursorIndex + 1)..];
+        Invalidate();
     }
 
     private void Backspace()
     {
-        if (_textContent.Length > 0 && _cursorIndex > 0)
-        {
-            _textContent = _textContent[..(_cursorIndex - 1)] + _textContent[_cursorIndex..];
-            _cursorIndex--;
-            Invalidate();
-        }
+        if (_textContent.Length <= 0 || _cursorIndex <= 0) return;
+        _textContent = _textContent[..(_cursorIndex - 1)] + _textContent[_cursorIndex..];
+        _cursorIndex--;
+        Invalidate();
     }
 
     private void GoForwards()
     {
-        if (_cursorIndex < _textContent.Length)
-        {
-            _cursorIndex++;
-            Invalidate();
-        }
+        if (_cursorIndex >= _textContent.Length) return;
+        _cursorIndex++;
+        Invalidate();
     }
 
     private void GoBackwards()
     {
-        if (_cursorIndex > 0)
-        {
-            _cursorIndex--;
-            Invalidate();
-        }
+        if (_cursorIndex <= 0) return;
+        _cursorIndex--;
+        Invalidate();
     }
 
     private void TypeChar() 
@@ -225,37 +228,43 @@ public class CustomTextBox : KeyboardDrawable
         Invalidate();
     }
 
-    private async Task RecursiveDelete(CancellationToken cancellationToken)
+    private async void RecursiveDelete(CancellationToken cancellationToken)
     {
         Delete();
-        await Task.Delay(PrimaryKeyDelay);
+        await Task.Delay(PrimaryKeyDelay, CancellationToken.None);
         while (!cancellationToken.IsCancellationRequested)
         {
             Delete();
-            await Task.Delay(SecondaryKeyDelay);
+            await Task.Delay(SecondaryKeyDelay, CancellationToken.None);
         }
     }
 
-    private async Task RecursiveBackspace(CancellationToken cancellationToken)
+    private async void RecursiveBackspace(CancellationToken cancellationToken)
     {
         Backspace();
-        await Task.Delay(PrimaryKeyDelay);
+        await Task.Delay(PrimaryKeyDelay, CancellationToken.None);
         while (!cancellationToken.IsCancellationRequested)
         {
             Backspace();
-            await Task.Delay(SecondaryKeyDelay);
+            await Task.Delay(SecondaryKeyDelay, CancellationToken.None);
         }
     }
 
-    private async Task RecursiveTyping(CancellationToken cancellationToken)
+    private async void RecursiveTyping(CancellationToken cancellationToken)
     {
         var lastChar = _currentChar;
         TypeChar();
-        await Task.Delay(PrimaryKeyDelay);
+        await Task.Delay(PrimaryKeyDelay, CancellationToken.None);
         while (!cancellationToken.IsCancellationRequested)
         {
             TypeChar();
-            await Task.Delay(SecondaryKeyDelay);
+            await Task.Delay(SecondaryKeyDelay, CancellationToken.None);
         }
+    }
+
+    private void RenewRecursionSource()
+    {
+        _recursionSource.Cancel();
+        _recursionSource = new();
     }
 }

@@ -34,17 +34,13 @@ public class MainForm : Form, IDisposable
         layout.EndHorizontal();
 
         Content = layout;
+
     }
 
     public new void Dispose()
 	{
 		GC.SuppressFinalize(this);
 	}
-
-    protected override void OnSizeChanged(EventArgs e)
-    {
-        base.OnSizeChanged(e);
-    }
 
     protected override void OnKeyDown(KeyEventArgs e)
     {

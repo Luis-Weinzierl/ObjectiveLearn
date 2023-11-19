@@ -16,19 +16,18 @@ public class CustomNumericStepper : KeyboardDrawable
     private const int PrimaryKeyDelay = 500;
     private const int SecondaryKeyDelay = 50;
     private const int Gap = 1;
-    private int _value = 0;
+    private int _value;
 
-    public int Value { 
-        get {
-            return _value;
-        }
+    public int Value
+    {
+        get => _value;
         set {
             _value = value;
             Invalidate();
         }
     }
 
-    public Font Font { get; set; } = new Font(SystemFont.Default, 12);
+    public Font Font { get; set; }
 
     public Color Color { get; set; }
 
@@ -113,7 +112,7 @@ public class CustomNumericStepper : KeyboardDrawable
 
         KeyHandler.FocusedComponent = this;
         _recursionSource.Cancel();
-        ValueChanged.Invoke(this, EventArgs.Empty);
+        ValueChanged?.Invoke(this, EventArgs.Empty);
     }
 
     protected override void OnMouseDown(MouseEventArgs e)
@@ -153,17 +152,17 @@ public class CustomNumericStepper : KeyboardDrawable
     {
         _recursionSource.Cancel();
         _recursionSource = new();
-        Task.Run(async () => await RecursiveAddOne(_recursionSource.Token));
+        RecursiveAddOne(_recursionSource.Token);
     }
 
-    private async Task RecursiveAddOne(CancellationToken cancellationToken)
+    private async void RecursiveAddOne(CancellationToken cancellationToken)
     {
         AddOne();
-        await Task.Delay(PrimaryKeyDelay);
+        await Task.Delay(PrimaryKeyDelay, CancellationToken.None);
         while (!cancellationToken.IsCancellationRequested)
         {
             AddOne();
-            await Task.Delay(SecondaryKeyDelay);
+            await Task.Delay(SecondaryKeyDelay, CancellationToken.None);
         }
     }
 
@@ -177,17 +176,17 @@ public class CustomNumericStepper : KeyboardDrawable
     {
         _recursionSource.Cancel();
         _recursionSource = new();
-        Task.Run(async () => await RecursiveRemoveOne(_recursionSource.Token));
+        RecursiveRemoveOne(_recursionSource.Token);
     }
 
-    private async Task RecursiveRemoveOne(CancellationToken cancellationToken)
+    private async void RecursiveRemoveOne(CancellationToken cancellationToken)
     {
         RemoveOne();
-        await Task.Delay(PrimaryKeyDelay);
+        await Task.Delay(PrimaryKeyDelay, CancellationToken.None);
         while (!cancellationToken.IsCancellationRequested)
         {
             RemoveOne();
-            await Task.Delay(SecondaryKeyDelay);
+            await Task.Delay(SecondaryKeyDelay, CancellationToken.None);
         }
     }
 }

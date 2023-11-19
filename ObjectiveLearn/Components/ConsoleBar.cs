@@ -51,6 +51,7 @@ public class ConsoleBar : Drawable
             Text = LanguageManager.Get(LanguageName.ConsoleBarExecute),
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
+            Height = 30,
         };
 
         var clearErrorsButton = new CustomButton
@@ -58,12 +59,15 @@ public class ConsoleBar : Drawable
             Text = LanguageManager.Get(LanguageName.ConsoleBarClearErrors),
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
+            Height = 30,
         };
 
-        _textBox = new CustomTextBox()
+        _textBox = new CustomTextBox
         {
-            Color = ConfigManager.GetColor(Config.UiTextColor)
+            Color = ConfigManager.GetColor(Config.UiTextColor),
+            Height = 30
         };
+
         if (App.TextFont is not null)
             _textBox.Font = App.TextFont;
 
@@ -75,8 +79,7 @@ public class ConsoleBar : Drawable
         var errorLabel = new Label
         {
             Text = string.Join('\n', _errors),
-            TextColor = ConfigManager.GetColor(Config.ErrorTextColor),
-            Width = -1
+            TextColor = ConfigManager.GetColor(Config.ErrorTextColor)
         };
 
         var copyrightLabel = new LinkButton()

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using Eto.Drawing;
 using Eto.Forms;
@@ -34,14 +35,19 @@ public class CustomButton : Drawable
     private float _height = -1;
     private SizeF _textSize;
 
-    public void Init() 
+    protected override void OnLoad(EventArgs e)
     {
+        base.OnLoad(e);
+
+        // Because WPF was a bitch about painting sth with Width = -1
+        if (Width == 0)
+        {
+            Width = 100;
+        }
+    
         Cursor = Cursors.Pointer;
         TextBrush = new(Color);
         DisabledTextBrush = new(DisabledColor);
-    
-        Height = (int)_height;
-        Width = (int)_width;
     }
 
     protected override void OnPaint(PaintEventArgs e)
@@ -62,7 +68,7 @@ public class CustomButton : Drawable
             width = e.ClipRectangle.Width;
         }
 
-        if (Height > -1)
+        if (Height > 0)
         {
             height = Height;
         }
@@ -74,10 +80,8 @@ public class CustomButton : Drawable
         _height = height;
         _width = width;
 
-        if (TextBrush is null) 
-        {
-            Init();
-        }
+        Height = (int)height;
+        Width = (int)width;
 
         e.Graphics.FillRectangle(BackdropColor, 0, 0, _width, _height);
 
