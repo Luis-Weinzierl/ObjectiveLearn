@@ -9,8 +9,6 @@ namespace ObjectiveLearn;
 
 public class MainForm : Form, IDisposable
 {
-    private bool _controlDown = false;
-
     public MainForm(string title = "Objective: Learn")
 	{
         App.Initialize();

@@ -36,14 +36,15 @@ public static class App
     {
         Directory   = System.AppContext.BaseDirectory;
 
+        TextFont                 = new Font(SystemFont.Default, 12);
+        SmallTextFont            = new Font(SystemFont.Default, 8);
+        SmallTextFontUnderline   = new Font(SystemFont.Default, 8, FontDecoration.Underline); 
+
         TopBar                   = new TopBar();
         Canvas                   = new Canvas();
         SideBar                  = new SideBar();
         ConsoleBar               = new ConsoleBar();
-        TankVm                   = new TankLiteRuntimeEnvironment(VmVariables.DefaultVariables);
-        TextFont                 = new Font(SystemFont.Default, 12);
-        SmallTextFont            = new Font(SystemFont.Default, 8);
-        SmallTextFontUnderline   = new Font(SystemFont.Default, 8, FontDecoration.Underline);  
+        TankVm                   = new TankLiteRuntimeEnvironment(VmVariables.DefaultVariables); 
 
         CurrentFile = LanguageManager.Get(LanguageName.UiNoFileSelected);
 

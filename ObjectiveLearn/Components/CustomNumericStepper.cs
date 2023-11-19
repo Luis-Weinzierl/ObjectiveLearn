@@ -42,7 +42,6 @@ public class CustomNumericStepper : KeyboardDrawable
     
     public SolidBrush DisabledTextBrush { get; private set; }
 
-    public event EventHandler Submitted;
     public event EventHandler ValueChanged;
 
     private const float TextPadding = 5;
