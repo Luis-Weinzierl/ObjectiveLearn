@@ -37,7 +37,7 @@ Jedes Form-Objekt hat folgende Attribute:
 |int|X|Die X-Position der Form|
 |int|Y|Die Y-Position der Form|
 |int|Breite|Die Breite der Bounding-Box der Form|
-|int|Höhe|Die Höhe der Bounding-Box der Form|
+|int|Hoehe|Die Höhe der Bounding-Box der Form|
 |int|Rotation|Die Rotation der Form|
 |int|Farbe.R|Der Rot-Wert der Farbe der Form|
 |int|Farbe.G|Der Grün-Wert der Farbe der Form|
