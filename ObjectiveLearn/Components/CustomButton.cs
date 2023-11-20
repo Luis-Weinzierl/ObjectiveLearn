@@ -1,10 +1,6 @@
 using System;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
-using System.Windows.Media.Media3D;
 using Eto.Drawing;
 using Eto.Forms;
-using ObjectiveLearn.Shared;
 
 namespace ObjectiveLearn.Components;
 
@@ -104,13 +100,13 @@ public class CustomButton : Drawable
         var height = Height;
         var width = Width;
 
-        if (e.ClipRectangle.Width != Width || Width != _width)
+        if (Math.Abs(e.ClipRectangle.Width - Width) > 0 || Width != _width)
         {
             width = (int)e.ClipRectangle.Width;
             sizeChanged = true;
         }
 
-        if (e.ClipRectangle.Height != Height || Height != _height)
+        if (Math.Abs(e.ClipRectangle.Height - Height) > 0 || Height != _height)
         {
             height = (int)e.ClipRectangle.Height;
             sizeChanged = true;
@@ -156,6 +152,6 @@ public class CustomButton : Drawable
     {
         base.OnMouseUp(e);
 
-        Clicked.Invoke(this, EventArgs.Empty);
+        Clicked?.Invoke(this, EventArgs.Empty);
     }
 }

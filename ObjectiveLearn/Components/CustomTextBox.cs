@@ -1,10 +1,6 @@
 using System;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Markup;
-using Antlr4.Runtime.Atn;
 using Eto.Drawing;
 using Eto.Forms;
 using ObjectiveLearn.Shared;
@@ -37,18 +33,14 @@ public class CustomTextBox : KeyboardDrawable
 
     public Color BackdropColor { get; set; } = Color.FromArgb(255, 255, 255, 10);
 
-    public Color HoverColor { get; set; } = Color.FromArgb(255, 255, 255, 25);
-
     public SolidBrush TextBrush { get; private set; }
     
     public SolidBrush DisabledTextBrush { get; private set; }
 
     public event EventHandler Submitted;
 
-    private bool _isMouseOver = false;
-
     private const float TextPadding = 20;
-    private int _cursorIndex = 0;
+    private int _cursorIndex;
     private char? _currentChar;
 
     private CancellationTokenSource _recursionSource = new();
@@ -63,10 +55,9 @@ public class CustomTextBox : KeyboardDrawable
             Width = 100;
         }
 
-
         Cursor = Cursors.Pointer;
-        TextBrush = new(Color);
-        DisabledTextBrush = new(DisabledColor);
+        TextBrush = new SolidBrush(Color);
+        DisabledTextBrush = new SolidBrush(DisabledColor);
     }
 
     protected override void OnPaint(PaintEventArgs e)
@@ -90,11 +81,6 @@ public class CustomTextBox : KeyboardDrawable
         if (Enabled)
         {
             e.Graphics.FillRectangle(BackdropColor, 0, 0, width, height);
-
-            if (_isMouseOver)
-            {
-                e.Graphics.FillRectangle(HoverColor, 0, 0, width, height);
-            }
         }
 
         var distanceLeft = textSize.Width >= width - 20
@@ -126,8 +112,10 @@ public class CustomTextBox : KeyboardDrawable
     }
 
     public override void HandleKeyDown(KeyEventArgs e)
-    {
+    {   
+        // ReSharper disable All
         switch (e.Key)
+        // ReSharper restore All
         {
             case Keys.Backspace:
                 RenewRecursionSource();
@@ -160,7 +148,9 @@ public class CustomTextBox : KeyboardDrawable
     {
         _recursionSource.Cancel();
         
-        switch (e.Key) 
+        // ReSharper disable All
+        switch (e.Key)
+        // ReSharper restore All
         {
             case Keys.Enter:
                 Submitted?.Invoke(this, EventArgs.Empty);
@@ -254,7 +244,6 @@ public class CustomTextBox : KeyboardDrawable
 
     private async void RecursiveTyping(CancellationToken cancellationToken)
     {
-        var lastChar = _currentChar;
         TypeChar();
         await Task.Delay(PrimaryKeyDelay, CancellationToken.None);
         while (!cancellationToken.IsCancellationRequested)
@@ -267,6 +256,6 @@ public class CustomTextBox : KeyboardDrawable
     private void RenewRecursionSource()
     {
         _recursionSource.Cancel();
-        _recursionSource = new();
+        _recursionSource = new CancellationTokenSource();
     }
 }

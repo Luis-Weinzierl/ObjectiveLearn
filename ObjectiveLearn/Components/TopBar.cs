@@ -24,8 +24,6 @@ public class TopBar : Drawable
 
 	public void Draw()
     {
-        var buttonSize = new Size(80, 100);
-
         var rectangleButton = new ImageButton
         {
             Image = new Bitmap(Path.Combine(App.Directory, "Resources/RectangleIcon.png")),
@@ -97,7 +95,7 @@ public class TopBar : Drawable
         ColorPicker = new CustomColorPicker
         {
             Width = 100,
-            SelectedColor = Color.FromArgb(255, 0, 0),
+            SelectedColor = Color.FromArgb(239, 35, 60)
         };
 
         RotationStepper = new CustomNumericStepper
@@ -287,7 +285,9 @@ public class TopBar : Drawable
 
     private void DeleteButtonOnClick(object sender, EventArgs e) {
         DeleteButton.Enabled = false;
+        ColorPicker.SelectedColor = App.Canvas.DrawColor;
         RotationStepper.Enabled = false;
+        RotationStepper.Value = 0;
         Invalidate();
         App.SideBar.Reset();
         App.TankVm.Visitor.Variables.Remove(App.Canvas.SelectedShape.ReferencedShape.VariableName);

@@ -1,8 +1,6 @@
 using System;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Markup;
 using Eto.Drawing;
 using Eto.Forms;
 using ObjectiveLearn.Shared;
@@ -50,11 +48,12 @@ public class CustomNumericStepper : KeyboardDrawable
     
     private CancellationTokenSource _recursionSource = new();
 
+    private int _areaHovered = -1;
+
     public void Init() 
     {
-        Cursor = Cursors.Pointer;
-        TextBrush = new(Color);
-        DisabledTextBrush = new(DisabledColor);
+        TextBrush = new SolidBrush(Color);
+        DisabledTextBrush = new SolidBrush(DisabledColor);
     }
 
     protected override void OnPaint(PaintEventArgs e)
@@ -95,6 +94,17 @@ public class CustomNumericStepper : KeyboardDrawable
         e.Graphics.FillRectangle(BackdropColor, _addButtonRect);
         e.Graphics.FillRectangle(BackdropColor, _removeButtonRect);
 
+        switch (_areaHovered)
+        {
+            case 0:
+                e.Graphics.FillRectangle(HoverColor, _addButtonRect);
+                break;
+
+            case 1:
+                e.Graphics.FillRectangle(HoverColor, _removeButtonRect);
+                break;
+        }
+
         var distanceLeft = addTextSize.Width >= width - 20
             ? width - addTextSize.Width - 10
             : 10
@@ -115,6 +125,39 @@ public class CustomNumericStepper : KeyboardDrawable
         ValueChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    protected override void OnMouseMove(MouseEventArgs e)
+    {
+        base.OnMouseMove(e);
+
+        if (_addButtonRect.Contains(e.Location))
+        {
+            Cursor = Cursors.Pointer;
+            _areaHovered = 0;
+            Invalidate();
+        }
+        else if (_removeButtonRect.Contains(e.Location))
+        {
+            Cursor = Cursors.Pointer;
+            _areaHovered = 1;
+            Invalidate();
+        }
+        else
+        {
+            Cursor = Cursors.Default;
+            _areaHovered = -1;
+            Invalidate();
+        }
+    }
+
+    protected override void OnMouseLeave(MouseEventArgs e)
+    {
+        base.OnMouseLeave(e);
+
+        Cursor = Cursors.Default;
+        _areaHovered = -1;
+        Invalidate();
+    }
+
     protected override void OnMouseDown(MouseEventArgs e)
     {
         base.OnMouseDown(e);
@@ -130,7 +173,9 @@ public class CustomNumericStepper : KeyboardDrawable
 
     public override void HandleKeyUp(KeyEventArgs e)
     {
+        // ReSharper disable All
         switch (e.Key)
+        // ReSharper restore All
         {
             case Keys.Up:
                 AddOne();
@@ -151,7 +196,7 @@ public class CustomNumericStepper : KeyboardDrawable
     private void RecursiveAddOne()
     {
         _recursionSource.Cancel();
-        _recursionSource = new();
+        _recursionSource = new CancellationTokenSource();
         RecursiveAddOne(_recursionSource.Token);
     }
 
@@ -175,7 +220,7 @@ public class CustomNumericStepper : KeyboardDrawable
     private void RecursiveRemoveOne()
     {
         _recursionSource.Cancel();
-        _recursionSource = new();
+        _recursionSource = new CancellationTokenSource();
         RecursiveRemoveOne(_recursionSource.Token);
     }
 

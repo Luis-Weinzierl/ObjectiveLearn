@@ -21,10 +21,11 @@ public class Canvas : Drawable
     public new Point Location { get; set; }
     public List<Shape> Shapes { get; set; } = new();
     public Shape SelectedShape { get; set; }
+    public Color DrawColor = Color.FromArgb(239, 35, 60);
+
 
     private PointF? _lastMouseDownPos;
     private PointF? _currentMousePos;
-    private Color _drawColor = Color.FromArgb(255, 0, 0);
     private bool _selectedShapeContainsLastMouseDownPos;
     private bool _showTooltip;
     private CancellationTokenSource _cancellationTokenSource;
@@ -163,7 +164,7 @@ public class Canvas : Drawable
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException();
+                throw new IndexOutOfRangeException();
         }
     }
 
@@ -273,7 +274,7 @@ public class Canvas : Drawable
             App.SideBar.Reset();
             App.TopBar.DeleteButton.Enabled = false;
             App.TopBar.RotationStepper.Enabled = false;
-            App.TopBar.ColorPicker.SelectedColor = _drawColor;
+            App.TopBar.ColorPicker.SelectedColor = DrawColor;
             App.TopBar.RotationStepper.Value = 0;
             App.TopBar.Invalidate();
 
@@ -297,10 +298,10 @@ public class Canvas : Drawable
             startPoint,
             new Size((int)width, (int)height),
             0,
-            _drawColor.Rb,
-            _drawColor.Gb,
-            _drawColor.Bb,
-            _drawColor.Ab
+            DrawColor.Rb,
+            DrawColor.Gb,
+            DrawColor.Bb,
+            DrawColor.Ab
             );
 
         Shape.IdCounter++;
@@ -351,7 +352,7 @@ public class Canvas : Drawable
 
             if (type.Value == TlName.Rectangle)
             {
-                shape = new Shapes.Rectangle(
+                shape = new Rectangle(
                     new Size(w.Value, h.Value),
                     location: new Point(x.Value, y.Value),
                     r.Value,
@@ -407,9 +408,11 @@ public class Canvas : Drawable
 
             Shapes.Add(shape);
 
-            if (variable.Key == previousSelectedShapeRefName) {
-                SelectedShape = shape;
-            }
+            if (variable.Key != previousSelectedShapeRefName) continue;
+
+            SelectedShape = shape;
+            App.TopBar.RotationStepper.Value = shape.Rotation;
+            App.TopBar.ColorPicker.SelectedColor = shape.Color;
         }
 
         Invalidate();
@@ -433,7 +436,7 @@ public class Canvas : Drawable
             UpdateShapes();
         }
         else {
-            _drawColor = color;
+            DrawColor = color;
         }
     }
 

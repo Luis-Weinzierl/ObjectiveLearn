@@ -1,15 +1,11 @@
 using System;
-using System.Security.Cryptography.X509Certificates;
 using Eto.Drawing;
 using Eto.Forms;
-using ObjectiveLearn.Shared;
 
 namespace ObjectiveLearn.Components;
 
-public class CustomColorPicker : Drawable
+public sealed class CustomColorPicker : Drawable
 {
-    public Color Color { get; set; }
-
     private Color _selectedColor;
 
     public Color SelectedColor {
@@ -21,15 +17,13 @@ public class CustomColorPicker : Drawable
         }
     }
 
-    public Color DisabledColor { get; set; }
-
     public Color BackdropColor { get; set; } = Color.FromArgb(255, 255, 255, 10);
 
     public Color HoverColor { get; set; } = Color.FromArgb(255, 255, 255, 25);
    
     public event EventHandler ValueChanged;
 
-    private bool _isMouseOver = false;
+    private bool _isMouseOver;
 
     private ColorDialog _dialog;
 
@@ -59,7 +53,7 @@ public class CustomColorPicker : Drawable
         var centeredRectangle = new RectangleF
         {
             Size = size,
-            Location = new((width - size.Width) / 2, TextPadding)
+            Location = new PointF((width - size.Width) / 2, TextPadding)
         };
 
         e.Graphics.FillEllipse(SelectedColor, centeredRectangle);
@@ -85,9 +79,10 @@ public class CustomColorPicker : Drawable
     {
         base.OnMouseUp(e);
 
-        _dialog = new()
+        _dialog = new ColorDialog
         {
-            AllowAlpha = true
+            AllowAlpha = true,
+            Color = _selectedColor
         };
 
         _dialog.ColorChanged += ColorDialogOnColorChanged;

@@ -20,7 +20,6 @@ public class SideBar : Drawable
     private string _text2 = string.Empty;
 
     private readonly Color _textColor;
-    private readonly Color _uiTextColor;
     private readonly Color _backgroundColor;
 
     private readonly SolidBrush _textBrush;
@@ -29,11 +28,11 @@ public class SideBar : Drawable
     public SideBar()
     {
         _textColor = ConfigManager.GetColor(Config.SidebarTextColor);
-        _uiTextColor = ConfigManager.GetColor(Config.UiTextColor);
+        var uiTextColor = ConfigManager.GetColor(Config.UiTextColor);
         _backgroundColor = ConfigManager.GetColor(Config.SidebarBackground);
 
         _textBrush = new SolidBrush(_textColor);
-        _uiTextBrush = new SolidBrush(_uiTextColor);
+        _uiTextBrush = new SolidBrush(uiTextColor);
 
         Handler.Width = 300;
         Padding = new Padding(16);

@@ -1,8 +1,6 @@
 using System;
-using System.Security.Cryptography.X509Certificates;
 using Eto.Drawing;
 using Eto.Forms;
-using ObjectiveLearn.Shared;
 
 namespace ObjectiveLearn.Components;
 
@@ -79,7 +77,7 @@ public class ImageButton : Drawable
         Resize(height, width);
 
         Cursor = Cursors.Pointer;
-        TextBrush = new(Color);
+        TextBrush = new SolidBrush(Color);
     }
 
     private void CheckForResize(PaintEventArgs e)
@@ -88,13 +86,13 @@ public class ImageButton : Drawable
         var height = Height;
         var width = Width;
 
-        if (e.ClipRectangle.Width != Width || Width != _width)
+        if (Math.Abs(e.ClipRectangle.Width - Width) > 0 || Width != _width)
         {
             width = (int)e.ClipRectangle.Width;
             sizeChanged = true;
         }
 
-        if (e.ClipRectangle.Height != Height || Height != _height)
+        if (Math.Abs(e.ClipRectangle.Height - Height) > 0 || Height != _height)
         {
             height = (int)e.ClipRectangle.Height;
             sizeChanged = true;

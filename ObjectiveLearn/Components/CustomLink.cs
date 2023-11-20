@@ -1,9 +1,6 @@
 using System;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 using Eto.Drawing;
 using Eto.Forms;
-using ObjectiveLearn.Shared;
 
 namespace ObjectiveLearn.Components;
 
@@ -32,12 +29,9 @@ public class CustomLink : Drawable
         Width = (int)textSize.Width;
 
         Cursor = Cursors.Pointer;
-        TextBrush = new(Color);
+        TextBrush = new SolidBrush(Color);
 
-        if (HoverFont is not { })
-        {
-            HoverFont = new Font(Font.FamilyName, Font.Size, Font.FontStyle, FontDecoration.Underline);
-        }
+        HoverFont ??= new Font(Font.FamilyName, Font.Size, Font.FontStyle, FontDecoration.Underline);
     }
 
     protected override void OnPaint(PaintEventArgs e)
