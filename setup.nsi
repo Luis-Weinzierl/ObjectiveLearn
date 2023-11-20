@@ -30,6 +30,8 @@ UninstPage instfiles
 
 ;--------------------------------
 
+SetCompressor /SOLID LZMA 
+
 ; The stuff to install
 Section "ObjectiveLearn (required)"
 
