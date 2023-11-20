@@ -20,60 +20,111 @@ public class ImageButton : Drawable
 
     public Color HoverColor { get; set; } = Color.FromArgb(255, 255, 255, 25);
 
+    public int ForceWidth { get; set; } = -1;
+
+    public int ForceHeight { get; set; } = -1;
+
     public SolidBrush TextBrush { get; private set; }
-    public SolidBrush DisabledTextBrush { get; private set; }
 
     public event EventHandler Clicked;
 
-    private bool _isMouseOver = false;
+    private bool _isMouseOver;
+    private float _distanceLeft = -1;
+    private float _distanceTop = -1;
+    private int _width = -1;
+    private int _height = -1;
+
+    private void Resize(int height, int width)
+    {
+        var textSize = Font.MeasureString(Text);
+
+        if (ForceHeight > -1)
+        {
+            Height = ForceHeight;
+            _height = ForceHeight;
+        }
+
+        if (ForceWidth > -1)
+        {
+            Width = ForceWidth;
+            _width = ForceWidth;
+        }
+
+        if (ForceHeight <= -1)
+        {
+            Height = height;
+            _height = height;
+        }
+
+        if (ForceWidth <= -1)
+        {
+            Width = width;
+            _width = width;
+        }
+
+        var heightLeft = _height - Image.Height;
+
+        _distanceTop = Image.Height + (heightLeft - textSize.Height) / 2;
+        _distanceLeft = (Image.Width - textSize.Width) / 2;
+        Invalidate();
+    }
 
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
 
-        // Because WPF was a bitch about painting sth with Width = -1
-        if (Width == 0)
-        {
-            Width = 100;
-        }
+        var height = Image.Height;
+        var width = Image.Width;
+
+        Resize(height, width);
 
         Cursor = Cursors.Pointer;
         TextBrush = new(Color);
+    }
+
+    private void CheckForResize(PaintEventArgs e)
+    {
+        var sizeChanged = false;
+        var height = Height;
+        var width = Width;
+
+        if (e.ClipRectangle.Width != Width || Width != _width)
+        {
+            width = (int)e.ClipRectangle.Width;
+            sizeChanged = true;
+        }
+
+        if (e.ClipRectangle.Height != Height || Height != _height)
+        {
+            height = (int)e.ClipRectangle.Height;
+            sizeChanged = true;
+        }
+
+        if (sizeChanged)
+            Resize(height, width);
     }
 
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
 
-        var height = (int)e.ClipRectangle.Height;
-        var width = Image.Width;
-        var location = e.ClipRectangle.Location;
+        CheckForResize(e);
 
-        e.Graphics.FillRectangle(BackdropColor, 0, 0, width, height);
+        e.Graphics.FillRectangle(BackdropColor, 0, 0, _width, _height);
 
         if (_isMouseOver && Enabled)
         {
-            e.Graphics.FillRectangle(HoverColor, 0, 0, width, height);
+            e.Graphics.FillRectangle(HoverColor, 0, 0, _width, _height);
         }
 
-        e.Graphics.DrawImage(Image, location);
+        e.Graphics.DrawImage(Image, 0, 0);
 
-        var heightLeft = height - Image.Height;
-
-        var textSize = e.Graphics.MeasureString(Font, Text);
-
-        var distanceTop = Image.Height + (heightLeft - textSize.Height) / 2;
-        var distanceLeft = (Image.Width - textSize.Width) / 2;
-
-        e.Graphics.DrawText(Font, TextBrush, distanceLeft, distanceTop, Text);
+        e.Graphics.DrawText(Font, TextBrush, _distanceLeft, _distanceTop, Text);
 
         if (!Enabled)
         {
-            e.Graphics.FillRectangle(HoverColor, 0, 0, width, height);
+            e.Graphics.FillRectangle(HoverColor, 0, 0, _width, _height);
         }
-
-        Width = width;
-        Height = height;
     }
 
     protected override void OnMouseEnter(MouseEventArgs e)

@@ -32,7 +32,7 @@ public class TopBar : Drawable
             Text = LanguageManager.Get(LanguageName.TopBarRectangle),
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
-            Height = 130
+            ForceHeight = 130
         };
 
         var triangleButton = new ImageButton
@@ -41,7 +41,7 @@ public class TopBar : Drawable
             Text = LanguageManager.Get(LanguageName.TopBarTriangle),
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
-            Height = 130
+            ForceHeight = 130
         };
 
         var ellipseButton = new ImageButton
@@ -50,7 +50,7 @@ public class TopBar : Drawable
             Text = LanguageManager.Get(LanguageName.TopBarEllipse),
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
-            Height = 130
+            ForceHeight = 130
         };
 
         var saveButton = new CustomButton

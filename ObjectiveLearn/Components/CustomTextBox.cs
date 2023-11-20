@@ -13,9 +13,11 @@ namespace ObjectiveLearn.Components;
 
 public class CustomTextBox : KeyboardDrawable
 {
+    private const string ForbiddenChars = "\b\r\n\0\f\t\v";
+
     private const int PrimaryKeyDelay = 1000;
     private const int SecondaryKeyDelay = 100;
-    private string _textContent = string.Empty;
+    private string _textContent = "\0";
 
     public string Text
     {
@@ -142,7 +144,7 @@ public class CustomTextBox : KeyboardDrawable
 
                 RenewRecursionSource();
 
-                if (e.KeyChar == '\b')
+                if (ForbiddenChars.Contains(e.KeyChar))
                 {
                     return;
                 }

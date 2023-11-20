@@ -51,7 +51,7 @@ public class ConsoleBar : Drawable
             Text = LanguageManager.Get(LanguageName.ConsoleBarExecute),
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
-            Height = 30,
+            ForceHeight = 30,
         };
 
         var clearErrorsButton = new CustomButton
@@ -59,7 +59,7 @@ public class ConsoleBar : Drawable
             Text = LanguageManager.Get(LanguageName.ConsoleBarClearErrors),
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
-            Height = 30,
+            ForceHeight = 30,
         };
 
         _textBox = new CustomTextBox
@@ -82,15 +82,15 @@ public class ConsoleBar : Drawable
             TextColor = ConfigManager.GetColor(Config.ErrorTextColor)
         };
 
-        var copyrightLabel = new LinkButton()
+        var copyrightLabel = new CustomLink
         {
             Text = "\u00a9 2023 Luis Weinzierl",
-            TextColor = ConfigManager.GetColor(Config.LinkTextColor),
-            Font = App.SmallTextFontUnderline,
+            Color = ConfigManager.GetColor(Config.LinkTextColor),
+            Font = App.SmallTextFont,
             Cursor = Cursors.Pointer
         };
 
-        copyrightLabel.Click += AboutLinkOnClicked;
+        copyrightLabel.Clicked += AboutLinkOnClicked;
 
         var layout = new DynamicLayout();
 
