@@ -54,4 +54,9 @@ public class MainForm : Form, IDisposable
 
         base.OnKeyUp(e);
     }
+
+    protected override void OnLostFocus(EventArgs e)
+    {
+        KeyHandler.FocusedComponent?.Deactivate();
+    }
 }

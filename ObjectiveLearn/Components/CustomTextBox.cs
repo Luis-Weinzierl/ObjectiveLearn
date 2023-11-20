@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Eto.Drawing;
@@ -40,8 +43,11 @@ public class CustomTextBox : KeyboardDrawable
     public event EventHandler Submitted;
 
     private const float TextPadding = 20;
+    private readonly Stack<string> _history = new();
+
     private int _cursorIndex;
     private char? _currentChar;
+    private int _historyPosition = -1;
 
     private CancellationTokenSource _recursionSource = new();
 
@@ -164,6 +170,14 @@ public class CustomTextBox : KeyboardDrawable
                 GoForwards();
                 break;
 
+            case Keys.Up:
+                GoBackHistory();
+                break;
+
+            case Keys.Down:
+                GoForwardsHistory();
+                break;
+
             case Keys.End:
                 _cursorIndex = _textContent.Length;
                 Invalidate();
@@ -182,6 +196,11 @@ public class CustomTextBox : KeyboardDrawable
 
                 break;
         }
+    }
+
+    public override void Deactivate()
+    {
+        _recursionSource.Cancel();
     }
 
     private void Delete()
@@ -210,6 +229,51 @@ public class CustomTextBox : KeyboardDrawable
     {
         if (_cursorIndex <= 0) return;
         _cursorIndex--;
+        Invalidate();
+    }
+
+    private void GoForwardsHistory()
+    {
+        if (_history.Count == 0 || _historyPosition <= -1)
+        {
+            return;
+        }
+
+        _historyPosition--;
+        switch (_historyPosition)
+        {
+            case > -1:
+                UpdateHistory();
+                break;
+
+            default:
+                ClearTextField();
+                break;
+        }
+    }
+
+    private void GoBackHistory()
+    {
+        if (_history.Count == 0 || _historyPosition + 1 >= _history.Count)
+        {
+            return;
+        }
+
+        _historyPosition++;
+        UpdateHistory();
+    }
+
+    private void UpdateHistory()
+    {
+        _textContent = _history.ElementAt(_historyPosition);
+        _cursorIndex = _textContent.Length;
+        Invalidate();
+    }
+
+    private void ClearTextField()
+    {
+        _textContent = "\0";
+        _cursorIndex = 0;
         Invalidate();
     }
 
@@ -257,5 +321,12 @@ public class CustomTextBox : KeyboardDrawable
     {
         _recursionSource.Cancel();
         _recursionSource = new CancellationTokenSource();
+    }
+
+    public void Clear()
+    {
+        _history.Push(_textContent);
+        _historyPosition = -1;
+        ClearTextField();
     }
 }

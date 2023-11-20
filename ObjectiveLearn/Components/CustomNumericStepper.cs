@@ -186,7 +186,12 @@ public class CustomNumericStepper : KeyboardDrawable
                 break;
         }
     }
-    
+
+    public override void Deactivate()
+    {
+        _recursionSource.Cancel();
+    }
+
     private void AddOne() 
     {
         _value++;

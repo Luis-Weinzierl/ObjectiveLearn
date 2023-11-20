@@ -6,4 +6,6 @@ public abstract class KeyboardDrawable : Drawable
 {
     public abstract void HandleKeyDown(KeyEventArgs e);
     public abstract void HandleKeyUp(KeyEventArgs e);
+
+    public abstract void Deactivate();
 }

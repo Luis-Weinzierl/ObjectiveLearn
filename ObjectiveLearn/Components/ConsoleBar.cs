@@ -121,7 +121,7 @@ public class ConsoleBar : Drawable
         App.TankVm.Execute(_textBox.Text);
         UpdateShapes.Invoke(this, EventArgs.Empty);
 
-        _textBox.Text = string.Empty;
+        _textBox.Clear();
     }
 
     private void AboutLinkOnClicked(object sender, EventArgs e)
