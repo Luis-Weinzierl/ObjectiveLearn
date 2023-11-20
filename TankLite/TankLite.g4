@@ -26,8 +26,8 @@ multOp: '*' | '/';
 
 KEYW_VAR: 'var';
 
-INT: [0-9]+;
-FLOAT: [0-9]+ '.' [0-9]+;
+INT: '-'? [0-9]+;
+FLOAT: '-'? [0-9]+ '.' [0-9]+;
 STRING: '"' ~'"'* '"';
 BOOL: 'true' | 'false';
 
