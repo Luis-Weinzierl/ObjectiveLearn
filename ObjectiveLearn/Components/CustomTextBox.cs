@@ -16,6 +16,7 @@ public class CustomTextBox : KeyboardDrawable
 
     private const int PrimaryKeyDelay = 1000;
     private const int SecondaryKeyDelay = 100;
+    private const int CursorBlinkInterval = 1000;
     private string _textContent = "\0";
 
     public string Text
@@ -46,10 +47,12 @@ public class CustomTextBox : KeyboardDrawable
     private readonly Stack<string> _history = new();
 
     private int _cursorIndex;
+    private bool _cursorVisible;
     private char? _currentChar;
     private int _historyPosition = -1;
 
     private CancellationTokenSource _recursionSource = new();
+    private CancellationTokenSource _cursorBlinkSource = new();
 
     protected override void OnLoad(EventArgs e)
     {
@@ -101,11 +104,12 @@ public class CustomTextBox : KeyboardDrawable
 
         var textSizeBeforeCursor = e.Graphics.MeasureString(Font, textBeforeCursor);
 
-        e.Graphics.DrawLine(
-            Color,
-            new PointF(textSizeBeforeCursor.Width + distanceLeft, distanceTop),
-            new PointF(textSizeBeforeCursor.Width + distanceLeft, Height - distanceTop)
-        );
+        if (_cursorVisible)
+            e.Graphics.DrawLine(
+                Color,
+                new PointF(textSizeBeforeCursor.Width + distanceLeft, distanceTop),
+                new PointF(textSizeBeforeCursor.Width + distanceLeft, Height - distanceTop)
+            );
 
         Height = (int)height;
     }
@@ -115,6 +119,7 @@ public class CustomTextBox : KeyboardDrawable
         base.OnMouseUp(e);
 
         KeyHandler.FocusedComponent = this;
+        ShowCursorAndBlink();
     }
 
     public override void HandleKeyDown(KeyEventArgs e)
@@ -201,12 +206,16 @@ public class CustomTextBox : KeyboardDrawable
     public override void Deactivate()
     {
         _recursionSource.Cancel();
+        _cursorBlinkSource.Cancel();
+        _cursorVisible = false;
+        Invalidate();
     }
 
     private void Delete()
     {
         if (_textContent.Length <= 0 || _cursorIndex >= _textContent.Length) return;
         _textContent = _textContent[.._cursorIndex] + _textContent[(_cursorIndex + 1)..];
+        _cursorVisible = true;
         Invalidate();
     }
 
@@ -215,6 +224,7 @@ public class CustomTextBox : KeyboardDrawable
         if (_textContent.Length <= 0 || _cursorIndex <= 0) return;
         _textContent = _textContent[..(_cursorIndex - 1)] + _textContent[_cursorIndex..];
         _cursorIndex--;
+        _cursorVisible = true;
         Invalidate();
     }
 
@@ -222,6 +232,7 @@ public class CustomTextBox : KeyboardDrawable
     {
         if (_cursorIndex >= _textContent.Length) return;
         _cursorIndex++;
+        _cursorVisible = true;
         Invalidate();
     }
 
@@ -229,6 +240,7 @@ public class CustomTextBox : KeyboardDrawable
     {
         if (_cursorIndex <= 0) return;
         _cursorIndex--;
+        _cursorVisible = true;
         Invalidate();
     }
 
@@ -267,6 +279,7 @@ public class CustomTextBox : KeyboardDrawable
     {
         _textContent = _history.ElementAt(_historyPosition);
         _cursorIndex = _textContent.Length;
+        _cursorVisible = true;
         Invalidate();
     }
 
@@ -274,6 +287,7 @@ public class CustomTextBox : KeyboardDrawable
     {
         _textContent = "\0";
         _cursorIndex = 0;
+        _cursorVisible = true;
         Invalidate();
     }
 
@@ -281,6 +295,7 @@ public class CustomTextBox : KeyboardDrawable
     {
         _textContent = _textContent[.._cursorIndex] + _currentChar + _textContent[_cursorIndex..];
         _cursorIndex++;
+        _cursorVisible = true;
         Invalidate();
     }
 
@@ -328,5 +343,24 @@ public class CustomTextBox : KeyboardDrawable
         _history.Push(_textContent);
         _historyPosition = -1;
         ClearTextField();
+    }
+
+    private void ShowCursorAndBlink()
+    {
+        _cursorVisible = true;
+        Invalidate();
+        _cursorBlinkSource.Cancel();
+        _cursorBlinkSource = new CancellationTokenSource();
+        StartBlinkingCursor(_cursorBlinkSource.Token);
+    }
+
+    private async void StartBlinkingCursor(CancellationToken cancellationToken)
+    {
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            await Task.Delay(CursorBlinkInterval, CancellationToken.None);
+            _cursorVisible = !_cursorVisible;
+            Invalidate();
+        }
     }
 }
