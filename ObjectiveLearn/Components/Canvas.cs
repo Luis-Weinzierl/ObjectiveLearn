@@ -80,7 +80,7 @@ public class Canvas : Drawable
         if (_showTooltip && _currentMousePos is {} cp)
         {
             var hoveredShape = Shapes
-                .FirstOrDefault(shape => shape.Contains((Point)cp));
+                .LastOrDefault(shape => shape.Contains((Point)cp));
 
             if (hoveredShape is not null)
             {
@@ -259,7 +259,7 @@ public class Canvas : Drawable
                 var clickedShapes = Shapes
                     .Where(shape => shape.HandleClick(startPoint));
 
-                var clickedShape = clickedShapes.FirstOrDefault();
+                var clickedShape = clickedShapes.LastOrDefault();
 
                 if (clickedShape is not null)
                 {
