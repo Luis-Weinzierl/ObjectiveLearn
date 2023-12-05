@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Eto.Drawing;
@@ -28,6 +31,8 @@ public class CustomTextBox : KeyboardDrawable
             Invalidate();
         }
     }
+
+    public Dictionary<int, Color> TextColorRanges = new();
 
     public Font Font { get; set; }
 
@@ -98,7 +103,7 @@ public class CustomTextBox : KeyboardDrawable
             ;
         var distanceTop = (height - textSize.Height) / 2;
 
-        e.Graphics.DrawText(Font, Enabled ? TextBrush : DisabledTextBrush, distanceLeft, distanceTop, Text);
+        DrawText(e.Graphics, distanceLeft, distanceTop);
 
         var textBeforeCursor = _textContent[.._cursorIndex];
 
@@ -112,6 +117,37 @@ public class CustomTextBox : KeyboardDrawable
             );
 
         Height = (int)height;
+    }
+
+    private void DrawText(Graphics g, float distanceLeft, float distanceTop)
+    {
+        var currentColor = Color;
+        var buffer = string.Empty;
+
+        void Draw()
+        {
+            if (buffer.Length <= 0) return;
+
+            g.DrawText(Font, Enabled ? new SolidBrush(currentColor) : DisabledTextBrush, distanceLeft, distanceTop, buffer);
+            distanceLeft += Font.MeasureString(buffer).Width;
+            buffer = string.Empty;
+        }
+
+        for (var index = 0; index < _textContent.Length; index++)
+        {
+            var textChar = _textContent[index];
+
+            if (TextColorRanges.TryGetValue(index, out var range
+                ))
+            {
+                Draw();
+                currentColor = range;
+            }
+
+            buffer += textChar;
+        }
+
+        Draw();
     }
 
     protected override void OnMouseUp(MouseEventArgs e)
@@ -208,7 +244,7 @@ public class CustomTextBox : KeyboardDrawable
         _recursionSource.Cancel();
         _cursorBlinkSource.Cancel();
         _cursorVisible = false;
-        Invalidate();
+        TextHasChanged();
     }
 
     private void Delete()
@@ -216,7 +252,7 @@ public class CustomTextBox : KeyboardDrawable
         if (_textContent.Length <= 0 || _cursorIndex >= _textContent.Length) return;
         _textContent = _textContent[.._cursorIndex] + _textContent[(_cursorIndex + 1)..];
         _cursorVisible = true;
-        Invalidate();
+        TextHasChanged();
     }
 
     private void Backspace()
@@ -225,7 +261,7 @@ public class CustomTextBox : KeyboardDrawable
         _textContent = _textContent[..(_cursorIndex - 1)] + _textContent[_cursorIndex..];
         _cursorIndex--;
         _cursorVisible = true;
-        Invalidate();
+        TextHasChanged();
     }
 
     private void GoForwards()
@@ -233,7 +269,7 @@ public class CustomTextBox : KeyboardDrawable
         if (_cursorIndex >= _textContent.Length) return;
         _cursorIndex++;
         _cursorVisible = true;
-        Invalidate();
+        TextHasChanged();
     }
 
     private void GoBackwards()
@@ -241,7 +277,7 @@ public class CustomTextBox : KeyboardDrawable
         if (_cursorIndex <= 0) return;
         _cursorIndex--;
         _cursorVisible = true;
-        Invalidate();
+        TextHasChanged();
     }
 
     private void GoForwardsHistory()
@@ -280,7 +316,7 @@ public class CustomTextBox : KeyboardDrawable
         _textContent = _history.ElementAt(_historyPosition);
         _cursorIndex = _textContent.Length;
         _cursorVisible = true;
-        Invalidate();
+        TextHasChanged();
     }
 
     private void ClearTextField()
@@ -288,7 +324,7 @@ public class CustomTextBox : KeyboardDrawable
         _textContent = "\0";
         _cursorIndex = 0;
         _cursorVisible = true;
-        Invalidate();
+        TextHasChanged();
     }
 
     private void TypeChar() 
@@ -296,7 +332,7 @@ public class CustomTextBox : KeyboardDrawable
         _textContent = _textContent[.._cursorIndex] + _currentChar + _textContent[_cursorIndex..];
         _cursorIndex++;
         _cursorVisible = true;
-        Invalidate();
+        TextHasChanged();
     }
 
     private async void RecursiveDelete(CancellationToken cancellationToken)
@@ -354,6 +390,38 @@ public class CustomTextBox : KeyboardDrawable
         StartBlinkingCursor(_cursorBlinkSource.Token);
     }
 
+    private async void TextHasChanged()
+    {
+        Invalidate();
+        TextColorRanges = await Task.Run(ProcessTextColors);
+        Invalidate();
+    }
+
+    private Dictionary<int, Color> ProcessTextColors()
+    {
+        var dict = new Dictionary<int, Color>();
+
+        void MatchRegex(ColoredRegexMatch regexMatch)
+        {
+            var matches = regexMatch.Regex.Matches(Text);
+
+            foreach (Match match in matches)
+            {
+                var group = match.Groups[regexMatch.Group];
+                Debug.WriteLine(group.Index);
+                dict[group.Index] = regexMatch.Color;
+                dict[group.Index + group.Length] = Color;
+            }
+        }
+
+        foreach (var regexMatch in ColorPatterns)
+        {
+            MatchRegex(regexMatch);
+        }
+
+        return dict;
+    }
+
     private async void StartBlinkingCursor(CancellationToken cancellationToken)
     {
         while (!cancellationToken.IsCancellationRequested)
@@ -362,5 +430,48 @@ public class CustomTextBox : KeyboardDrawable
             _cursorVisible = !_cursorVisible;
             Invalidate();
         }
+    }
+
+    private static readonly ColoredRegexMatch[] ColorPatterns = {
+        /*
+        new()
+        {
+            Group = 0,
+            Regex = new(@"."),
+            Color = Color.FromArgb(255, 0, 0)
+        },
+        */
+        new() // Methods
+        {
+            Group = 1,
+            Regex = new(@"([a-zA-Z_][a-zA-Z0-9_]*)(\((.^[\(\);])*\))"), 
+            Color = Color.FromArgb(255, 209, 102)
+        },
+        new() // Constructors
+        {
+            Group = 1,
+            Regex = new(@"new ([a-zA-Z_][a-zA-Z0-9_]*)(\((.^[\(\);])*\))"),
+            Color = Color.FromArgb(6, 214, 160)
+        },
+        new() // 
+        {
+            Group = 0,
+            Regex = new(@"\(|\)|=|;|,|\."),
+            Color = Color.FromArgb(101, 107, 123)
+        },
+        new()
+        {
+            Group = 1,
+            Regex = new("(?<![a-zA-Z0-9_.])(var|new)(?![a-zA-Z0-9_.])"),
+            Color = Color.FromArgb(46, 134, 171)
+        },
+    };
+
+    private struct ColoredRegexMatch
+    {
+        public int Group { get; set; }
+        public Regex Regex { get; set; }
+        public Color Color { get; set; }
+
     }
 }
