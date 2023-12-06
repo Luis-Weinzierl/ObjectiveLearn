@@ -6,35 +6,35 @@ namespace ObjectiveLearn.Models;
 
 public static class VmVariables
 {
-    public static Dictionary<string, TlValue> DefaultVariables { get; } = new()
+    public static Dictionary<string, TankLiteValue> DefaultVariables { get; } = new()
     {
         {
-            TlName.Rectangle,
-            new TlObj
+            TankLiteName.Rectangle,
+            new TankLiteObj
             {
-                Value = new Dictionary<string, TlValue>
+                Value = new Dictionary<string, TankLiteValue>
                 {
-                    { TlName.Constructor, new TlFunc(RectangleHelpers.Constructor, TlName.Rectangle) }
+                    { TankLiteName.Constructor, new TankLiteFunc(RectangleHelpers.Constructor, TankLiteName.Rectangle) }
                 }
             }
         },
         {
-            TlName.Triangle,
-            new TlObj
+            TankLiteName.Triangle,
+            new TankLiteObj
             {
-                Value = new Dictionary<string, TlValue>
+                Value = new Dictionary<string, TankLiteValue>
                 {
-                    { TlName.Constructor, new TlFunc(TriangleHelpers.Constructor, TlName.Triangle) }
+                    { TankLiteName.Constructor, new TankLiteFunc(TriangleHelpers.Constructor, TankLiteName.Triangle) }
                 }
             }
         },
         {
-            TlName.Ellipse,
-            new TlObj
+            TankLiteName.Ellipse,
+            new TankLiteObj
             {
-                Value = new Dictionary<string, TlValue>
+                Value = new Dictionary<string, TankLiteValue>
                 {
-                    { TlName.Constructor, new TlFunc(EllipseHelpers.Constructor, TlName.Ellipse) }
+                    { TankLiteName.Constructor, new TankLiteFunc(EllipseHelpers.Constructor, TankLiteName.Ellipse) }
                 }
             }
         }

@@ -60,26 +60,26 @@ public static class App
 
         foreach (var kv in TankVm.Visitor.Variables)
         {
-            if (kv.Value.Type != TlName.Object || !((TlObj)kv.Value).Value.ContainsKey(TlName.Type))
+            if (kv.Value.Type != TankLiteName.Object || !((TankLiteObj)kv.Value).Value.ContainsKey(TankLiteName.Type))
             {
                 continue;
             }
 
-            var obj = ((TlObj)kv.Value).Value;
-            var color = ((TlObj)obj[TlName.Color]).Value;
+            var obj = ((TankLiteObj)kv.Value).Value;
+            var color = ((TankLiteObj)obj[TankLiteName.Color]).Value;
 
             shapes[kv.Key] = new SerializableShape
             {
-                Type = ((TlString)obj[TlName.Type]).Value,
-                X = ((TlInt)obj[TlName.XPos]).Value,
-                Y = ((TlInt)obj[TlName.YPos]).Value,
-                Width = ((TlInt)obj[TlName.Width]).Value,
-                Height = ((TlInt)obj[TlName.Height]).Value,
-                Rotation = ((TlInt)obj[TlName.Rotation]).Value,
-                R = ((TlInt)color[TlName.Red]).Value,
-                G = ((TlInt)color[TlName.Green]).Value,
-                B = ((TlInt)color[TlName.Blue]).Value,
-                A = ((TlInt)color[TlName.Alpha]).Value
+                Type = ((TankLiteString)obj[TankLiteName.Type]).Value,
+                X = ((TankLiteInt)obj[TankLiteName.XPos]).Value,
+                Y = ((TankLiteInt)obj[TankLiteName.YPos]).Value,
+                Width = ((TankLiteInt)obj[TankLiteName.Width]).Value,
+                Height = ((TankLiteInt)obj[TankLiteName.Height]).Value,
+                Rotation = ((TankLiteInt)obj[TankLiteName.Rotation]).Value,
+                R = ((TankLiteInt)color[TankLiteName.Red]).Value,
+                G = ((TankLiteInt)color[TankLiteName.Green]).Value,
+                B = ((TankLiteInt)color[TankLiteName.Blue]).Value,
+                A = ((TankLiteInt)color[TankLiteName.Alpha]).Value
             };
         }
 
@@ -98,7 +98,7 @@ public static class App
     {
         TopBar.DeleteButton.Enabled = false;
         TopBar.RotationStepper.Enabled = false;
-        var dict = new Dictionary<string, TlValue>();
+        var dict = new Dictionary<string, TankLiteValue>();
 
         foreach (var kv in program.Shapes)
         {

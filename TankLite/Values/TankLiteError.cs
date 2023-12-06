@@ -2,13 +2,13 @@
 
 namespace TankLite.Values;
 
-public class TlError : TlValue
+public class TankLiteError : TankLiteValue
 {
     public static event EventHandler<string> ErrorOccurred;
     public override string Type { get; set; } = "error";
     
     public string Message { get; set; }
-    public TlError(string message)
+    public TankLiteError(string message)
     {
         Message = message;
 

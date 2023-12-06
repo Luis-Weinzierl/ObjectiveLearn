@@ -8,5 +8,5 @@ public class SelectShapeEventArgs
 
     public string ShapeType { get; set; }
 
-    public TlObj Shape { get; set; }
+    public TankLiteObj Shape { get; set; }
 }

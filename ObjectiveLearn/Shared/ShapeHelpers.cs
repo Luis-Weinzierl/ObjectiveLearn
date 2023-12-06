@@ -10,10 +10,10 @@ namespace ObjectiveLearn.Shared;
 
 public class ShapeHelpers
 {
-    public static TlObj CreateShape(SerializableShape shape)
+    public static TankLiteObj CreateShape(SerializableShape shape)
     {
         return CreateShape(
-            new TlString(shape.Type),
+            new TankLiteString(shape.Type),
             new Point(shape.X, shape.Y),
             new Size(shape.Width, shape.Height),
             shape.Rotation,
@@ -24,17 +24,17 @@ public class ShapeHelpers
             );
     }
 
-    public static TlObj CreateShape(TlFuncArgs args, TlString shapeType)
+    public static TankLiteObj CreateShape(TankLiteFuncArgs args, TankLiteString shapeType)
     {
-        var x = ((TlInt)args.Args[0]).Value;
-        var y = ((TlInt)args.Args[1]).Value;
-        var w = ((TlInt)args.Args[2]).Value;
-        var h = ((TlInt)args.Args[3]).Value;
-        var a = args.Args.Length >= 5 ? ((TlInt)args.Args[4]).Value : 0;
-        var r = args.Args.Length >= 8 ? ((TlInt)args.Args[5]).Value : 255;
-        var g = args.Args.Length >= 8 ? ((TlInt)args.Args[6]).Value : 0;
-        var b = args.Args.Length >= 8 ? ((TlInt)args.Args[7]).Value : 0;
-        var alpha = args.Args.Length >= 9 ? ((TlInt)args.Args[8]).Value : 255;
+        var x = ((TankLiteInt)args.Args[0]).Value;
+        var y = ((TankLiteInt)args.Args[1]).Value;
+        var w = ((TankLiteInt)args.Args[2]).Value;
+        var h = ((TankLiteInt)args.Args[3]).Value;
+        var a = args.Args.Length >= 5 ? ((TankLiteInt)args.Args[4]).Value : 0;
+        var r = args.Args.Length >= 8 ? ((TankLiteInt)args.Args[5]).Value : 255;
+        var g = args.Args.Length >= 8 ? ((TankLiteInt)args.Args[6]).Value : 0;
+        var b = args.Args.Length >= 8 ? ((TankLiteInt)args.Args[7]).Value : 0;
+        var alpha = args.Args.Length >= 9 ? ((TankLiteInt)args.Args[8]).Value : 255;
 
         return CreateShape(
             shapeType,
@@ -48,8 +48,8 @@ public class ShapeHelpers
             );
     }
 
-    public static TlObj CreateShape(
-        TlString shapeType,
+    public static TankLiteObj CreateShape(
+        TankLiteString shapeType,
         Point location,
         Size size,
         int rotation,
@@ -59,43 +59,43 @@ public class ShapeHelpers
         int a
         )
     {
-        var obj = new TlObj
+        var obj = new TankLiteObj
         {
-            Value = new Dictionary<string, TlValue>
+            Value = new Dictionary<string, TankLiteValue>
             {
-                { TlName.Type, shapeType },
-                { TlName.XPos, new TlInt(location.X) },
-                { TlName.YPos, new TlInt(location.Y) },
-                { TlName.Width, new TlInt(size.Width) },
-                { TlName.Height, new TlInt(size.Height) },
-                { TlName.Rotation, new TlInt(rotation) },
+                { TankLiteName.Type, shapeType },
+                { TankLiteName.XPos, new TankLiteInt(location.X) },
+                { TankLiteName.YPos, new TankLiteInt(location.Y) },
+                { TankLiteName.Width, new TankLiteInt(size.Width) },
+                { TankLiteName.Height, new TankLiteInt(size.Height) },
+                { TankLiteName.Rotation, new TankLiteInt(rotation) },
                 {
-                    TlName.Color,
-                    new TlObj
+                    TankLiteName.Color,
+                    new TankLiteObj
                     {
-                        Value = new Dictionary<string, TlValue>
+                        Value = new Dictionary<string, TankLiteValue>
                         {
-                            { TlName.Red, new TlInt(r) },
-                            { TlName.Green, new TlInt(g) },
-                            { TlName.Blue, new TlInt(b) },
-                            { TlName.Alpha, new TlInt(a) }
+                            { TankLiteName.Red, new TankLiteInt(r) },
+                            { TankLiteName.Green, new TankLiteInt(g) },
+                            { TankLiteName.Blue, new TankLiteInt(b) },
+                            { TankLiteName.Alpha, new TankLiteInt(a) }
                         }
                     }
                 },
-                { TlName.SetPosition, new TlFunc(SetPosition, "void") },
-                { TlName.SetSize, new TlFunc(SetSize, "void") },
-                { TlName.SetColor, new TlFunc(SetColor, "void") },
-                { TlName.SetRotation, new TlFunc(SetRotation, "void") },
-                { TlName.Move, new TlFunc(Move, "void") }
+                { TankLiteName.SetPosition, new TankLiteFunc(SetPosition, "void") },
+                { TankLiteName.SetSize, new TankLiteFunc(SetSize, "void") },
+                { TankLiteName.SetColor, new TankLiteFunc(SetColor, "void") },
+                { TankLiteName.SetRotation, new TankLiteFunc(SetRotation, "void") },
+                { TankLiteName.Move, new TankLiteFunc(Move, "void") }
             }
         };
         return obj;
     }
 
-    private static TlValue SetPosition(TlFuncArgs args)
+    private static TankLiteValue SetPosition(TankLiteFuncArgs args)
     {
         if (args.Args.Length != 2) {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.ErrorExpectedArgs)
                     .Replace("{expected}", "2")
@@ -106,8 +106,8 @@ public class ShapeHelpers
         for (var i = 0; i < args.Args.Length; i++) {
             var arg = args.Args[i];
 
-            if (arg.Type != TlName.Int) {
-                return new TlError(
+            if (arg.Type != TankLiteName.Int) {
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", i.ToString())
@@ -116,16 +116,16 @@ public class ShapeHelpers
             }
         }
 
-        args.Parent.Value[TlName.XPos] = (TlInt)args.Args[0];
-        args.Parent.Value[TlName.YPos] = (TlInt)args.Args[1];
+        args.Parent.Value[TankLiteName.XPos] = (TankLiteInt)args.Args[0];
+        args.Parent.Value[TankLiteName.YPos] = (TankLiteInt)args.Args[1];
 
-        return new TlVoid();
+        return new TankLiteVoid();
     }
 
-    private static TlValue SetSize(TlFuncArgs args)
+    private static TankLiteValue SetSize(TankLiteFuncArgs args)
     {
         if (args.Args.Length != 2) {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.ErrorExpectedArgs)
                     .Replace("{expected}", "2")
@@ -136,8 +136,8 @@ public class ShapeHelpers
         for (var i = 0; i < args.Args.Length; i++) {
             var arg = args.Args[i];
 
-            if (arg.Type != TlName.Int) {
-                return new TlError(
+            if (arg.Type != TankLiteName.Int) {
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", i.ToString())
@@ -146,16 +146,16 @@ public class ShapeHelpers
             }
         }
 
-        args.Parent.Value[TlName.Width] = (TlInt)args.Args[0];
-        args.Parent.Value[TlName.Height] = (TlInt)args.Args[1];
+        args.Parent.Value[TankLiteName.Width] = (TankLiteInt)args.Args[0];
+        args.Parent.Value[TankLiteName.Height] = (TankLiteInt)args.Args[1];
 
-        return new TlVoid();
+        return new TankLiteVoid();
     }
 
-    private static TlValue SetColor(TlFuncArgs args)
+    private static TankLiteValue SetColor(TankLiteFuncArgs args)
     {
         if (args.Args.Length != 3 && args.Args.Length != 4) {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.ErrorExpectedArgs)
                     .Replace("{expected}", "3 {or} 4")
@@ -167,8 +167,8 @@ public class ShapeHelpers
         for (var i = 0; i < args.Args.Length; i++) {
             var arg = args.Args[i];
 
-            if (arg.Type != TlName.Int) {
-                return new TlError(
+            if (arg.Type != TankLiteName.Int) {
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", i.ToString())
@@ -176,10 +176,10 @@ public class ShapeHelpers
                 );
             }
             
-            var value = ((TlInt)arg).Value;
+            var value = ((TankLiteInt)arg).Value;
 
             if (value is > 255 or < 0) {
-                return new TlError(
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.ErrorOutsideRange)
                         .Replace("{i}", i.ToString())
@@ -190,20 +190,20 @@ public class ShapeHelpers
             }
         }
 
-        var color = (TlObj)args.Parent.Value[TlName.Color];
+        var color = (TankLiteObj)args.Parent.Value[TankLiteName.Color];
 
-        color.Value[TlName.Red] = (TlInt)args.Args[0];
-        color.Value[TlName.Green] = (TlInt)args.Args[1];
-        color.Value[TlName.Blue] = (TlInt)args.Args[2];
-        color.Value[TlName.Alpha] = args.Args.Length > 3 ? (TlInt)args.Args[3] : new TlInt(255);
+        color.Value[TankLiteName.Red] = (TankLiteInt)args.Args[0];
+        color.Value[TankLiteName.Green] = (TankLiteInt)args.Args[1];
+        color.Value[TankLiteName.Blue] = (TankLiteInt)args.Args[2];
+        color.Value[TankLiteName.Alpha] = args.Args.Length > 3 ? (TankLiteInt)args.Args[3] : new TankLiteInt(255);
 
-        return new TlVoid();
+        return new TankLiteVoid();
     }
 
-    private static TlValue SetRotation(TlFuncArgs args)
+    private static TankLiteValue SetRotation(TankLiteFuncArgs args)
     {
         if (args.Args.Length != 1) {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.ErrorExpectedArgs)
                     .Replace("{expected}", "1")
@@ -211,8 +211,8 @@ public class ShapeHelpers
             );
         }
 
-        if (args.Args[0].Type != TlName.Int) {
-            return new TlError(
+        if (args.Args[0].Type != TankLiteName.Int) {
+            return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.ErrorTypeInferenceArgs)
                         .Replace("{i}", "0")
@@ -220,16 +220,16 @@ public class ShapeHelpers
                 );
         }
 
-        args.Parent.Value[TlName.Rotation] = (TlInt)args.Args[0];
+        args.Parent.Value[TankLiteName.Rotation] = (TankLiteInt)args.Args[0];
 
-        return new TlVoid();
+        return new TankLiteVoid();
     }
 
-    private static TlValue Move(TlFuncArgs args)
+    private static TankLiteValue Move(TankLiteFuncArgs args)
     {
         if (args.Args.Length != 2)
         {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.ErrorExpectedArgs)
                     .Replace("{expected}", "2")
@@ -238,11 +238,11 @@ public class ShapeHelpers
         }
 
         var anyIsInt = args.Args
-            .Any(arg => arg.Type != TlName.Int);
+            .Any(arg => arg.Type != TankLiteName.Int);
 
         if (anyIsInt)
         {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.ErrorTypeInferenceArgs)
                     .Replace("{i}", "0")
@@ -250,9 +250,9 @@ public class ShapeHelpers
             );
         }
 
-        args.Parent.Value[TlName.XPos].Add(args.Args[0]);
-        args.Parent.Value[TlName.YPos].Add(args.Args[1]);
+        args.Parent.Value[TankLiteName.XPos].Add(args.Args[0]);
+        args.Parent.Value[TankLiteName.YPos].Add(args.Args[1]);
 
-        return new TlVoid();
+        return new TankLiteVoid();
     }
 }

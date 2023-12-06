@@ -1,25 +1,25 @@
 ﻿namespace TankLite.Values;
 
-public class TlString : TlValue
+public class TankLiteString : TankLiteValue
 {
     public override string Type { get; set; } = "string";
     public string Value { get; set; }
 
-    public TlString(string value)
+    public TankLiteString(string value)
     {
         Value = value;
     }
 
-    public override TlValue Add(TlValue other)
+    public override TankLiteValue Add(TankLiteValue other)
     {
         switch (other.Type)
         {
             case "string":
-                Value += ((TlString)other).Value;
+                Value += ((TankLiteString)other).Value;
                 return this;
 
             default:
-                return new TlError(
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotAdd)
                         .Replace("{type1}", Type)
