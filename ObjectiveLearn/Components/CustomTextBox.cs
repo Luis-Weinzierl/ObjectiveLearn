@@ -124,22 +124,14 @@ public class CustomTextBox : KeyboardDrawable
         var currentColor = Color;
         var buffer = string.Empty;
 
-        void Draw()
-        {
-            if (buffer.Length <= 0) return;
-
-            g.DrawText(Font, Enabled ? new SolidBrush(currentColor) : DisabledTextBrush, distanceLeft, distanceTop, buffer);
-            distanceLeft += Font.MeasureString(buffer).Width;
-            buffer = string.Empty;
-        }
-
         for (var index = 0; index < _textContent.Length; index++)
         {
             var textChar = _textContent[index];
 
-            if (TextColorRanges.TryGetValue(index, out var range
-                ))
+            if (TextColorRanges.TryGetValue(index, out var range))
             {
+                Debug.WriteLine(string.Join(", ", TextColorRanges.Select(model => $"{model.Key} : {model.Value}")));
+                Debug.WriteLine($"Setting Color to {range} after drawing {buffer} in {currentColor} with idx {index}");
                 Draw();
                 currentColor = range;
             }
@@ -148,6 +140,16 @@ public class CustomTextBox : KeyboardDrawable
         }
 
         Draw();
+        return;
+
+        void Draw()
+        {
+            if (buffer.Length <= 0) return;
+
+            g.DrawText(Font, Enabled ? new SolidBrush(currentColor) : DisabledTextBrush, distanceLeft, distanceTop, buffer);
+            distanceLeft += Font.MeasureString(buffer).Width;
+            buffer = string.Empty;
+        }
     }
 
     protected override void OnMouseUp(MouseEventArgs e)
@@ -408,9 +410,11 @@ public class CustomTextBox : KeyboardDrawable
             foreach (Match match in matches)
             {
                 var group = match.Groups[regexMatch.Group];
-                Debug.WriteLine(group.Index);
                 dict[group.Index] = regexMatch.Color;
-                dict[group.Index + group.Length] = Color;
+                if (!(dict.ContainsKey(group.Index + group.Length) && dict[group.Index + group.Length] == Color))
+                {
+                    dict[group.Index + group.Length] = Color;
+                }
             }
         }
 
@@ -450,20 +454,32 @@ public class CustomTextBox : KeyboardDrawable
         new() // Constructors
         {
             Group = 1,
-            Regex = new(@"new ([a-zA-Z_][a-zA-Z0-9_]*)(\((.^[\(\);])*\))"),
+            Regex = new(@"new ([a-zA-Z_][a-zA-Z0-9_]*)(\(([^\(\);])*\))"),
             Color = Color.FromArgb(6, 214, 160)
         },
-        new() // 
+        new() // Keywords
+        {
+            Group = 1,
+            Regex = new("(?<![a-zA-Z0-9_.])(var|new)(?![a-zA-Z0-9_.])"),
+            Color = Color.FromArgb(46, 134, 171)
+        },
+        new() // Symbols
         {
             Group = 0,
             Regex = new(@"\(|\)|=|;|,|\."),
             Color = Color.FromArgb(101, 107, 123)
         },
-        new()
+        new() // Strings
         {
-            Group = 1,
-            Regex = new("(?<![a-zA-Z0-9_.])(var|new)(?![a-zA-Z0-9_.])"),
-            Color = Color.FromArgb(46, 134, 171)
+            Group = 0,
+            Regex = new(@"""[^""]*"""),
+            Color = Color.FromArgb(244, 211, 94)
+        },
+        new() // Numbers
+        {
+            Group = 0,
+            Regex = new(@"[0-9]+(\.[0-9]+)?"),
+            Color = Color.FromArgb(244, 240, 187)
         },
     };
 
