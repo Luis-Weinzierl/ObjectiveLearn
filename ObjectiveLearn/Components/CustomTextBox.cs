@@ -453,12 +453,6 @@ public class CustomTextBox : KeyboardDrawable
             Regex = new Regex("(?<![a-zA-Z0-9_.])(var|new)(?![a-zA-Z0-9_.])"),
             Color = Color.FromArgb(46, 134, 171)
         },
-        new() // Symbols
-        {
-            Group = 0,
-            Regex = new Regex(@"\(|\)|=|;|,|\."),
-            Color = Color.FromArgb(101, 107, 123)
-        },
         new() // Strings
         {
             Group = 0,
@@ -470,6 +464,12 @@ public class CustomTextBox : KeyboardDrawable
             Group = 0,
             Regex = new Regex(@"[0-9]+(\.[0-9]+)?"),
             Color = Color.FromArgb(244, 240, 187)
+        },
+        new() // Symbols
+        {
+            Group = 0,
+            Regex = new Regex(@"\(|\)|=|;|,|\."),
+            Color = Color.FromArgb(101, 107, 123)
         }
     };
 
