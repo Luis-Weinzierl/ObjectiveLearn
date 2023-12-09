@@ -11,20 +11,20 @@ using TankLite.Values;
 
 namespace TankLite;
 
-public class TankLiteVisitor : TankLiteBaseVisitor<TlValue>
+public class TankLiteVisitor : TankLiteBaseVisitor<TankLiteValue>
 {
-    public Dictionary<string, TlValue> Variables { get; set; } = new();
+    public Dictionary<string, TankLiteValue> Variables { get; set; } = new();
 
-    public override TlValue VisitFncall([NotNull] TankLiteParser.FncallContext context)
+    public override TankLiteValue VisitFncall([NotNull] TankLiteParser.FncallContext context)
     {
         var breadcrumbs = context.deepIdent().IDENT().Select(i => i.GetText()).ToArray();
 
         var value = Variables.Get(breadcrumbs);
-        var parent = breadcrumbs.Length > 1 ? (TlObj)Variables.Get(breadcrumbs[..^1]) : null;
+        var parent = breadcrumbs.Length > 1 ? (TankLiteObj)Variables.Get(breadcrumbs[..^1]) : null;
 
         if (value is null) 
         {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.TankLiteVariableDoesNotExist)
                     .Replace("{name}", string.Join('.', breadcrumbs))
@@ -33,7 +33,7 @@ public class TankLiteVisitor : TankLiteBaseVisitor<TlValue>
 
         if (!value.Type.StartsWith("func"))
         {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.TankLiteVariableNotFunction)
                     .Replace("{name}", string.Join('.', breadcrumbs))
@@ -42,9 +42,9 @@ public class TankLiteVisitor : TankLiteBaseVisitor<TlValue>
         }
 
         var args = context.expr().Select(Visit).ToArray();
-        var fn = (TlFunc)value;
+        var fn = (TankLiteFunc)value;
 
-        var fnArgs = new TlFuncArgs
+        var fnArgs = new TankLiteFuncArgs
         {
             Args = args,
             Parent = parent
@@ -53,34 +53,34 @@ public class TankLiteVisitor : TankLiteBaseVisitor<TlValue>
         return fn.Value(fnArgs);
     }
 
-    public override TlValue VisitConstantExpression([NotNull] TankLiteParser.ConstantExpressionContext context)
+    public override TankLiteValue VisitConstantExpression([NotNull] TankLiteParser.ConstantExpressionContext context)
     {
         var ctx = context.constant();
 
         if (ctx.BOOL() is { } b)
         {
-            return new TlBool(b.GetText() == "true");
+            return new TankLiteBool(b.GetText() == "true");
         }
 
         if (ctx.FLOAT() is { } f)
         {
-            return new TlFloat(float.Parse(f.GetText(), CultureInfo.InvariantCulture));
+            return new TankLiteFloat(float.Parse(f.GetText(), CultureInfo.InvariantCulture));
         }
 
         if (ctx.INT() is { } i)
         {
-            return new TlInt(int.Parse(i.GetText(), CultureInfo.InvariantCulture));
+            return new TankLiteInt(int.Parse(i.GetText(), CultureInfo.InvariantCulture));
         }
 
         if (ctx.STRING() is { } s)
         {
-            return new TlString(s.GetText()[1..^1]);
+            return new TankLiteString(s.GetText()[1..^1]);
         }
 
-        return new TlError("Shit happened");
+        return new TankLiteError("Shit happened");
     }
 
-    public override TlValue VisitIdentifierExpression([NotNull] TankLiteParser.IdentifierExpressionContext context)
+    public override TankLiteValue VisitIdentifierExpression([NotNull] TankLiteParser.IdentifierExpressionContext context)
     {
         var breadcrumbs = context.deepIdent().IDENT().Select(i => i.GetText()).ToList();
 
@@ -88,7 +88,7 @@ public class TankLiteVisitor : TankLiteBaseVisitor<TlValue>
 
         if (value is null)
         {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.TankLiteVariableDoesNotExist)
                     .Replace("{name}", string.Join('.', breadcrumbs))
@@ -98,7 +98,7 @@ public class TankLiteVisitor : TankLiteBaseVisitor<TlValue>
         return value;
     }
 
-    public override TlValue VisitMultiplicationExpression([NotNull] TankLiteParser.MultiplicationExpressionContext context)
+    public override TankLiteValue VisitMultiplicationExpression([NotNull] TankLiteParser.MultiplicationExpressionContext context)
     {
         var first = Visit(context.expr(0));
         var second = Visit(context.expr(1));
@@ -111,7 +111,7 @@ public class TankLiteVisitor : TankLiteBaseVisitor<TlValue>
         };
     }
 
-    public override TlValue VisitAdditiveExpression([NotNull] TankLiteParser.AdditiveExpressionContext context)
+    public override TankLiteValue VisitAdditiveExpression([NotNull] TankLiteParser.AdditiveExpressionContext context)
     {
         var first = Visit(context.expr(0));
         var second = Visit(context.expr(1));
@@ -124,40 +124,40 @@ public class TankLiteVisitor : TankLiteBaseVisitor<TlValue>
         };
     }
 
-    public override TlValue VisitAssignment([NotNull] TankLiteParser.AssignmentContext context)
+    public override TankLiteValue VisitAssignment([NotNull] TankLiteParser.AssignmentContext context)
     {
         Variables[context.IDENT().GetText()] = Visit(context.expr());
 
-        return new TlVoid();
+        return new TankLiteVoid();
     }
 
-    public override TlValue VisitReassignment([NotNull] TankLiteParser.ReassignmentContext context)
+    public override TankLiteValue VisitReassignment([NotNull] TankLiteParser.ReassignmentContext context)
     {
         var value = Visit(context.expr());
         var breadcrumbs = context.deepIdent().IDENT().Select(i => i.GetText()).ToList();
 
         Variables.Set(breadcrumbs, value);
 
-        return new TlVoid();
+        return new TankLiteVoid();
     }
 
-    public override TlValue VisitConstructorExpression([NotNull] TankLiteParser.ConstructorExpressionContext context)
+    public override TankLiteValue VisitConstructorExpression([NotNull] TankLiteParser.ConstructorExpressionContext context)
     {
         var name = context.IDENT().GetText();
 
         if (!Variables.TryGetValue(name, out var value) || value.Type != "object")
         {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.TankLiteClassDoesNotExist)
                     .Replace("{name}", name)
             );
         }
 
-        var constructor = ((TlFunc)((TlObj)value).Value[".ctor"]).Value;
+        var constructor = ((TankLiteFunc)((TankLiteObj)value).Value[".ctor"]).Value;
         var args = context.expr().Select(Visit).ToArray();
 
-        var fnArgs = new TlFuncArgs
+        var fnArgs = new TankLiteFuncArgs
         {
             Args = args
         };

@@ -3,13 +3,13 @@ using TankLite.Models;
 
 namespace TankLite.Values;
 
-public class TlFunc : TlValue
+public class TankLiteFunc : TankLiteValue
 {
     public override bool IsReadonly { get; set; } = true;
     public string ReturnType { get; set; }
-    public Func<TlFuncArgs, TlValue> Value { get; set; }
+    public Func<TankLiteFuncArgs, TankLiteValue> Value { get; set; }
 
-    public TlFunc(Func<TlFuncArgs, TlValue> func, string returnType)
+    public TankLiteFunc(Func<TankLiteFuncArgs, TankLiteValue> func, string returnType)
     {
         Value = func;
         base.Type = $"func<{returnType}>";

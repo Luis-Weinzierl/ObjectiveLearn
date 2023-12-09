@@ -290,10 +290,10 @@ public class Canvas : Drawable
         App.TankVm.Visitor.Variables[$"form{Shape.IdCounter}"] = ShapeHelpers.CreateShape(
             App.Tool switch
             {
-                ShapeTool.Rectangle => TlName.RectangleType,
-                ShapeTool.Triangle => TlName.TriangleType,
-                ShapeTool.Ellipse => TlName.EllipseType,
-                _ => TlName.RectangleType
+                ShapeTool.Rectangle => TankLiteName.RectangleType,
+                ShapeTool.Triangle => TankLiteName.TriangleType,
+                ShapeTool.Ellipse => TankLiteName.EllipseType,
+                _ => TankLiteName.RectangleType
             },
             startPoint,
             new Size((int)width, (int)height),
@@ -322,35 +322,35 @@ public class Canvas : Drawable
 
         foreach (var variable in App.TankVm.Visitor.Variables)
         {
-            if (variable.Value.Type != TlName.Object)
+            if (variable.Value.Type != TankLiteName.Object)
             {
                 continue;
             }
 
-            var obj = (TlObj)variable.Value;
+            var obj = (TankLiteObj)variable.Value;
 
-            if (!obj.Value.ContainsKey(TlName.Type))
+            if (!obj.Value.ContainsKey(TankLiteName.Type))
             {
                 continue;
             }
 
-            var type = (TlString)obj.Value[TlName.Type];
-            var x = (TlInt)obj.Value[TlName.XPos];
-            var y = (TlInt)obj.Value[TlName.YPos];
-            var w = (TlInt)obj.Value[TlName.Width];
-            var h = (TlInt)obj.Value[TlName.Height];
-            var r = (TlInt)obj.Value[TlName.Rotation];
+            var type = (TankLiteString)obj.Value[TankLiteName.Type];
+            var x = (TankLiteInt)obj.Value[TankLiteName.XPos];
+            var y = (TankLiteInt)obj.Value[TankLiteName.YPos];
+            var w = (TankLiteInt)obj.Value[TankLiteName.Width];
+            var h = (TankLiteInt)obj.Value[TankLiteName.Height];
+            var r = (TankLiteInt)obj.Value[TankLiteName.Rotation];
 
-            var color = (TlObj)obj.Value[TlName.Color];
+            var color = (TankLiteObj)obj.Value[TankLiteName.Color];
 
-            var red     = (TlInt)color.Value[TlName.Red];
-            var green   = (TlInt)color.Value[TlName.Green];
-            var blue    = (TlInt)color.Value[TlName.Blue];
-            var alpha   = (TlInt)color.Value[TlName.Alpha];
+            var red     = (TankLiteInt)color.Value[TankLiteName.Red];
+            var green   = (TankLiteInt)color.Value[TankLiteName.Green];
+            var blue    = (TankLiteInt)color.Value[TankLiteName.Blue];
+            var alpha   = (TankLiteInt)color.Value[TankLiteName.Alpha];
 
             Shape shape;
 
-            if (type.Value == TlName.Rectangle)
+            if (type.Value == TankLiteName.Rectangle)
             {
                 shape = new Rectangle(
                     new Size(w.Value, h.Value),
@@ -364,7 +364,7 @@ public class Canvas : Drawable
                         )
                     );
             }
-            else if (type.Value == TlName.Triangle)
+            else if (type.Value == TankLiteName.Triangle)
             {
                 shape = new Triangle(
                     
@@ -379,7 +379,7 @@ public class Canvas : Drawable
                         )
                     );
             }
-            else if (type.Value == TlName.Ellipse)
+            else if (type.Value == TankLiteName.Ellipse)
             {
                 shape = new Ellipse(
                     new Size(w.Value, h.Value),
@@ -421,17 +421,17 @@ public class Canvas : Drawable
     public void SetColor(Color color) {
         if (SelectedShape is {} s) {
             var name = s.ReferencedShape.VariableName;
-            var colorName = LanguageManager.Get(LanguageName.TlNameColor);
-            var r = LanguageManager.Get(LanguageName.TlNameRed);
-            var g = LanguageManager.Get(LanguageName.TlNameGreen);
-            var b = LanguageManager.Get(LanguageName.TlNameBlue);
-            var a = LanguageManager.Get(LanguageName.TlNameAlpha);
-            var shapeObj = (TlObj)App.TankVm.Visitor.Variables[name];
-            var colorObj = (TlObj)shapeObj.Value[colorName];
-            colorObj.Value[r] = new TlInt(color.Rb);
-            colorObj.Value[g] = new TlInt(color.Gb);
-            colorObj.Value[b] = new TlInt(color.Bb);
-            colorObj.Value[a] = new TlInt(color.Ab);
+            var colorName = LanguageManager.Get(LanguageName.TankLiteNameColor);
+            var r = LanguageManager.Get(LanguageName.TankLiteNameRed);
+            var g = LanguageManager.Get(LanguageName.TankLiteNameGreen);
+            var b = LanguageManager.Get(LanguageName.TankLiteNameBlue);
+            var a = LanguageManager.Get(LanguageName.TankLiteNameAlpha);
+            var shapeObj = (TankLiteObj)App.TankVm.Visitor.Variables[name];
+            var colorObj = (TankLiteObj)shapeObj.Value[colorName];
+            colorObj.Value[r] = new TankLiteInt(color.Rb);
+            colorObj.Value[g] = new TankLiteInt(color.Gb);
+            colorObj.Value[b] = new TankLiteInt(color.Bb);
+            colorObj.Value[a] = new TankLiteInt(color.Ab);
             App.SideBar.SelectObject(SelectedShape.ReferencedShape);
             UpdateShapes();
         }
@@ -444,9 +444,9 @@ public class Canvas : Drawable
         if (SelectedShape is null) return;
 
         var name = SelectedShape.ReferencedShape.VariableName;
-        var rot = LanguageManager.Get(LanguageName.TlNameRotation);
-        var shapeObj = (TlObj)App.TankVm.Visitor.Variables[name];
-        shapeObj.Value[rot] = new TlInt(newRotation);
+        var rot = LanguageManager.Get(LanguageName.TankLiteNameRotation);
+        var shapeObj = (TankLiteObj)App.TankVm.Visitor.Variables[name];
+        shapeObj.Value[rot] = new TankLiteInt(newRotation);
         App.SideBar.SelectObject(SelectedShape.ReferencedShape);
         UpdateShapes();
     }
@@ -455,11 +455,11 @@ public class Canvas : Drawable
         if (SelectedShape is null) return;
 
         var name = SelectedShape.ReferencedShape.VariableName;
-        var x = LanguageManager.Get(LanguageName.TlNameXPos);
-        var y = LanguageManager.Get(LanguageName.TlNameYPos);
-        var shapeObj = (TlObj)App.TankVm.Visitor.Variables[name];
-        shapeObj.Value[x] = new TlInt((int)newPos.X);
-        shapeObj.Value[y] = new TlInt((int)newPos.Y);
+        var x = LanguageManager.Get(LanguageName.TankLiteNameXPos);
+        var y = LanguageManager.Get(LanguageName.TankLiteNameYPos);
+        var shapeObj = (TankLiteObj)App.TankVm.Visitor.Variables[name];
+        shapeObj.Value[x] = new TankLiteInt((int)newPos.X);
+        shapeObj.Value[y] = new TankLiteInt((int)newPos.Y);
         App.SideBar.SelectObject(SelectedShape.ReferencedShape);
         UpdateShapes();
     }

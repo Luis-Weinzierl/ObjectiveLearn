@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -124,22 +122,14 @@ public class CustomTextBox : KeyboardDrawable
         var currentColor = Color;
         var buffer = string.Empty;
 
-        void Draw()
-        {
-            if (buffer.Length <= 0) return;
-
-            g.DrawText(Font, Enabled ? new SolidBrush(currentColor) : DisabledTextBrush, distanceLeft, distanceTop, buffer);
-            distanceLeft += Font.MeasureString(buffer).Width;
-            buffer = string.Empty;
-        }
-
         for (var index = 0; index < _textContent.Length; index++)
         {
             var textChar = _textContent[index];
 
-            if (TextColorRanges.TryGetValue(index, out var range
-                ))
+            if (TextColorRanges.TryGetValue(index, out var range))
             {
+                Debug.WriteLine(string.Join(", ", TextColorRanges.Select(model => $"{model.Key} : {model.Value}")));
+                Debug.WriteLine($"Setting Color to {range} after drawing {buffer} in {currentColor} with idx {index}");
                 Draw();
                 currentColor = range;
             }
@@ -148,6 +138,16 @@ public class CustomTextBox : KeyboardDrawable
         }
 
         Draw();
+        return;
+
+        void Draw()
+        {
+            if (buffer.Length <= 0) return;
+
+            g.DrawText(Font, Enabled ? new SolidBrush(currentColor) : DisabledTextBrush, distanceLeft, distanceTop, buffer);
+            distanceLeft += Font.MeasureString(buffer).Width;
+            buffer = string.Empty;
+        }
     }
 
     protected override void OnMouseUp(MouseEventArgs e)
@@ -401,6 +401,13 @@ public class CustomTextBox : KeyboardDrawable
     {
         var dict = new Dictionary<int, Color>();
 
+        foreach (var regexMatch in ColorPatterns)
+        {
+            MatchRegex(regexMatch);
+        }
+
+        return dict;
+
         void MatchRegex(ColoredRegexMatch regexMatch)
         {
             var matches = regexMatch.Regex.Matches(Text);
@@ -408,18 +415,13 @@ public class CustomTextBox : KeyboardDrawable
             foreach (Match match in matches)
             {
                 var group = match.Groups[regexMatch.Group];
-                Debug.WriteLine(group.Index);
                 dict[group.Index] = regexMatch.Color;
-                dict[group.Index + group.Length] = Color;
+                if (!(dict.ContainsKey(group.Index + group.Length) && dict[group.Index + group.Length] == Color))
+                {
+                    dict[group.Index + group.Length] = Color;
+                }
             }
         }
-
-        foreach (var regexMatch in ColorPatterns)
-        {
-            MatchRegex(regexMatch);
-        }
-
-        return dict;
     }
 
     private async void StartBlinkingCursor(CancellationToken cancellationToken)
@@ -433,45 +435,49 @@ public class CustomTextBox : KeyboardDrawable
     }
 
     private static readonly ColoredRegexMatch[] ColorPatterns = {
-        /*
-        new()
-        {
-            Group = 0,
-            Regex = new(@"."),
-            Color = Color.FromArgb(255, 0, 0)
-        },
-        */
         new() // Methods
         {
             Group = 1,
-            Regex = new(@"([a-zA-Z_][a-zA-Z0-9_]*)(\((.^[\(\);])*\))"), 
+            Regex = new Regex(@"([a-zA-Z_][a-zA-Z0-9_]*)(\((.^[\(\);])*\))"), 
             Color = Color.FromArgb(255, 209, 102)
         },
         new() // Constructors
         {
             Group = 1,
-            Regex = new(@"new ([a-zA-Z_][a-zA-Z0-9_]*)(\((.^[\(\);])*\))"),
+            Regex = new Regex(@"new ([a-zA-Z_][a-zA-Z0-9_]*)(\(([^\(\);])*\))"),
             Color = Color.FromArgb(6, 214, 160)
         },
-        new() // 
-        {
-            Group = 0,
-            Regex = new(@"\(|\)|=|;|,|\."),
-            Color = Color.FromArgb(101, 107, 123)
-        },
-        new()
+        new() // Keywords
         {
             Group = 1,
-            Regex = new("(?<![a-zA-Z0-9_.])(var|new)(?![a-zA-Z0-9_.])"),
+            Regex = new Regex("(?<![a-zA-Z0-9_.])(var|new)(?![a-zA-Z0-9_.])"),
             Color = Color.FromArgb(46, 134, 171)
         },
+        new() // Strings
+        {
+            Group = 0,
+            Regex = new Regex(@"""[^""]*"""),
+            Color = Color.FromArgb(244, 211, 94)
+        },
+        new() // Numbers
+        {
+            Group = 0,
+            Regex = new Regex(@"[0-9]+(\.[0-9]+)?"),
+            Color = Color.FromArgb(244, 240, 187)
+        },
+        new() // Symbols
+        {
+            Group = 0,
+            Regex = new Regex(@"\(|\)|=|;|,|\."),
+            Color = Color.FromArgb(101, 107, 123)
+        }
     };
 
     private struct ColoredRegexMatch
     {
-        public int Group { get; set; }
-        public Regex Regex { get; set; }
-        public Color Color { get; set; }
+        public int Group { get; init; }
+        public Regex Regex { get; init; }
+        public Color Color { get; init; }
 
     }
 }

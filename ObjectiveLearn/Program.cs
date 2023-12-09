@@ -25,7 +25,7 @@ public class Program
         var language = languageBuilder.Build();
 
         LanguageManager.Init(language);
-        TlName.Init();
+        TankLiteName.Init();
 
         new Application(Eto.Platform.Detect).Run(new MainForm());
 	}

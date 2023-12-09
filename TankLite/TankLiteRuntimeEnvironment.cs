@@ -9,7 +9,7 @@ public class TankLiteRuntimeEnvironment
 {
     public TankLiteVisitor Visitor { get; set; } = new();
 
-    public TankLiteRuntimeEnvironment(Dictionary<string, TlValue> variables)
+    public TankLiteRuntimeEnvironment(Dictionary<string, TankLiteValue> variables)
     {
         var clone = variables.ToDictionary(entry => entry.Key,
             entry => entry.Value);

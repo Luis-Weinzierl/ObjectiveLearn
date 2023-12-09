@@ -7,11 +7,11 @@ namespace ObjectiveLearn.Shared;
 
 public class EllipseHelpers
 {
-    public static TlValue Constructor(TlFuncArgs args)
+    public static TankLiteValue Constructor(TankLiteFuncArgs args)
     {
         if (args.Args.Length != 8 && args.Args.Length != 4 && args.Args.Length != 5 && args.Args.Length != 9)
         {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.ErrorExpectedArgs)
                     .Replace("{expected}", "4, 5, 8 {or} 9")
@@ -23,9 +23,9 @@ public class EllipseHelpers
         for (var i = 0; i < args.Args.Length; i++)
         {
             var arg = args.Args[i];
-            if (arg.Type != TlName.Int)
+            if (arg.Type != TankLiteName.Int)
             {
-                return new TlError(
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.ErrorTypeInferenceCtor)
                         .Replace("{i}", i.ToString())
@@ -34,6 +34,6 @@ public class EllipseHelpers
             }
         }
 
-        return ShapeHelpers.CreateShape(args, TlName.EllipseType);
+        return ShapeHelpers.CreateShape(args, TankLiteName.EllipseType);
     }
 }

@@ -58,9 +58,9 @@ public class SideBar : Drawable
     {
         _title = App.Tool switch
         {
-            ShapeTool.Rectangle => TlName.Rectangle,
-            ShapeTool.Triangle => TlName.Triangle,
-            ShapeTool.Ellipse => TlName.Ellipse,
+            ShapeTool.Rectangle => TankLiteName.Rectangle,
+            ShapeTool.Triangle => TankLiteName.Triangle,
+            ShapeTool.Ellipse => TankLiteName.Ellipse,
             _ => throw new NotImplementedException()
         };
 
@@ -159,20 +159,20 @@ public class SideBar : Drawable
         e.Graphics.DrawText(App.TextFont, _textBrush, rect.X + CardPadding, height, _text2);
     }
 
-    public static string GetAllProperties(TlObj obj, string prefix)
+    public static string GetAllProperties(TankLiteObj tankLiteObj, string prefix)
     {
         var propOutput = string.Empty;
 
-        var properties = obj.Value
+        var properties = tankLiteObj.Value
             .Where(property =>
                 !property.Key.StartsWith('.') && 
-                !property.Value.Type.StartsWith(TlName.Func));
+                !property.Value.Type.StartsWith(TankLiteName.Func));
 
         foreach (var property in properties)
         {
-            if (property.Value.Type == TlName.Object)
+            if (property.Value.Type == TankLiteName.Object)
             {
-                var props = GetAllProperties((TlObj)property.Value, $"{prefix}{property.Key}.");
+                var props = GetAllProperties((TankLiteObj)property.Value, $"{prefix}{property.Key}.");
                 propOutput += props;
                 continue;
             }
@@ -183,8 +183,8 @@ public class SideBar : Drawable
         return propOutput;
     }
 
-    private void GetAllProperties(TlObj obj)
+    private void GetAllProperties(TankLiteObj tankLiteObj)
     {
-        _text = GetAllProperties(obj, "");
+        _text = GetAllProperties(tankLiteObj, "");
     }
 }

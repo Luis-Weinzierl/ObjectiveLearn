@@ -8,22 +8,22 @@ namespace TankLite.Extensions;
 
 public static class DictionaryExtensions
 {
-    public static TlValue Get(this Dictionary<string, TlValue> dict, IEnumerable<string> breadcrumbs)
+    public static TankLiteValue Get(this Dictionary<string, TankLiteValue> dict, IEnumerable<string> breadcrumbs)
     {
-        Dictionary<string, TlValue> current = dict;
+        Dictionary<string, TankLiteValue> current = dict;
 
         for (int i = 0; i < breadcrumbs.Count() - 1; i++)
         {
             var name = breadcrumbs.ElementAt(i);
-            if (!current.TryGetValue(name, out TlValue value) || !value.Type.StartsWith("object"))
+            if (!current.TryGetValue(name, out TankLiteValue value) || !value.Type.StartsWith("object"))
             {
                 return null;
             }
 
-            current = ((TlObj)value).Value;
+            current = ((TankLiteObj)value).Value;
         }
 
-        if (!current.TryGetValue(breadcrumbs.Last(), out TlValue returnValue))
+        if (!current.TryGetValue(breadcrumbs.Last(), out TankLiteValue returnValue))
         {
             return null;
         }
@@ -31,9 +31,9 @@ public static class DictionaryExtensions
         return returnValue;
     }
 
-    public static TlValue Set(this Dictionary<string, TlValue> dict, IEnumerable<string> breadcrumbs, TlValue value)
+    public static TankLiteValue Set(this Dictionary<string, TankLiteValue> dict, IEnumerable<string> breadcrumbs, TankLiteValue tankLiteValue)
     {
-        Dictionary<string, TlValue> current = dict;
+        Dictionary<string, TankLiteValue> current = dict;
 
         for (int i = 0; i < breadcrumbs.Count() - 1; i++)
         {
@@ -41,7 +41,7 @@ public static class DictionaryExtensions
 
             if (!current.ContainsKey(name))
             {
-                return new TlError(
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.TankLiteVariableDoesNotExist)
                         .Replace("{name}", string.Join('.', breadcrumbs.ToArray()[..(i + 1)]))
@@ -52,22 +52,22 @@ public static class DictionaryExtensions
 
             if (!obj.Type.StartsWith("object"))
             {
-                return new TlError(
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.TankLiteVariableIsNotObject)
                         .Replace("{name}", string.Join('.', breadcrumbs.ToArray()[..(i + 1)]))
-                        .Replace("{type}", value.Type)
+                        .Replace("{type}", tankLiteValue.Type)
                 );
             }
 
-            current = ((TlObj)obj).Value;
+            current = ((TankLiteObj)obj).Value;
         }
 
         var lastName = breadcrumbs.Last();
 
         if (!current.ContainsKey(lastName))
         {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.TankLiteVariableDoesNotExist)
                     .Replace("{name}", string.Join('.', breadcrumbs))
@@ -78,26 +78,26 @@ public static class DictionaryExtensions
 
         if (last.IsReadonly)
         {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.TankLiteVariableIsReadonly)
                     .Replace("{name}", lastName)
             );
         }
 
-        if (last.Type != value.Type)
+        if (last.Type != tankLiteValue.Type)
         {
-            return new TlError(
+            return new TankLiteError(
                 LanguageManager
                     .Get(LanguageName.TankLiteVarTypeInterference)
-                    .Replace("{valueType}", value.Type)
+                    .Replace("{valueType}", tankLiteValue.Type)
                     .Replace("{name}", string.Join('.', breadcrumbs))
                     .Replace("{type}", last.Type)
             );
         }
 
-        current[lastName] = value;
+        current[lastName] = tankLiteValue;
 
-        return new TlVoid();
+        return new TankLiteVoid();
     }
 }

@@ -19,7 +19,7 @@ public class ConsoleBar : Drawable
 
     public ConsoleBar()
     {
-        TlError.ErrorOccurred += OnErrorOccurred;
+        TankLiteError.ErrorOccurred += OnErrorOccurred;
 
         Draw();
     }

@@ -2,30 +2,30 @@
 
 namespace TankLite.Values;
 
-public class TlFloat : TlValue
+public class TankLiteFloat : TankLiteValue
 {
     public override string Type { get; set; } = "float";
     public float Value { get; set; }
 
-    public TlFloat(float value)
+    public TankLiteFloat(float value)
     {
         Value = value;
     }
 
-    public override TlValue Add(TlValue other)
+    public override TankLiteValue Add(TankLiteValue other)
     {
         switch (other.Type)
         {
             case "float":
-                Value += ((TlFloat)other).Value;
+                Value += ((TankLiteFloat)other).Value;
                 return this;
 
             case "int":
-                Value += ((TlInt)other).Value;
+                Value += ((TankLiteInt)other).Value;
                 return this;
 
             default:
-                return new TlError(
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotAdd)
                         .Replace("{type1}", Type)
@@ -34,20 +34,20 @@ public class TlFloat : TlValue
         }
     }
 
-    public override TlValue Subtract(TlValue other)
+    public override TankLiteValue Subtract(TankLiteValue other)
     {
         switch (other.Type)
         {
             case "float":
-                Value -= ((TlFloat)other).Value;
+                Value -= ((TankLiteFloat)other).Value;
                 return this;
 
             case "int":
-                Value -= ((TlInt)other).Value;
+                Value -= ((TankLiteInt)other).Value;
                 return this;
 
             default:
-                return new TlError(
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotSubtract)
                         .Replace("{type1}", Type)
@@ -56,20 +56,20 @@ public class TlFloat : TlValue
         }
     }
 
-    public override TlValue Multiply(TlValue other)
+    public override TankLiteValue Multiply(TankLiteValue other)
     {
         switch (other.Type)
         {
             case "float":
-                Value *= ((TlFloat)other).Value;
+                Value *= ((TankLiteFloat)other).Value;
                 return this;
 
             case "int":
-                Value *= ((TlInt)other).Value;
+                Value *= ((TankLiteInt)other).Value;
                 return this;
 
             default:
-                return new TlError(
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotMultiply)
                         .Replace("{type1}", Type)
@@ -78,20 +78,20 @@ public class TlFloat : TlValue
         }
     }
 
-    public override TlValue Divide(TlValue other)
+    public override TankLiteValue Divide(TankLiteValue other)
     {
         switch (other.Type)
         {
             case "float":
-                Value /= ((TlFloat)other).Value;
+                Value /= ((TankLiteFloat)other).Value;
                 return this;
 
             case "int":
-                Value /= ((TlInt)other).Value;
+                Value /= ((TankLiteInt)other).Value;
                 return this;
 
             default:
-                return new TlError(
+                return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotDivide)
                         .Replace("{type1}", Type)

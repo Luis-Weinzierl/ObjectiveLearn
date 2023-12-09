@@ -1,12 +1,12 @@
 ﻿namespace TankLite.Values;
 
-public class TlBool : TlValue
+public class TankLiteBool : TankLiteValue
 {
     public override string Type { get; set; } = "bool";
 
     public bool Value { get; set; }
 
-    public TlBool(bool value)
+    public TankLiteBool(bool value)
     {
         Value = value;
     }

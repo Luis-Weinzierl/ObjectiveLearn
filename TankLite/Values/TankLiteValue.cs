@@ -1,40 +1,40 @@
 ﻿namespace TankLite.Values;
 
-public abstract class TlValue
+public abstract class TankLiteValue
 {
     public virtual bool IsReadonly { get; set; } = false;
     public virtual string Type { get; set; }
 
-    public virtual TlValue Add(TlValue _)
+    public virtual TankLiteValue Add(TankLiteValue _)
     {
-        return new TlError(
+        return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotOperate)
                         .Replace("{type}", Type)
                 );
     }
 
-    public virtual TlValue Subtract(TlValue _)
+    public virtual TankLiteValue Subtract(TankLiteValue _)
     {
-        return new TlError(
+        return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotOperate)
                         .Replace("{type}", Type)
                 );
     }
 
-    public virtual TlValue Multiply(TlValue _)
+    public virtual TankLiteValue Multiply(TankLiteValue _)
     {
-        return new TlError(
+        return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotOperate)
                         .Replace("{type}", Type)
                 );
     }
 
-    public virtual TlValue Divide(TlValue _)
+    public virtual TankLiteValue Divide(TankLiteValue _)
     {
-        return new TlError(
+        return new TankLiteError(
                     LanguageManager
                         .Get(LanguageName.TankLiteCannotOperate)
                         .Replace("{type}", Type)
