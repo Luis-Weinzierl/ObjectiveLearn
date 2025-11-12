@@ -1,6 +1,6 @@
 # Objective: Learn
-![version-badge](https://img.shields.io/badge/version-1.4--2-06D6A0)
-![version-badge](https://img.shields.io/badge/.NET%20version-6.0-118AB2?logo=.net)
+![version-badge](https://img.shields.io/badge/version-1.5--2-06D6A0)
+![version-badge](https://img.shields.io/badge/.NET%20version-10.0-118AB2?logo=.net)
 <img src="assets/Header.png" style="width: 100%;">
 
 Objective: Learn ist ein Programm, dass Kindern die Grundzüge von objektorientierter Programmierung spielerisch beibringt.
