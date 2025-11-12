@@ -416,10 +416,15 @@ public class CustomTextBox : KeyboardDrawable
             {
                 var group = match.Groups[regexMatch.Group];
                 dict[group.Index] = regexMatch.Color;
-                if (!(dict.ContainsKey(group.Index + group.Length) && dict[group.Index + group.Length] == Color))
+                for (int i = 1; i < group.Length; i++)
                 {
-                    dict[group.Index + group.Length] = Color;
+                    var j = group.Index + i;
+                    if (dict.ContainsKey(j))
+                        dict.Remove(j);
                 }
+                if (dict.ContainsKey(group.Index + group.Length))
+                    continue;
+                dict[group.Index + group.Length] = Color;
             }
         }
     }
@@ -461,8 +466,8 @@ public class CustomTextBox : KeyboardDrawable
         },
         new() // Numbers
         {
-            Group = 0,
-            Regex = new Regex(@"[0-9]+(\.[0-9]+)?"),
+            Group = 1,
+            Regex = new Regex(@"(?<![a-zA-Z0-9_.])([0-9]+(\.[0-9]+)?)"),
             Color = Color.FromArgb(244, 240, 187)
         },
         new() // Symbols
