@@ -41,7 +41,7 @@ Section "ObjectiveLearn (required)"
   SetOutPath $INSTDIR
   
   ; Put file there
-  File /r ".\ObjectiveLearn\bin\Wpf\Release\net6.0-windows\win-x64\*"
+  File /r ".\ObjectiveLearn\bin\Wpf\Release\net10.0-windows7.0\win-x64\publish\*"
   
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\LuisWeinzierl_ObjectiveLearn "Install_Dir" "$INSTDIR"
