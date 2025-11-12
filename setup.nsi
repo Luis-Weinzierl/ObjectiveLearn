@@ -2,7 +2,7 @@
 Name "Objective: Learn"
 
 ; The file to write
-OutFile "objectivelearnsetup.exe"
+OutFile "objectivelearn-setup-win-x86.exe"
 
 ; Request application privileges for Windows Vista and higher
 RequestExecutionLevel admin
@@ -41,7 +41,7 @@ Section "ObjectiveLearn (required)"
   SetOutPath $INSTDIR
   
   ; Put file there
-  File /r ".\ObjectiveLearn\bin\Wpf\Release\net10.0-windows7.0\win-x64\publish\*"
+  File /r ".\ObjectiveLearn\bin\Wpf\Release\net10.0-windows7.0\win-x64\publish\win-x86\*"
   
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\LuisWeinzierl_ObjectiveLearn "Install_Dir" "$INSTDIR"

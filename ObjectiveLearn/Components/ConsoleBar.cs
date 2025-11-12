@@ -129,7 +129,7 @@ public class ConsoleBar : Drawable
         var dialog = new AboutDialog
         {
             Developers = new [] { "Luis Weinzierl" },
-            Version = "v.1.5-1",
+            Version = "v.1.5-2",
             ProgramDescription = "Objective: Learn ist ein Lernprogramm, das auf den Auftrag von Herrn Schmidt entwickelt wurde, um Schülern die Objektorientierte Programmierung spielerisch beizubringen",
             Copyright = "Luis Weinzierl",
             Website = new Uri("https://github.com/Luis-Weinzierl/ObjectiveLearn"),
