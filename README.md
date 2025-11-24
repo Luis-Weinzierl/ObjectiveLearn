@@ -1,6 +1,6 @@
 # Objective: Learn
-![version-badge](https://img.shields.io/badge/version-1.4--2-06D6A0)
-![version-badge](https://img.shields.io/badge/.NET%20version-6.0-118AB2?logo=.net)
+![version-badge](https://img.shields.io/badge/version-1.5--2-06D6A0)
+![version-badge](https://img.shields.io/badge/.NET%20version-10.0-118AB2?logo=.net)
 <img src="assets/Header.png" style="width: 100%;">
 
 Objective: Learn ist ein Programm, dass Kindern die Grundzüge von objektorientierter Programmierung spielerisch beibringt.
@@ -66,6 +66,6 @@ Objective: Learn unterstützt momentan Deutsch und US-Englisch. Man kann die Spr
 ### Texte bearbeiten 
 Die Texte, die Objective: Learn verwendet, können verändert werden, indem man die `de_DE.json` bzw. `en_US.json` Datei bearbeitet. Eigene Sprachen können ebenfalls hinzugefügt werden, so bei hier das `language` Attribut in der `appsettings.json` auf den Sprachnamen gesetzt werden und eine Datei mit dem Sprachnamen + `.json` erstellt und mit den gleichen JSON-Objekten wie die anderen Sprachdateien befüllt werden muss. Bsp.: Die Sprache GB-Englisch soll hinzugefügt werden. Das Kürzel für diese Sprache lautet `en_GB`. Also muss die Datei `en_GB.json` erstellt werden und der Inhalt einer der anderen Sprachkonfigurationsdateien hinein kopiert werden. Sie können nun die Texte übersetzen. Anschließend müssen sie noch das `language` Attribut auf `en_GB` setzen, und ihre neue Sprache ist erstellt.
 
-# Linuxs Deps
+# Linux Deps
 libgtk-3.0
 fonts-cantarell
