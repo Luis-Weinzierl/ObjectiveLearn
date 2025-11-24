@@ -1,5 +1,5 @@
-version="1.0"
-revision="1"
+version="1.5"
+revision="2"
 
 if ! command -v dotnet &> /dev/null
 then
@@ -23,9 +23,9 @@ do
 done
 
 declare -A build_platforms
-build_platforms[amd64]="ubuntu.16.04-x64"
-build_platforms[arm64]="ubuntu.16.04-arm64"
-build_platforms[x64]="ubuntu.16.04-x64"
+build_platforms[amd64]="ubuntu.24.04-x64"
+build_platforms[arm64]="ubuntu.24.04-arm64"
+build_platforms[x64]="ubuntu.24.04-x64"
 
 mkdir pkgbin
 rm -r pkgbin/*

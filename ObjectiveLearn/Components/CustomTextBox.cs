@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -159,7 +160,9 @@ public class CustomTextBox : KeyboardDrawable
     }
 
     public override void HandleKeyDown(KeyEventArgs e)
-    {   
+    {
+        Console.WriteLine($"Key down: {e.Key}");
+
         // ReSharper disable All
         switch (e.Key)
         // ReSharper restore All
@@ -174,6 +177,13 @@ public class CustomTextBox : KeyboardDrawable
                 RecursiveDelete(_recursionSource.Token);
                 return;
 
+            case Keys.Space:
+                RenewRecursionSource();
+                _currentChar = ' ';
+                Console.WriteLine($"Current char set to {_currentChar}");
+                RecursiveTyping(_recursionSource.Token);
+                return;
+
             default:
                 if (!e.IsChar) return;
 
@@ -185,6 +195,7 @@ public class CustomTextBox : KeyboardDrawable
                 }
 
                 _currentChar = e.KeyChar;
+                Console.WriteLine($"Current char set to {_currentChar}");
                 RecursiveTyping(_recursionSource.Token);
 
                 return;

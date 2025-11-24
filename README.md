@@ -65,3 +65,7 @@ Objective: Learn unterstützt momentan Deutsch und US-Englisch. Man kann die Spr
 
 ### Texte bearbeiten 
 Die Texte, die Objective: Learn verwendet, können verändert werden, indem man die `de_DE.json` bzw. `en_US.json` Datei bearbeitet. Eigene Sprachen können ebenfalls hinzugefügt werden, so bei hier das `language` Attribut in der `appsettings.json` auf den Sprachnamen gesetzt werden und eine Datei mit dem Sprachnamen + `.json` erstellt und mit den gleichen JSON-Objekten wie die anderen Sprachdateien befüllt werden muss. Bsp.: Die Sprache GB-Englisch soll hinzugefügt werden. Das Kürzel für diese Sprache lautet `en_GB`. Also muss die Datei `en_GB.json` erstellt werden und der Inhalt einer der anderen Sprachkonfigurationsdateien hinein kopiert werden. Sie können nun die Texte übersetzen. Anschließend müssen sie noch das `language` Attribut auf `en_GB` setzen, und ihre neue Sprache ist erstellt.
+
+# Linuxs Deps
+libgtk-3.0
+fonts-cantarell

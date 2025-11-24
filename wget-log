@@ -1,0 +1,6 @@
+--2025-11-19 21:49:59--  https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb
+Resolving packages.microsoft.com (packages.microsoft.com)... 13.107.246.45, 13.107.213.45, 2620:1ec:46::45, ...
+Connecting to packages.microsoft.com (packages.microsoft.com)|13.107.246.45|:443... failed: Connection timed out.
+Connecting to packages.microsoft.com (packages.microsoft.com)|13.107.213.45|:443... failed: Connection timed out.
+Connecting to packages.microsoft.com (packages.microsoft.com)|2620:1ec:46::45|:443... failed: Network is unreachable.
+Connecting to packages.microsoft.com (packages.microsoft.com)|2620:1ec:bdf::45|:443... failed: Network is unreachable.

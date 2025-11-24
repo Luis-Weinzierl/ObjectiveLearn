@@ -7,7 +7,7 @@
   -->
 
 	<PropertyGroup>
-		<TargetFramework>net10.0-windows7.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ApplicationIcon>WinIcon.ico</ApplicationIcon>
 	</PropertyGroup>
 	
@@ -65,6 +65,9 @@
         </None>
         <None Update="Resources\Logo.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\LogoS.png">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </None>
         <None Update="Resources\RectangleIcon.png">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>

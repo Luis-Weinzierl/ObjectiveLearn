@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "ObjectiveLearn": {
+      "commandName": "Project"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "Profil \"1\"": {
+      "commandName": "Project"
+    }
+  }
+}
