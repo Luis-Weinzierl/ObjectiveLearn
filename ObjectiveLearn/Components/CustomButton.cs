@@ -1,6 +1,7 @@
 using System;
 using Eto.Drawing;
 using Eto.Forms;
+using ObjectiveLearn.Shared;
 
 namespace ObjectiveLearn.Components;
 
@@ -122,11 +123,12 @@ public class CustomButton : Drawable
 
         CheckForResize(e);
 
-        e.Graphics.FillRectangle(BackdropColor, 0, 0, Width, Height);
-
+        // e.Graphics.FillRectangle(BackdropColor, 0, 0, Width, Height);
+        CustomShapes.DrawRoundedRectangle(e.Graphics, 0, 0, Width, Height, 10, BackdropColor);
         if (_isMouseOver && Enabled)
         {
-            e.Graphics.FillRectangle(HoverColor, 0, 0, Width, Height);
+            // e.Graphics.FillRectangle(HoverColor, 0, 0, Width, Height);
+            CustomShapes.DrawRoundedRectangle(e.Graphics, 0, 0, Width, Height, 10, HoverColor);
         }
 
         e.Graphics.DrawText(Font, Enabled ? TextBrush : DisabledTextBrush, _distanceLeft, _distanceTop, Text);

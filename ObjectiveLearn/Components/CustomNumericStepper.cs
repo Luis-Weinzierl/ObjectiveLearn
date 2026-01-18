@@ -90,9 +90,11 @@ public class CustomNumericStepper : KeyboardDrawable
             Location = new PointF(textBoxWidth + addButtonWidth + 2 * Gap, 0)
         };
 
-        e.Graphics.FillRectangle(BackdropColor, textBoxRect);
+        // e.Graphics.FillRectangle(BackdropColor, textBoxRect);
+        CustomShapes.DrawRoundedRectangleL(e.Graphics, (int)textBoxRect.X, (int)textBoxRect.Y, (int)textBoxRect.Width, (int)textBoxRect.Height, 10, BackdropColor);
         e.Graphics.FillRectangle(BackdropColor, _addButtonRect);
-        e.Graphics.FillRectangle(BackdropColor, _removeButtonRect);
+        // e.Graphics.FillRectangle(BackdropColor, _removeButtonRect);
+        CustomShapes.DrawRoundedRectangleR(e.Graphics, (int)_removeButtonRect.X, (int)_removeButtonRect.Y, (int)_removeButtonRect.Width, (int)_removeButtonRect.Height, 10, BackdropColor);
 
         switch (_areaHovered)
         {

@@ -82,7 +82,7 @@ public class ConsoleBar : Drawable
 
         var copyrightLabel = new CustomLink
         {
-            Text = "\u00a9 2025 Luis Weinzierl",
+            Text = "\u00a9 2026 Luis Weinzierl",
             Color = ConfigManager.GetColor(Config.LinkTextColor),
             Font = App.SmallTextFont,
             Cursor = Cursors.Pointer

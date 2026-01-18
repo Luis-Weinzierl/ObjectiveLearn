@@ -93,7 +93,7 @@ public class CustomTextBox : KeyboardDrawable
 
         if (Enabled)
         {
-            e.Graphics.FillRectangle(BackdropColor, 0, 0, width, height);
+            CustomShapes.DrawRoundedRectangle(e.Graphics, 0, 0, Width, Height, 10, BackdropColor);
         }
 
         var distanceLeft = textSize.Width >= width - 20

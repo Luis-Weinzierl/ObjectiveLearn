@@ -1,6 +1,7 @@
-using System;
 using Eto.Drawing;
 using Eto.Forms;
+using ObjectiveLearn.Shared;
+using System;
 
 namespace ObjectiveLearn.Components;
 
@@ -108,11 +109,13 @@ public class ImageButton : Drawable
 
         CheckForResize(e);
 
-        e.Graphics.FillRectangle(BackdropColor, 0, 0, _width, _height);
+        // e.Graphics.FillRectangle(BackdropColor, 0, 0, _width, _height);
+        CustomShapes.DrawRoundedRectangle(e.Graphics, 0, 0, Width, Height, 10, BackdropColor);
 
         if (_isMouseOver && Enabled)
         {
-            e.Graphics.FillRectangle(HoverColor, 0, 0, _width, _height);
+            // e.Graphics.FillRectangle(HoverColor, 0, 0, _width, _height);
+            CustomShapes.DrawRoundedRectangle(e.Graphics, 0, 0, Width, Height, 10, HoverColor);
         }
 
         e.Graphics.DrawImage(Image, 0, 0);
@@ -121,7 +124,8 @@ public class ImageButton : Drawable
 
         if (!Enabled)
         {
-            e.Graphics.FillRectangle(HoverColor, 0, 0, _width, _height);
+            // e.Graphics.FillRectangle(HoverColor, 0, 0, _width, _height);
+            CustomShapes.DrawRoundedRectangle(e.Graphics, 0, 0, Width, Height, 10, HoverColor);
         }
     }
 
