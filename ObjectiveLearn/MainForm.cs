@@ -25,7 +25,7 @@ public class MainForm : Form, IDisposable
 
         layout.BeginHorizontal(true);
         layout.BeginVertical(null, null, true, true);
-        layout.Add(App.TopBar, true, false);
+        layout.Add(App.ToolBar, true, false);
         layout.Add(App.Canvas, true, true);
         layout.Add(App.ConsoleBar, true, false);
         layout.EndVertical();

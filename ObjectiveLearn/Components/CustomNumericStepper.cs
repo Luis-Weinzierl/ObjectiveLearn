@@ -25,6 +25,8 @@ public class CustomNumericStepper : KeyboardDrawable
         }
     }
 
+    public Func<int, string> Formatter = s => s.ToString();
+
     public Font Font { get; set; }
 
     public Color Color { get; set; }
@@ -69,8 +71,8 @@ public class CustomNumericStepper : KeyboardDrawable
         var removeTextSize = e.Graphics.MeasureString(Font, RemoveContent);
 
         var addButtonWidth = 2 * TextPadding + addTextSize.Width;
-        var removeButtonWidth = 2 * TextPadding + removeTextSize.Width;
-        var textBoxWidth = width - addButtonWidth - removeButtonWidth - 2 * Gap;
+        var removeButtonWidth = 2 * TextPadding + removeTextSize.Width + 3;
+        var textBoxWidth = width - addButtonWidth - removeButtonWidth - 3 * Gap;
 
         var textBoxRect = new RectangleF
         {
@@ -87,7 +89,7 @@ public class CustomNumericStepper : KeyboardDrawable
         _removeButtonRect = new RectangleF
         {
             Size = new SizeF(removeButtonWidth, height),
-            Location = new PointF(textBoxWidth + addButtonWidth + 2 * Gap, 0)
+            Location = new PointF(textBoxWidth + addButtonWidth + 3 * Gap, 0)
         };
 
         // e.Graphics.FillRectangle(BackdropColor, textBoxRect);
@@ -103,7 +105,7 @@ public class CustomNumericStepper : KeyboardDrawable
                 break;
 
             case 1:
-                e.Graphics.FillRectangle(HoverColor, _removeButtonRect);
+                CustomShapes.DrawRoundedRectangleR(e.Graphics, (int)_removeButtonRect.X, (int)_removeButtonRect.Y, (int)_removeButtonRect.Width, (int)_removeButtonRect.Height, 10, HoverColor);
                 break;
         }
 
@@ -113,7 +115,7 @@ public class CustomNumericStepper : KeyboardDrawable
             ;
         var distanceTop = (height - addTextSize.Height) / 2;
 
-        e.Graphics.DrawText(Font, Enabled ? Color : DisabledColor, distanceLeft, distanceTop, _value.ToString());
+        e.Graphics.DrawText(Font, Enabled ? Color : DisabledColor, distanceLeft, distanceTop, Formatter(_value));
         e.Graphics.DrawText(Font, Enabled ? Color : DisabledColor, textBoxWidth + Gap + TextPadding, distanceTop, AddContent);
         e.Graphics.DrawText(Font, Enabled ? Color : DisabledColor, textBoxWidth + 2 * Gap + addButtonWidth + TextPadding, distanceTop, RemoveContent);
     }

@@ -23,7 +23,7 @@ public static class App
     public static string Directory { get; set; }
     public static string CurrentFile { get; set; }
 
-    public static TopBar TopBar { get; set; }
+    public static ToolBar ToolBar { get; set; }
     public static Canvas Canvas { get; set; }
     public static ConsoleBar ConsoleBar { get; set; }
     public static SideBar SideBar { get; set; }
@@ -40,7 +40,7 @@ public static class App
         SmallTextFont            = new Font(SystemFont.Default, 8);
         SmallTextFontUnderline   = new Font(SystemFont.Default, 8, FontDecoration.Underline); 
 
-        TopBar                   = new TopBar();
+        ToolBar                  = new ToolBar();
         Canvas                   = new Canvas();
         SideBar                  = new SideBar();
         ConsoleBar               = new ConsoleBar();
@@ -54,8 +54,8 @@ public static class App
 
     public static SerializableObjectiveLearnProgram Serialize()
     {
-        TopBar.DeleteButton.Enabled = false;
-        TopBar.RotationStepper.Enabled = false;
+        ToolBar.DeleteButton.Enabled = false;
+        ToolBar.RotationStepper.Enabled = false;
         var shapes = new Dictionary<string, SerializableShape>();
 
         foreach (var kv in TankVm.Visitor.Variables)
@@ -96,8 +96,8 @@ public static class App
 
     public static void Deserialize(SerializableObjectiveLearnProgram program)
     {
-        TopBar.DeleteButton.Enabled = false;
-        TopBar.RotationStepper.Enabled = false;
+        ToolBar.DeleteButton.Enabled = false;
+        ToolBar.RotationStepper.Enabled = false;
         var dict = new Dictionary<string, TankLiteValue>();
 
         foreach (var kv in program.Shapes)
@@ -112,7 +112,7 @@ public static class App
         Task = program.Task;
         Shape.IdCounter = program.FormCounter;
 
-        TopBar.ColorPicker.Enabled = !TeacherMode;
+        ToolBar.ColorPicker.Enabled = !TeacherMode;
 
         Canvas.UpdateShapes();
     }

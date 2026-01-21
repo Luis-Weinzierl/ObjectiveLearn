@@ -44,9 +44,9 @@ public class Canvas : Drawable
 
     private void OnSelectShape(object sender, SelectShapeEventArgs e) {
         SelectedShape = (Shape)sender;
-        App.TopBar.DeleteButton.Enabled = true;
-        App.TopBar.RotationStepper.Enabled = true;
-        App.TopBar.Invalidate();
+        App.ToolBar.DeleteButton.Enabled = true;
+        App.ToolBar.RotationStepper.Enabled = true;
+        App.ToolBar.Invalidate();
     }
 
     protected override void OnPaint(PaintEventArgs pe)
@@ -263,8 +263,8 @@ public class Canvas : Drawable
 
                 if (clickedShape is not null)
                 {
-                    App.TopBar.ColorPicker.SelectedColor = clickedShape.Color;
-                    App.TopBar.RotationStepper.Value = clickedShape.Rotation;
+                    App.ToolBar.ColorPicker.SelectedColor = clickedShape.Color;
+                    App.ToolBar.RotationStepper.Value = clickedShape.Rotation;
                     Invalidate();
                     return;
                 }
@@ -272,11 +272,11 @@ public class Canvas : Drawable
 
             SelectedShape = null;
             App.SideBar.Reset();
-            App.TopBar.DeleteButton.Enabled = false;
-            App.TopBar.RotationStepper.Enabled = false;
-            App.TopBar.ColorPicker.SelectedColor = DrawColor;
-            App.TopBar.RotationStepper.Value = 0;
-            App.TopBar.Invalidate();
+            App.ToolBar.DeleteButton.Enabled = false;
+            App.ToolBar.RotationStepper.Enabled = false;
+            App.ToolBar.ColorPicker.SelectedColor = DrawColor;
+            App.ToolBar.RotationStepper.Value = 0;
+            App.ToolBar.Invalidate();
 
             Invalidate();
             return;
@@ -307,8 +307,8 @@ public class Canvas : Drawable
         Shape.IdCounter++;
         UpdateShapes();
         SelectedShape = null;
-        App.TopBar.DeleteButton.Enabled = false;
-        App.TopBar.RotationStepper.Enabled = false;
+        App.ToolBar.DeleteButton.Enabled = false;
+        App.ToolBar.RotationStepper.Enabled = false;
     }
 
     public void UpdateShapes()
@@ -411,8 +411,8 @@ public class Canvas : Drawable
             if (variable.Key != previousSelectedShapeRefName) continue;
 
             SelectedShape = shape;
-            App.TopBar.RotationStepper.Value = shape.Rotation;
-            App.TopBar.ColorPicker.SelectedColor = shape.Color;
+            App.ToolBar.RotationStepper.Value = shape.Rotation;
+            App.ToolBar.ColorPicker.SelectedColor = shape.Color;
         }
 
         Invalidate();

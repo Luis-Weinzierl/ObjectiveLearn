@@ -10,14 +10,14 @@ using System.Linq;
 
 namespace ObjectiveLearn.Components;
 
-public class TopBar : Drawable
+public class ToolBar : Drawable
 {
     private static Dialog _confirmActionDialog;
     public CustomButton DeleteButton;
     public CustomNumericStepper RotationStepper;
     public CustomColorPicker ColorPicker;
 
-    public TopBar()
+    public ToolBar()
     {
         Draw();
     }
@@ -26,7 +26,7 @@ public class TopBar : Drawable
     {
         var rectangleButton = new ImageButton
         {
-            Image = new Bitmap(Path.Combine(App.Directory, "Resources/RectangleIcon.png")),
+            Image = new Bitmap(Path.Combine(App.Directory, "Resources/rectangle.png")),
             Text = LanguageManager.Get(LanguageName.TopBarRectangle),
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
@@ -35,7 +35,7 @@ public class TopBar : Drawable
 
         var triangleButton = new ImageButton
         {
-            Image = new Bitmap(Path.Combine(App.Directory, "Resources/TriangleIcon.png")),
+            Image = new Bitmap(Path.Combine(App.Directory, "Resources/triangle.png")),
             Text = LanguageManager.Get(LanguageName.TopBarTriangle),
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
@@ -44,7 +44,7 @@ public class TopBar : Drawable
 
         var ellipseButton = new ImageButton
         {
-            Image = new Bitmap(Path.Combine(App.Directory, "Resources/CircleIcon.png")),
+            Image = new Bitmap(Path.Combine(App.Directory, "Resources/ellipse.png")),
             Text = LanguageManager.Get(LanguageName.TopBarEllipse),
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
@@ -100,6 +100,7 @@ public class TopBar : Drawable
 
         RotationStepper = new CustomNumericStepper
         {
+            Formatter = s => $"{s}°",
             Font = App.TextFont,
             Color = ConfigManager.GetColor(Config.UiTextColor),
             DisabledColor = ConfigManager.GetColor(Config.UiDisabledTextColor),
@@ -274,7 +275,7 @@ public class TopBar : Drawable
         App.Canvas.UpdateShapes();
         App.TeacherMode = false;
         App.SideBar.Reset();
-        App.TopBar.Draw();
+        App.ToolBar.Draw();
         App.CurrentFile = LanguageManager.Get(LanguageName.UiNoFileSelected);
         _confirmActionDialog.Close();
     }
